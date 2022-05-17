@@ -2,13 +2,15 @@
 
 namespace Khoatran\CarForRent\Controller;
 
-class CarController extends BaseController
+use Khoatran\CarForRent\App\View;
+
+class CarController
 {
     /**
      * @return false|string
      */
-    public function index(): false | string
+    public function index(): false|string
     {
-        return $this->render('car');
+        return View::render('car');
     }
 }

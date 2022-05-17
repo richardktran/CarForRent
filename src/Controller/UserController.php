@@ -2,13 +2,15 @@
 
 namespace Khoatran\CarForRent\Controller;
 
-class UserController extends BaseController
+use Khoatran\CarForRent\App\View;
+
+class UserController
 {
     /**
      * @return false|string
      */
-    public function index(): false | string
+    public function index(): false|string
     {
-        return $this->render('user');
+        return View::render('user');
     }
 }
