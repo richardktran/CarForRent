@@ -1,0 +1,40 @@
+<?php
+
+namespace Khoatran\CarForRent;
+
+use Khoatran\CarForRent\Controller\NotFoundController;
+use Khoatran\CarForRent\Request\Request;
+
+class Route
+{
+    /**
+     * @var array
+     */
+    protected static array $routes = [];
+
+    /**
+     * @param  $uri
+     * @param  $callback
+     * @return void
+     */
+    public static function get($uri, $callback): void
+    {
+        self::$routes['GET'][$uri] = $callback;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function handle(): mixed
+    {
+        $request = new Request();
+        $notFoundController = new NotFoundController();
+        $path = $request->getPath();
+        $method = $request->getMethod();
+        $response = self::$routes[$method][$path] ?? false;
+        if (!$response) {
+            echo $notFoundController->index();
+        }
+        return call_user_func($response);
+    }
+}

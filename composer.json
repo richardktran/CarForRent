@@ -1,15 +1,18 @@
 {
-    "name": "khoatran/car-for-rent",
-    "autoload": {
-        "psr-4": {
-            "Khoatran\\CarForRent\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Dang Khoa Tran",
-            "email": "richardktran.dev@gmail.com"
-        }
-    ],
-    "require": {}
+  "name": "khoatran/car-for-rent",
+  "autoload": {
+    "psr-4": {
+      "Khoatran\\CarForRent\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Dang Khoa Tran",
+      "email": "richardktran.dev@gmail.com"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
+  }
 }
