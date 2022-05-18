@@ -1,1 +1,1 @@
-<h1>Home</h1>
+<button type="button" onclick="location.href='logout'" class="btn btn-primary">Log out</button>

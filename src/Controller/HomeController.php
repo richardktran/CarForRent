@@ -12,6 +12,9 @@ class HomeController
      */
     public function index(): void
     {
+        if (!isset($_SESSION['user_id'])) {
+            View::redirect('/login');
+        }
         View::render("home");
     }
 }

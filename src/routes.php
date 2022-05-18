@@ -9,3 +9,4 @@ use Khoatran\CarForRent\Controller\LoginController;
 Route::get('/', [new HomeController(), 'index']);
 Route::get('/login', [new LoginController(), 'index']);
 Route::post('/login', [new LoginController(), 'login']);
+Route::get('/logout', [new LoginController(), 'logout']);

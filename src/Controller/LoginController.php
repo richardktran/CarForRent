@@ -23,6 +23,10 @@ class LoginController
      */
     public function index(): void
     {
+        if (isset($_SESSION['user_id'])) {
+            View::redirect('/');
+            return;
+        }
         View::render('login', [
             'username' => '',
             'password' => '',
@@ -50,6 +54,13 @@ class LoginController
             ]);
             return;
         }
+        $_SESSION["user_id"] = $user->id;
         View::redirect('/');
+    }
+
+    public function logout(): void
+    {
+        unset($_SESSION['user_id']);
+        View::redirect('/login');
     }
 }

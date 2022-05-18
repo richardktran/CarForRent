@@ -3,7 +3,6 @@
 namespace Khoatran\CarForRent;
 
 use Khoatran\CarForRent\App\View;
-use Khoatran\CarForRent\Controller\NotFoundController;
 use Khoatran\CarForRent\Request\Request;
 
 class Route
@@ -34,7 +33,6 @@ class Route
     public static function handle(): mixed
     {
         $request = new Request();
-
         $path = $request->getPath();
         $method = $request->getMethod();
         $response = self::$routes[$method][$path] ?? false;
