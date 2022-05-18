@@ -2,6 +2,7 @@
 
 namespace Khoatran\CarForRent\Database;
 
+use Khoatran\CarForRent\DotEnv;
 use PDO;
 use PDOException;
 
@@ -17,14 +18,14 @@ class Database
      */
     public static function getConnection(): PDO
     {
-
+        (new DotEnv(__DIR__ . '/../../.env'))->load();
         if (empty(self::$connection)) {
             $db_info = array(
-                "db_host" => "localhost",
-                "db_port" => "3306",
-                "db_user" => "root",
-                "db_pass" => "Trandangkhoa1;",
-                "db_name" => "carforrent",
+                "db_host" => getenv('DATABASE_HOST'),
+                "db_port" => getenv('DATABASE_PORT'),
+                "db_user" => getenv('DATABASE_USER'),
+                "db_pass" => getenv('DATABASE_PASSWORD'),
+                "db_name" => getenv('DATABASE_DB_NAME'),
             );
 
             try {
