@@ -9,7 +9,7 @@ class CarController
     /**
      * @return false|string
      */
-    public function index(): false|string
+    public function index(): false | string
     {
         return View::render('car');
     }

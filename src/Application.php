@@ -9,6 +9,6 @@ class Application
      */
     public function run(): void
     {
-        print_r(Route::handle());
+        echo Route::handle();
     }
 }

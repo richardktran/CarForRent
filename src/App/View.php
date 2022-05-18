@@ -6,10 +6,22 @@ class View
 {
     /**
      * @param string $template
-     * @return false|string
+     * @param $data
+     * @return void
      */
-    public static function render(string $template): false|string
+    public static function render(string $template, array $data = null): void
     {
-        return file_get_contents(__DIR__ . "/../View/$template.php");
+        require __DIR__ . "/../View/Layout/header.php";
+        require __DIR__ . "/../View/$template.php";
+        require __DIR__ . "/../View/Layout/footer.php";
+    }
+
+    /**
+     * @param $url
+     * @return void
+     */
+    public static function redirect($url): void
+    {
+        header("location: $url");
     }
 }
