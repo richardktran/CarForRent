@@ -7,6 +7,7 @@ use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\UserModel;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
+use Khoatran\CarForRent\Service\SessionService;
 use PDO;
 
 class LoginController
@@ -23,7 +24,7 @@ class LoginController
      */
     public function index(): void
     {
-        if (isset($_SESSION['user_id'])) {
+        if (SessionService::getUserId()!=null) {
             View::redirect('/');
             return;
         }
@@ -46,7 +47,7 @@ class LoginController
             ]);
             return;
         }
-        if (!password_verify($loginRequest->password, $user->password)) {
+        if (!password_verify($loginRequest->password, $user->getPassword())) {
             View::render('login', [
                 'username' => $loginRequest->username,
                 'password' => '',
@@ -54,13 +55,13 @@ class LoginController
             ]);
             return;
         }
-        $_SESSION["user_id"] = $user->id;
+        SessionService::setUserId($user->getId());
         View::redirect('/');
     }
 
     public function logout(): void
     {
-        unset($_SESSION['user_id']);
+        SessionService::destroyUser();
         View::redirect('/login');
     }
 }

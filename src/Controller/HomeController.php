@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\Controller;
 
 use Khoatran\CarForRent\App\View;
+use Khoatran\CarForRent\Service\SessionService;
 
 class HomeController
 {
@@ -12,7 +13,7 @@ class HomeController
      */
     public function index(): void
     {
-        if (!isset($_SESSION['user_id'])) {
+        if (SessionService::getUserId()==null) {
             View::redirect('/login');
         }
         View::render("home");

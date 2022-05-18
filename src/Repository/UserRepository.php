@@ -21,12 +21,12 @@ class UserRepository
 
         $user = new UserModel();
         if ($row = $statement->fetch()) {
-            $user->id = $row['id'];
-            $user->username = $row['username'];
-            $user->password = $row['password'];
-            $user->fullName = $row['full_name'];
-            $user->phoneNumber = $row['phone_number'];
-            $user->type = $row['type'];
+            $user->setId($row['id']);
+            $user->setUsername($row['username']);
+            $user->setPassword($row['password']);
+            $user->setFullName($row['full_name']);
+            $user->setPhoneNumber($row['phone_number']);
+            $user->setType($row['type']);
             return $user;
         } else {
             return null;
