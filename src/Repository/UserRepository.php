@@ -32,4 +32,28 @@ class UserRepository
             return null;
         }
     }
+
+    public function findById($id): ?UserModel
+    {
+        $statement = $this->connection->prepare("SELECT * FROM users WHERE id = ? ");
+        $statement->execute([$id]);
+
+        try {
+            $user = new UserModel();
+            if ($row = $statement->fetch()) {
+                $user->setId($row['id']);
+                $user->setUsername($row['username']);
+                $user->setPassword($row['password']);
+                $user->setFullName($row['full_name']);
+                $user->setPhoneNumber($row['phone_number']);
+                $user->setType($row['type']);
+
+                return $user;
+            } else {
+                return null;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
+    }
 }
