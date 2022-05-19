@@ -4,22 +4,18 @@ namespace Khoatran\CarForRent\Controller;
 
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Database\Database;
-use Khoatran\CarForRent\Model\UserModel;
-use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
+use Khoatran\CarForRent\Service\LoginService;
 use Khoatran\CarForRent\Service\SessionService;
 use PDO;
 
 class LoginController
 {
-    /**
-     * @var PDO
-     */
-    protected PDO $connection;
+    protected LoginService $loginService;
 
     public function __construct()
     {
-        $this->connection = Database::getConnection();
+        $this->loginService = new LoginService();
     }
 
     /**
@@ -51,26 +47,7 @@ class LoginController
             ]);
             return;
         }
-        $userRepository = new UserRepository($this->connection);
-        $user = $userRepository->findByUsername($loginRequest->getUsername());
-        if ($user == null) {
-            View::render('login', [
-                'username' => $loginRequest->getUsername(),
-                'password' => '',
-                'error' => 'Username does not exist',
-            ]);
-            return;
-        }
-        if (!password_verify($loginRequest->getPassword(), $user->getPassword())) {
-            View::render('login', [
-                'username' => $loginRequest->getUsername(),
-                'password' => '',
-                'error' => 'Wrong password',
-            ]);
-            return;
-        }
-        SessionService::setUserId($user->getId());
-        View::redirect('/');
+        $this->loginService->login($loginRequest);
     }
 
     /**
