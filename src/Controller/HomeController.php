@@ -13,9 +13,6 @@ class HomeController
      */
     public function index(): void
     {
-        if (SessionService::getUserId()==null) {
-            View::redirect('/login');
-        }
         View::render("home");
     }
 }

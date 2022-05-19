@@ -5,6 +5,7 @@ namespace Khoatran\CarForRent\Service;
 class SessionService
 {
     public static string $userIdKey = 'user_id';
+
     public static function getUserId(): ?int
     {
         if (isset($_SESSION[self::$userIdKey])) {
@@ -21,5 +22,10 @@ class SessionService
     public static function destroyUser(): void
     {
         unset($_SESSION[self::$userIdKey]);
+    }
+
+    public static function isLogin(): bool
+    {
+        return self::getUserId() != null;
     }
 }

@@ -17,14 +17,14 @@ class Route
      * @param  $callback
      * @return void
      */
-    public static function get($uri, $callback): void
+    public static function get($uri, $callback, $middlewares = []): void
     {
-        self::$routes['GET'][$uri] = $callback;
+        self::$routes['GET'][$uri] = [$callback, $middlewares];
     }
 
-    public static function post($uri, $callback): void
+    public static function post($uri, $callback, $middlewares = []): void
     {
-        self::$routes['POST'][$uri] = $callback;
+        self::$routes['POST'][$uri] = [$callback, $middlewares];
     }
 
     /**
@@ -36,14 +36,21 @@ class Route
         $path = $request->getPath();
         $method = $request->getMethod();
         $response = self::$routes[$method][$path] ?? false;
+
         if (!$response) {
             View::render('_404');
             return null;
         }
-        if (is_string($response)) {
-            View::render($response);
+        $callback = $response[0];
+        $middlewares = $response[1];
+        foreach ($middlewares as $middleware) {
+            $middlewareHandle = new $middleware();
+            $middlewareHandle->run();
+        }
+        if (is_string($callback)) {
+            View::render($callback);
             return null;
         }
-        return call_user_func($response);
+        return call_user_func($callback);
     }
 }

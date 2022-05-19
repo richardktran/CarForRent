@@ -12,6 +12,9 @@ use PDO;
 
 class LoginController
 {
+    /**
+     * @var PDO
+     */
     protected PDO $connection;
 
     public function __construct()
@@ -24,7 +27,7 @@ class LoginController
      */
     public function index(): void
     {
-        if (SessionService::getUserId()!=null) {
+        if (SessionService::isLogin()) {
             View::redirect('/');
             return;
         }
@@ -34,22 +37,33 @@ class LoginController
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function login(): void
     {
         $loginRequest = new LoginRequest($_POST);
+        if (!$loginRequest->validate()) {
+            View::render('login', [
+                'username' => $loginRequest->getUsername() ?? "",
+                'password' => '',
+                'error' => 'Your username or password is empty',
+            ]);
+            return;
+        }
         $userRepository = new UserRepository($this->connection);
-        $user = $userRepository->findByUsername($loginRequest->username);
+        $user = $userRepository->findByUsername($loginRequest->getUsername());
         if ($user == null) {
             View::render('login', [
-                'username' => $loginRequest->username,
+                'username' => $loginRequest->getUsername(),
                 'password' => '',
                 'error' => 'Username does not exist',
             ]);
             return;
         }
-        if (!password_verify($loginRequest->password, $user->getPassword())) {
+        if (!password_verify($loginRequest->getPassword(), $user->getPassword())) {
             View::render('login', [
-                'username' => $loginRequest->username,
+                'username' => $loginRequest->getUsername(),
                 'password' => '',
                 'error' => 'Wrong password',
             ]);
@@ -59,6 +73,9 @@ class LoginController
         View::redirect('/');
     }
 
+    /**
+     * @return void
+     */
     public function logout(): void
     {
         SessionService::destroyUser();

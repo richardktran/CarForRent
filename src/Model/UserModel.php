@@ -106,5 +106,4 @@ class UserModel
     {
         $this->type = $type;
     }
-
 }
