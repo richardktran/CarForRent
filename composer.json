@@ -5,6 +5,11 @@
       "Khoatran\\CarForRent\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Khoatran\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "Dang Khoa Tran",
@@ -15,6 +20,7 @@
     "ext-pdo": "*"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "3.*"
+    "squizlabs/php_codesniffer": "3.*",
+    "phpunit/phpunit": "^9.5"
   }
 }

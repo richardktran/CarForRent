@@ -4,6 +4,7 @@ namespace Khoatran\CarForRent\Service;
 
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Database\Database;
+use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
 use PDO;
@@ -17,24 +18,17 @@ class LoginService
         $this->userRepository = new UserRepository(Database::getConnection());
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function login(LoginRequest $loginRequest): void
     {
         $user = $this->userRepository->findByUsername($loginRequest->getUsername());
         if ($user == null) {
-            View::render('login', [
-                'username' => $loginRequest->getUsername(),
-                'password' => '',
-                'error' => 'Username does not exist',
-            ]);
-            return;
+            throw new ValidationException("Your account does not exist");
         }
         if (!password_verify($loginRequest->getPassword(), $user->getPassword())) {
-            View::render('login', [
-                'username' => $loginRequest->getUsername(),
-                'password' => '',
-                'error' => 'Wrong password',
-            ]);
-            return;
+            throw new ValidationException("Your password is wrong");
         }
         SessionService::setUserId($user->getId());
         View::redirect('/');

@@ -3,11 +3,10 @@
 namespace Khoatran\CarForRent\Controller;
 
 use Khoatran\CarForRent\App\View;
-use Khoatran\CarForRent\Database\Database;
+use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Service\LoginService;
 use Khoatran\CarForRent\Service\SessionService;
-use PDO;
 
 class LoginController
 {
@@ -39,15 +38,27 @@ class LoginController
     public function login(): void
     {
         $loginRequest = new LoginRequest($_POST);
-        if (!$loginRequest->validate()) {
+        try {
+            $loginRequest->validate();
+        } catch (ValidationException $error) {
             View::render('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
-                'error' => 'Your username or password is empty',
+                'error' => $error->getMessage(),
             ]);
             return;
         }
-        $this->loginService->login($loginRequest);
+
+        try {
+            $this->loginService->login($loginRequest);
+        } catch (ValidationException $error) {
+            View::render('login', [
+                'username' => $loginRequest->getUsername(),
+                'password' => '',
+                'error' => $error->getMessage(),
+            ]);
+        }
+
     }
 
     /**

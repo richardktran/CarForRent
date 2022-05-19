@@ -2,6 +2,8 @@
 
 namespace Khoatran\CarForRent\Request;
 
+use Khoatran\CarForRent\Exception\ValidationException;
+
 class LoginRequest
 {
     private string $username;
@@ -59,11 +61,12 @@ class LoginRequest
 
     /**
      * @return bool
+     * @throws ValidationException
      */
     public function validate(): bool
     {
         if (empty($this->getUsername()) || empty($this->getPassword())) {
-            return false;
+            throw new ValidationException("Your username or password is not empty");
         }
 
         return true;
