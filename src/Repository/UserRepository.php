@@ -9,10 +9,12 @@ use PDO;
 class UserRepository
 {
     private PDO $connection;
+    private UserModel $user;
 
     public function __construct()
     {
         $this->connection = Database::getConnection();
+        $this->user = new UserModel();
     }
 
     public function findByUsername($username): ?UserModel
@@ -20,15 +22,14 @@ class UserRepository
         $statement = $this->connection->prepare("SELECT * FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
-        $user = new UserModel();
         if ($row = $statement->fetch()) {
-            $user->setId($row['id']);
-            $user->setUsername($row['username']);
-            $user->setPassword($row['password']);
-            $user->setFullName($row['full_name']);
-            $user->setPhoneNumber($row['phone_number']);
-            $user->setType($row['type']);
-            return $user;
+            $this->user->setId($row['id']);
+            $this->user->setUsername($row['username']);
+            $this->user->setPassword($row['password']);
+            $this->user->setFullName($row['full_name']);
+            $this->user->setPhoneNumber($row['phone_number']);
+            $this->user->setType($row['type']);
+            return $this->user;
         } else {
             return null;
         }

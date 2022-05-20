@@ -30,15 +30,8 @@ class Request
     public function getBody(): array
     {
         $body = [];
-        if ($this->getMethod() === 'GET') {
-            foreach ($_GET as $key => $value) {
-                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            }
-        }
-        if ($this->getMethod() === 'POST') {
-            foreach ($_POST as $key => $value) {
-                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            }
+        foreach ($_POST as $key => $value) {
+            $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
         }
         return $body;
     }

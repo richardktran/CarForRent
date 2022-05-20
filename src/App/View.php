@@ -6,7 +6,7 @@ class View
 {
     /**
      * @param string $template
-     * @param $data
+     * @param array|null $data
      * @return void
      */
     public static function render(string $template, array $data = null): void
