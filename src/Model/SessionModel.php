@@ -9,11 +9,11 @@ class SessionModel
     protected int $sessLifetime;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSessID(): string
+    public function getSessID(): string|null
     {
-        return $this->sessID;
+        return $this->sessID ?? null;
     }
 
     /**
@@ -27,9 +27,9 @@ class SessionModel
     /**
      * @return string
      */
-    public function getSessData(): string
+    public function getSessData(): string|null
     {
-        return $this->sessData;
+        return $this->sessData ?? null;
     }
 
     /**
@@ -43,9 +43,9 @@ class SessionModel
     /**
      * @return int
      */
-    public function getSessLifetime(): int
+    public function getSessLifetime(): int|null
     {
-        return $this->sessLifetime;
+        return $this->sessLifetime ?? null;
     }
 
     /**

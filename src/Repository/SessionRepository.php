@@ -2,6 +2,7 @@
 
 namespace Khoatran\CarForRent\Repository;
 
+use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\SessionModel;
 use PDO;
 
@@ -9,9 +10,9 @@ class SessionRepository
 {
     protected PDO $connection;
 
-    public function __construct(PDO $connection)
+    public function __construct()
     {
-        $this->connection = $connection;
+        $this->connection = Database::getConnection();
     }
 
     public function save(SessionModel $session): SessionModel
@@ -27,13 +28,13 @@ class SessionRepository
 
     public function deleteById($sessionID): void
     {
-        $statement = $this->connection->prepare("DELETE FROM sessions WHERE id = '$sessionID' ");
+        $statement = $this->connection->prepare("DELETE FROM sessions WHERE sess_id = '$sessionID' ");
         $statement->execute();
     }
 
     public function findById($sessionID): SessionModel
     {
-        $statement = $this->connection->prepare("SELECT id, user_id FROM sessions WHERE id = '$sessionID' ");
+        $statement = $this->connection->prepare("SELECT * FROM sessions WHERE sess_id = '$sessionID' ");
         $statement->execute();
 
         try {

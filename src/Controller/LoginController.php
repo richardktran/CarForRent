@@ -5,16 +5,19 @@ namespace Khoatran\CarForRent\Controller;
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Request\LoginRequest;
+use Khoatran\CarForRent\Request\Request;
 use Khoatran\CarForRent\Service\LoginService;
 use Khoatran\CarForRent\Service\SessionService;
 
 class LoginController
 {
     protected LoginService $loginService;
+    protected Request $request;
 
     public function __construct()
     {
         $this->loginService = new LoginService();
+        $this->request = new Request();
     }
 
     /**
@@ -37,7 +40,7 @@ class LoginController
      */
     public function login(): void
     {
-        $loginRequest = new LoginRequest($_POST);
+        $loginRequest = new LoginRequest($this->request->getBody());
         try {
             $loginRequest->validate();
         } catch (ValidationException $error) {

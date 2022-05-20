@@ -3,11 +3,9 @@
 namespace Khoatran\CarForRent\Service;
 
 use Khoatran\CarForRent\App\View;
-use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
-use PDO;
 
 class LoginService
 {
@@ -15,7 +13,7 @@ class LoginService
 
     public function __construct()
     {
-        $this->userRepository = new UserRepository(Database::getConnection());
+        $this->userRepository = new UserRepository();
     }
 
     /**

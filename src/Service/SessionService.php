@@ -13,16 +13,14 @@ class SessionService
 
     public static function getUserId(): ?int
     {
-//        $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-//        $sessionRepository = new SessionRepository(Database::getConnection());
-//        $userRepository = new UserRepository(Database::getConnection());
-//        $session = $sessionRepository->findById($sessionId);
-//
-//        return $userRepository->findById($session->getSessData())->getId();
-        if (isset($_SESSION[self::$userIdKey])) {
-            return $_SESSION[self::$userIdKey];
+        $sessionId = $_COOKIE[self::$userIdKey] ?? '';
+        $sessionRepository = new SessionRepository();
+        $userRepository = new UserRepository();
+        $session = $sessionRepository->findById($sessionId);
+        if ($session->getSessID() == null) {
+            return null;
         }
-        return null;
+        return $userRepository->findById($session->getSessData())->getId();
     }
 
     public static function setUserId(int $userId): void
@@ -33,7 +31,7 @@ class SessionService
         $lifetime = time() + (60 * 60 * 24);
         $session->setSessLifetime($lifetime);
 
-        $sessionRepository = new SessionRepository(Database::getConnection());
+        $sessionRepository = new SessionRepository();
         $sessionRepository->save($session);
         setcookie(self::$userIdKey, $session->getSessID(), time() + (60 * 60 * 24), '/');
         $_SESSION[self::$userIdKey] = $userId;
@@ -42,7 +40,7 @@ class SessionService
     public static function destroyUser(): void
     {
         $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-        $sessionRepository = new SessionRepository(Database::getConnection());
+        $sessionRepository = new SessionRepository();
         $sessionRepository->deleteById($sessionId);
         setcookie(self::$userIdKey, '', 1, '/');
         unset($_SESSION[self::$userIdKey]);

@@ -2,6 +2,7 @@
 
 namespace Khoatran\CarForRent\Repository;
 
+use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\UserModel;
 use PDO;
 
@@ -9,9 +10,9 @@ class UserRepository
 {
     private PDO $connection;
 
-    public function __construct(PDO $connection)
+    public function __construct()
     {
-        $this->connection = $connection;
+        $this->connection = Database::getConnection();
     }
 
     public function findByUsername($username): ?UserModel
