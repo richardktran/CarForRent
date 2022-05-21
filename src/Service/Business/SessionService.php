@@ -39,7 +39,7 @@ class SessionService implements SessionServiceInterface
         $session->setSessLifetime($lifetime);
 
         $this->sessionRepository->save($session);
-        setcookie(self::$userIdKey, $session->getSessID(), time() + (60 * 60 * 24), '/');
+        setcookie(self::$userIdKey, $session->getSessID(), $lifetime, '/');
         $_SESSION[self::$userIdKey] = $userId;
     }
 

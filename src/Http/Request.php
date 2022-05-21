@@ -1,6 +1,8 @@
 <?php
 
-namespace Khoatran\CarForRent\request;
+namespace Khoatran\CarForRent\Http;
+
+use Khoatran\CarForRent\App\View;
 
 class Request
 {
@@ -26,12 +28,18 @@ class Request
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getBody(): array
     {
         $body = [];
         foreach ($_POST as $key => $value) {
             $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        $token = $body['token'] ?? '';
+        if (!$token || $token !== $_SESSION['token']) {
+            View::render('_404');
+            exit;
         }
         return $body;
     }

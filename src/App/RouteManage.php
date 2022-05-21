@@ -2,7 +2,6 @@
 
 namespace Khoatran\CarForRent\App;
 
-use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Controller\HomeController;
 use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Middleware\AuthenticateMiddleware;

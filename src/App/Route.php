@@ -2,10 +2,6 @@
 
 namespace Khoatran\CarForRent\App;
 
-use Khoatran\CarForRent\Request\Request;
-use Khoatran\CarForRent\Service\ServiceProvider;
-use ReflectionException;
-
 class Route
 {
     /**

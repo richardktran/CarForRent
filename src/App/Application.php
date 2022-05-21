@@ -2,7 +2,7 @@
 
 namespace Khoatran\CarForRent\App;
 
-use Khoatran\CarForRent\request\Request;
+use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Service\ServiceProvider;
 use ReflectionException;
 
@@ -11,6 +11,7 @@ class Application
     /**
      * @return void
      * @throws ReflectionException
+     * @throws \Exception
      */
     public function run(): void
     {

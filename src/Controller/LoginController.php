@@ -6,7 +6,7 @@ use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Request\LoginRequest;
-use Khoatran\CarForRent\Request\Request;
+use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 

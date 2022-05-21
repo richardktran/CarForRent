@@ -21,6 +21,7 @@ echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" method="post">
             <input type="checkbox" value="remember-me"> Remember me
         </label>
     </div>
+    <input type="hidden" name="token" value="<?= $_SESSION['token'] ?? '' ?>">
     <?php
 
     if (array_key_exists('error', $data)) {

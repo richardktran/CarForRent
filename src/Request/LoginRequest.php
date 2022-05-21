@@ -10,9 +10,9 @@ class LoginRequest
     private string $password;
 
     /**
-     * @return mixed|string
+     * @return string
      */
-    public function getUsername(): mixed
+    public function getUsername(): string
     {
         return $this->formatRequest($this->username);
     }
@@ -26,9 +26,9 @@ class LoginRequest
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
-    public function getPassword(): mixed
+    public function getPassword(): string
     {
         return $this->password;
     }
