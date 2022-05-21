@@ -2,7 +2,7 @@
 
 namespace Khoatran\CarForRent\Database;
 
-use Khoatran\CarForRent\DotEnv;
+use Khoatran\CarForRent\App\DotEnv;
 use PDO;
 use PDOException;
 

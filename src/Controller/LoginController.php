@@ -7,18 +7,20 @@ use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Request\Request;
-use Khoatran\CarForRent\Service\LoginService;
-use Khoatran\CarForRent\Service\SessionService;
+use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
+use Khoatran\CarForRent\Service\Business\SessionService;
 
 class LoginController
 {
-    protected LoginService $loginService;
+    protected LoginServiceInterface $loginService;
     protected Request $request;
+    protected SessionService $sessionService;
 
-    public function __construct()
+    public function __construct(Request $request, LoginServiceInterface $loginService, SessionService $sessionService)
     {
-        $this->loginService = new LoginService();
-        $this->request = new Request();
+        $this->loginService = $loginService;
+        $this->request = $request;
+        $this->sessionService = $sessionService;
     }
 
     /**
@@ -26,7 +28,7 @@ class LoginController
      */
     public function index(): void
     {
-        if (SessionService::isLogin()) {
+        if ($this->sessionService->isLogin()) {
             View::redirect('/');
             return;
         }
@@ -44,7 +46,9 @@ class LoginController
         $loginRequest = new LoginRequest($this->request->getBody());
         try {
             $loginRequest->validate();
-            $this->loginService->login($loginRequest);
+            $userLogin = $this->loginService->login($loginRequest);
+            $this->sessionService->setUserId($userLogin->getId());
+            View::redirect('/');
         } catch (ValidationException|LoginException $error) {
             View::render('login', [
                 'username' => $loginRequest->getUsername() ?? "",
@@ -61,7 +65,7 @@ class LoginController
      */
     public function logout(): void
     {
-        SessionService::destroyUser();
+        $this->sessionService->destroyUser();
         View::redirect('/login');
     }
 }

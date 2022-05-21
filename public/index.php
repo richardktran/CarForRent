@@ -2,9 +2,8 @@
 session_start();
 require __DIR__ . '/../vendor/autoload.php';
 
-use Khoatran\CarForRent\Application;
-use Khoatran\CarForRent\Controller\LoginController;
-use Khoatran\CarForRent\RouteManage;
+use Khoatran\CarForRent\App\Application;
+use Khoatran\CarForRent\App\RouteManage;
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');

@@ -1,14 +1,16 @@
 <?php
 
-namespace Khoatran\CarForRent\Service;
+namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Exception\ValidationException;
+use Khoatran\CarForRent\Model\UserModel;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
+use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 
-class LoginService
+class LoginService implements LoginServiceInterface
 {
     protected UserRepository $userRepository;
 
@@ -20,7 +22,7 @@ class LoginService
     /**
      * @throws LoginException
      */
-    public function login(LoginRequest $loginRequest): void
+    public function login(LoginRequest $loginRequest): UserModel
     {
         $user = $this->userRepository->findByUsername($loginRequest->getUsername());
         if ($user == null) {
@@ -29,7 +31,6 @@ class LoginService
         if (!password_verify($loginRequest->getPassword(), $user->getPassword())) {
             throw new LoginException("Your password is wrong");
         }
-        SessionService::setUserId($user->getId());
-        View::redirect('/');
+        return $user;
     }
 }

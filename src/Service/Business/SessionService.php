@@ -1,29 +1,35 @@
 <?php
 
-namespace Khoatran\CarForRent\Service;
+namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\SessionModel;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
+use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
-class SessionService
+class SessionService implements SessionServiceInterface
 {
     public static string $userIdKey = 'user_id';
+    protected SessionRepository $sessionRepository;
 
-    public static function getUserId(): ?int
+    public function __construct(SessionRepository $sessionRepository)
+    {
+        $this->sessionRepository = $sessionRepository;
+    }
+
+    public function getUserId(): ?int
     {
         $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-        $sessionRepository = new SessionRepository();
         $userRepository = new UserRepository();
-        $session = $sessionRepository->findById($sessionId);
+        $session = $this->sessionRepository->findById($sessionId);
         if ($session->getSessID() == null) {
             return null;
         }
         return $userRepository->findById($session->getSessData())->getId();
     }
 
-    public static function setUserId(int $userId): void
+    public function setUserId(int $userId): void
     {
         $session = new SessionModel();
         $session->setSessID(uniqid());
@@ -31,23 +37,21 @@ class SessionService
         $lifetime = time() + (60 * 60 * 24);
         $session->setSessLifetime($lifetime);
 
-        $sessionRepository = new SessionRepository();
-        $sessionRepository->save($session);
+        $this->sessionRepository->save($session);
         setcookie(self::$userIdKey, $session->getSessID(), time() + (60 * 60 * 24), '/');
         $_SESSION[self::$userIdKey] = $userId;
     }
 
-    public static function destroyUser(): void
+    public function destroyUser(): void
     {
         $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-        $sessionRepository = new SessionRepository();
-        $sessionRepository->deleteById($sessionId);
+        $this->sessionRepository->deleteById($sessionId);
         setcookie(self::$userIdKey, '', 1, '/');
         unset($_SESSION[self::$userIdKey]);
     }
 
-    public static function isLogin(): bool
+    public function isLogin(): bool
     {
-        return self::getUserId() != null;
+        return $this->getUserId() != null;
     }
 }

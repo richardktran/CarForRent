@@ -1,6 +1,6 @@
 <?php
 
-namespace Khoatran\CarForRent;
+namespace Khoatran\CarForRent\App;
 
 class DotEnv
 {

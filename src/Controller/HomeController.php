@@ -3,7 +3,7 @@
 namespace Khoatran\CarForRent\Controller;
 
 use Khoatran\CarForRent\App\View;
-use Khoatran\CarForRent\Service\SessionService;
+use Khoatran\CarForRent\Service\Business\SessionService;
 
 class HomeController
 {

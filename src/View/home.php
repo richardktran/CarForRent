@@ -7,7 +7,9 @@
             <a class="p-2 text-dark" href="#">Support</a>
             <a class="p-2 text-dark" href="#">Pricing</a>
         </nav>
-        <a class="btn btn-outline-primary" href="/logout">Logout</a>
+        <form action="/logout" method="post">
+            <button class="btn btn-outline-primary">Logout</button>
+        </form>
     </div>
 </header>
 
