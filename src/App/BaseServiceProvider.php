@@ -11,8 +11,14 @@ abstract class BaseServiceProvider
         $this->provider = new Container();
     }
 
+    /**
+     * @return void
+     */
     abstract public function register(): void;
 
+    /**
+     * @return Container
+     */
     public function getContainer(): Container
     {
         $this->register();

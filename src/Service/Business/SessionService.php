@@ -12,21 +12,22 @@ class SessionService implements SessionServiceInterface
 {
     public static string $userIdKey = 'user_id';
     protected SessionRepository $sessionRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(SessionRepository $sessionRepository)
+    public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository)
     {
         $this->sessionRepository = $sessionRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function getUserId(): ?int
     {
         $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-        $userRepository = new UserRepository();
         $session = $this->sessionRepository->findById($sessionId);
         if ($session->getSessID() == null) {
             return null;
         }
-        return $userRepository->findById($session->getSessData())->getId();
+        return $this->userRepository->findById($session->getSessData())->getId();
     }
 
     public function setUserId(int $userId): void

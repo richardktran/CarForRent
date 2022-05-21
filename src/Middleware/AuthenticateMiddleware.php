@@ -3,13 +3,13 @@
 namespace Khoatran\CarForRent\Middleware;
 
 use Khoatran\CarForRent\App\View;
-use Khoatran\CarForRent\Service\Business\SessionService;
+use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
 class AuthenticateMiddleware implements MiddlewareInterface
 {
-    private SessionService $sessionService;
+    private SessionServiceInterface $sessionService;
 
-    public function __construct(SessionService $sessionService)
+    public function __construct(SessionServiceInterface $sessionService)
     {
         $this->sessionService = $sessionService;
     }

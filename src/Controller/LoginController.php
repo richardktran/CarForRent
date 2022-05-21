@@ -8,15 +8,15 @@ use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Request\Request;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
-use Khoatran\CarForRent\Service\Business\SessionService;
+use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
 class LoginController
 {
     protected LoginServiceInterface $loginService;
     protected Request $request;
-    protected SessionService $sessionService;
+    protected SessionServiceInterface $sessionService;
 
-    public function __construct(Request $request, LoginServiceInterface $loginService, SessionService $sessionService)
+    public function __construct(Request $request, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
     {
         $this->loginService = $loginService;
         $this->request = $request;

@@ -11,10 +11,10 @@ class UserRepository
     private PDO $connection;
     private UserModel $user;
 
-    public function __construct()
+    public function __construct(UserModel $user)
     {
         $this->connection = Database::getConnection();
-        $this->user = new UserModel();
+        $this->user = $user;
     }
 
     public function findByUsername($username): ?UserModel

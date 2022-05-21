@@ -2,9 +2,7 @@
 
 namespace Khoatran\CarForRent\Service\Business;
 
-use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\LoginException;
-use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Model\UserModel;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
@@ -14,9 +12,9 @@ class LoginService implements LoginServiceInterface
 {
     protected UserRepository $userRepository;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = new UserRepository();
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -25,11 +23,13 @@ class LoginService implements LoginServiceInterface
     public function login(LoginRequest $loginRequest): UserModel
     {
         $user = $this->userRepository->findByUsername($loginRequest->getUsername());
+
         if ($user == null) {
-            throw new LoginException("Your account does not exist");
+            throw new LoginException("Your username or password is not correct");
         }
-        if (!password_verify($loginRequest->getPassword(), $user->getPassword())) {
-            throw new LoginException("Your password is wrong");
+        $checkPassword = password_verify($loginRequest->getPassword(), $user->getPassword());
+        if (!$checkPassword) {
+            throw new LoginException("Your username or password is not correct");
         }
         return $user;
     }
