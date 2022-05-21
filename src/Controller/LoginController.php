@@ -49,7 +49,7 @@ class LoginController
             $userLogin = $this->loginService->login($loginRequest);
             $this->sessionService->setUserId($userLogin->getId());
             View::redirect('/');
-        } catch (ValidationException|LoginException $error) {
+        } catch (ValidationException | LoginException $error) {
             View::render('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
@@ -57,7 +57,6 @@ class LoginController
             ]);
             return;
         }
-
     }
 
     /**

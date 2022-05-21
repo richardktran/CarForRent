@@ -29,7 +29,7 @@ class Application
         $callback = $response[0];
         $middlewares = $response[1];
         foreach ($middlewares as $middleware) {
-            $middlewareHandle = $container->make($middleware);;
+            $middlewareHandle = $container->make($middleware);
             $middlewareHandle->run();
         }
         if (is_string($callback)) {

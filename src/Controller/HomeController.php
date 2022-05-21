@@ -7,7 +7,6 @@ use Khoatran\CarForRent\Service\Business\SessionService;
 
 class HomeController
 {
-
     /**
      * @return void
      */

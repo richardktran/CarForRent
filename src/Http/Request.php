@@ -28,7 +28,6 @@ class Request
 
     /**
      * @return array
-     * @throws \Exception
      */
     public function getBody(): array
     {

@@ -16,5 +16,3 @@ class RouteManage
         Route::post('/logout', [LoginController::class, 'logout']);
     }
 }
-
-
