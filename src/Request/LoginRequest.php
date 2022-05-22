@@ -41,13 +41,6 @@ class LoginRequest
         $this->password = $password;
     }
 
-
-    public function __construct(array $loginRequest)
-    {
-        $this->setUsername($loginRequest['username']);
-        $this->setPassword($loginRequest['password']);
-    }
-
     /**
      * @param $data
      * @return string
@@ -57,6 +50,13 @@ class LoginRequest
         $data = trim($data);
         $data = stripslashes($data);
         return htmlspecialchars($data);
+    }
+
+    public function fromArray(array $requestBody): self
+    {
+        $this->setUsername($requestBody['username']);
+        $this->setPassword($requestBody['password']);
+        return $this;
     }
 
     /**

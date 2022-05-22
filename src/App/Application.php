@@ -43,6 +43,8 @@ class Application
         $currenController = $callback[0];
         $action = $callback[1];
         $controller = $container->make($currenController);
-        $controller->{$action}();
+        $response = $controller->{$action}();
+
+        View::display($response);
     }
 }

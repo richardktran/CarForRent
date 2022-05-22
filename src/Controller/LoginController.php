@@ -5,6 +5,7 @@ namespace Khoatran\CarForRent\Controller;
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Exception\ValidationException;
+use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
@@ -14,57 +15,59 @@ class LoginController
 {
     protected LoginServiceInterface $loginService;
     protected Request $request;
+    protected Response $response;
     protected SessionServiceInterface $sessionService;
 
-    public function __construct(Request $request, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
+    public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
     {
-        $this->loginService = $loginService;
         $this->request = $request;
+        $this->response = $response;
+        $this->loginService = $loginService;
         $this->sessionService = $sessionService;
     }
 
     /**
-     * @return void
+     * @return Response
      */
-    public function index(): void
+    public function index(): Response
     {
         if ($this->sessionService->isLogin()) {
-            View::redirect('/');
-            return;
+            return $this->response->redirect('/');
         }
-        View::render('login', [
+        return $this->response->renderView('login', [
             'username' => '',
             'password' => '',
         ]);
     }
 
     /**
-     * @return void
+     * @return Response
      */
-    public function login(): void
+    public function login(): Response
     {
-        $loginRequest = new LoginRequest($this->request->getBody());
+        $loginRequest = new LoginRequest();
+        $loginRequest = $loginRequest->fromArray($this->request->getBody());
         try {
             $loginRequest->validate();
             $userLogin = $this->loginService->login($loginRequest);
             $this->sessionService->setUserId($userLogin->getId());
-            View::redirect('/');
-        } catch (ValidationException | LoginException $error) {
-            View::render('login', [
+
+            return $this->response->redirect('/');
+        } catch (ValidationException|LoginException $error) {
+            return $this->response->renderView('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
                 'error' => $error->getMessage(),
             ]);
-            return;
         }
     }
 
     /**
-     * @return void
+     * @return Response
      */
-    public function logout(): void
+    public function logout(): Response
     {
         $this->sessionService->destroyUser();
-        View::redirect('/login');
+        return $this->response->redirect('/');
     }
 }
