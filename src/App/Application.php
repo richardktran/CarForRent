@@ -14,11 +14,8 @@ class Application
      * @throws ReflectionException
      * @throws \Exception
      */
-    public function run(): void
+    public function run($request, $responseView, $provider): void
     {
-        $request = new Request();
-        $responseView = new Response();
-        $provider = new ServiceProvider();
         $container = $provider->getContainer();
 
         $path = $request->getPath();
@@ -34,7 +31,11 @@ class Application
         $middlewares = $response[1];
         foreach ($middlewares as $middleware) {
             $middlewareHandle = $container->make($middleware);
-            $middlewareHandle->run();
+            $isNext = $middlewareHandle->run();
+            if (gettype($isNext) == 'boolean') {
+                continue;
+            }
+            View::display($isNext);
         }
         if (is_string($callback)) {
             $responseView->renderView($callback);
