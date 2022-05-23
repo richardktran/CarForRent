@@ -30,7 +30,7 @@ class SessionService implements SessionServiceInterface
         return $this->userRepository->findById($session->getSessData())->getId();
     }
 
-    public function setUserId(int $userId): void
+    public function setUserId(int $userId): bool
     {
         $session = new SessionModel();
         $session->setSessID(uniqid());
@@ -38,17 +38,25 @@ class SessionService implements SessionServiceInterface
         $lifetime = time() + (60 * 60 * 24);
         $session->setSessLifetime($lifetime);
 
-        $this->sessionRepository->save($session);
+        $sessionSaved = $this->sessionRepository->save($session);
+        if (getType($sessionSaved) == 'boolean' && !$sessionSaved) {
+            return false;
+        }
         setcookie(self::$userIdKey, $session->getSessID(), $lifetime, '/');
         $_SESSION[self::$userIdKey] = $userId;
+        return true;
     }
 
-    public function destroyUser(): void
+    public function destroyUser(): bool
     {
         $sessionId = $_COOKIE[self::$userIdKey] ?? '';
-        $this->sessionRepository->deleteById($sessionId);
+        $checkDeleteSession = $this->sessionRepository->deleteById($sessionId);
+        if (!$checkDeleteSession) {
+            return false;
+        }
         setcookie(self::$userIdKey, '', 1, '/');
         unset($_SESSION[self::$userIdKey]);
+        return true;
     }
 
     public function isLogin(): bool

@@ -6,9 +6,9 @@ interface SessionServiceInterface
 {
     public function getUserId(): ?int;
 
-    public function setUserId(int $userId): void;
+    public function setUserId(int $userId): bool;
 
-    public function destroyUser(): void;
+    public function destroyUser(): bool;
 
     public function isLogin(): bool;
 }

@@ -18,8 +18,12 @@ class LoginController
     protected Response $response;
     protected SessionServiceInterface $sessionService;
 
-    public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
-    {
+    public function __construct(
+        Request $request,
+        Response $response,
+        LoginServiceInterface $loginService,
+        SessionServiceInterface $sessionService
+    ) {
         $this->request = $request;
         $this->response = $response;
         $this->loginService = $loginService;
@@ -67,7 +71,10 @@ class LoginController
      */
     public function logout(): Response
     {
-        $this->sessionService->destroyUser();
+        $isLogout = $this->sessionService->destroyUser();
+        if ($isLogout) {
+            return $this->response->redirect('/login');
+        }
         return $this->response->redirect('/');
     }
 }

@@ -21,10 +21,12 @@ class UserModel
 
     /**
      * @param int $id
+     * @return $this
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -37,10 +39,12 @@ class UserModel
 
     /**
      * @param string $username
+     * @return $this
      */
-    public function setUsername(string $username): void
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+        return $this;
     }
 
     /**
@@ -53,10 +57,12 @@ class UserModel
 
     /**
      * @param string $password
+     * @return $this
      */
-    public function setPassword(string $password): void
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+        return $this;
     }
 
     /**
@@ -69,10 +75,12 @@ class UserModel
 
     /**
      * @param string $fullName
+     * @return $this
      */
-    public function setFullName(string $fullName): void
+    public function setFullName(string $fullName): self
     {
         $this->fullName = $fullName;
+        return $this;
     }
 
     /**
@@ -85,10 +93,12 @@ class UserModel
 
     /**
      * @param string $phoneNumber
+     * @return $this
      */
-    public function setPhoneNumber(string $phoneNumber): void
+    public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
+        return $this;
     }
 
     /**
@@ -101,9 +111,11 @@ class UserModel
 
     /**
      * @param int $type
+     * @return $this
      */
-    public function setType(int $type): void
+    public function setType(int $type): self
     {
         $this->type = $type;
+        return $this;
     }
 }
