@@ -88,16 +88,14 @@ class SessionServiceTest extends TestCase
         $this->assertFalse($destroyResult);
     }
 
-//    public function testUserIsLogin()
-//    {
-//        $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
-//        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-//        $sessionService = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
-//        $sessionService->expects($this->once())->method('getUserId')->willReturn(1);
-//        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
-//        $isLoginResult = $session->isLogin();
-//        $this->assertTrue($isLoginResult);
-//    }
+    public function testUserIsLogin()
+    {
+        $sessionServiceMock = $this->getMockBuilder(SessionService::class)->onlyMethods(['getUserId'])->disableOriginalConstructor()->getMock();
+        $sessionServiceMock->method('getUserId')->willReturn(1);
+        $isLoginResult = $sessionServiceMock->isLogin();
+        $this->assertTrue($isLoginResult);
+
+    }
 
     private function getSession(string $id, string $data, int $lifeTime): SessionModel
     {

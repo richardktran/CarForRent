@@ -7,11 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
-    public function testGetPath()
+    /**
+     * @dataProvider getPathProvider
+     * @return void
+     */
+    public function testGetPath($param, $expected)
     {
         $request = new Request();
-        $_SERVER['REQUEST_URI'] = '/login?redirect=true';
-        $this->assertEquals('/login', $request->getPath());
+        $_SERVER['REQUEST_URI'] = $param;
+        $this->assertEquals($expected, $request->getPath());
     }
 
     /**
@@ -35,6 +39,24 @@ class RequestTest extends TestCase
             ['PATCH'],
             ['HEAD'],
             ['OPTIONS'],
+        ];
+    }
+
+    public function getPathProvider()
+    {
+        return [
+            'get-path-case-1' => [
+                'param' => '/login?redirect=true',
+                'expected' => '/login',
+            ],
+            'get-path-case-2' => [
+                'param' => '/login',
+                'expected' => '/login',
+            ],
+            'get-path-case-3' => [
+                'param' => '/home?redirect=true',
+                'expected' => '/home',
+            ],
         ];
     }
 }

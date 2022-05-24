@@ -21,11 +21,9 @@ class View
      */
     public static function display($response): void
     {
-        if ($response == null) {
-            return;
-        }
-        if ($response->getRedirectUrl() != null) {
+        if ($response->getRedirectUrl() !== null) {
             static::redirect($response->getRedirectUrl());
+            return;
         }
         $template = $response->getTemplate();
         $data = $response->getData();
