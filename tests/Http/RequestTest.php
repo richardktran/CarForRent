@@ -59,4 +59,19 @@ class RequestTest extends TestCase
             ],
         ];
     }
+
+//    /**
+//     * @runInSeparateProcess
+//     * @preserveGlobalState disabled
+//     * @return void
+//     */
+//    public function testGetBodySuccess()
+//    {
+//        $request = new Request();
+//        $_POST['username'] = 'admin';
+//        $_POST['password'] = '123456';
+//        $result = $request->getBody();
+//        $this->assertEquals('admin', $result['username']);
+//        $this->assertEquals('123456', $result['password']);
+//    }
 }
