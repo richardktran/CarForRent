@@ -7,5 +7,5 @@ use Khoatran\CarForRent\Request\LoginRequest;
 
 interface LoginServiceInterface
 {
-    public function login(LoginRequest $loginRequest): UserModel;
+    public function login(LoginRequest $loginRequest): ?UserModel;
 }

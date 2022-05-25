@@ -18,18 +18,18 @@ class LoginService implements LoginServiceInterface
     }
 
     /**
-     * @throws LoginException
+     * @param LoginRequest $loginRequest
+     * @return UserModel|null
      */
-    public function login(LoginRequest $loginRequest): UserModel
+    public function login(LoginRequest $loginRequest): ?UserModel
     {
         $user = $this->userRepository->findByUsername($loginRequest->getUsername());
-
         if ($user == null) {
-            throw new LoginException("Your username or password is not correct");
+            return null;
         }
         $checkPassword = password_verify($loginRequest->getPassword(), $user->getPassword());
         if (!$checkPassword) {
-            throw new LoginException("Your username or password is not correct");
+            return null;
         }
         return $user;
     }
