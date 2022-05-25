@@ -83,17 +83,8 @@ class Container
         $dependencies = [];
 
         foreach ($parameters as $parameter) {
-//            $dependency = $parameter->getClass();
             $dependency = new ReflectionClass($parameter->getType()->getName());
-            if (!is_null($dependency)) {
-                $dependencies[] = $this->make($dependency->name);
-                continue;
-            }
-            if ($parameter->isDefaultValueAvailable()) {
-                $dependencies[] = $parameter->getDefaultValue();
-                continue;
-            }
-            throw new Exception("Can not resolve dependency {$parameter->name}");
+            $dependencies[] = $this->make($dependency->name);
         }
 
         return $dependencies;

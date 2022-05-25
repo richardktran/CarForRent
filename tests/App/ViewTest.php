@@ -36,4 +36,39 @@ class ViewTest extends TestCase
         );
     }
 
+    /**
+     * @runInSeparateProcess
+     * @return void
+     */
+    public function testDisplayWithGetTemplateHaveDataResponse()
+    {
+        $_SERVER["REQUEST_URI"] = '/login';
+        $response = new Response();
+        $response = $response->renderView('login', ['username' => 'richardktran', 'password' => '123456']);
+
+        View::display($response);
+        $template = $response->getTemplate();
+        $data = $response->getData();
+        $this->assertEquals('login', $template);
+        $this->assertEquals(['username' => 'richardktran', 'password' => '123456'], $data);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @return void
+     */
+    public function testDisplayWithGetTemplateWithDataHaveErrorResponse()
+    {
+        $_SERVER["REQUEST_URI"] = '/login';
+        $response = new Response();
+        $response = $response->renderView('login',
+            ['username' => 'richardktran', 'password' => '123456', 'error' => 'error']);
+
+        View::display($response);
+        $template = $response->getTemplate();
+        $data = $response->getData();
+        $this->assertEquals('login', $template);
+        $this->assertEquals(['username' => 'richardktran', 'password' => '123456', 'error' => 'error'], $data);
+    }
+
 }

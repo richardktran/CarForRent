@@ -72,7 +72,7 @@ class LoginControllerTest extends TestCase
         ]);
         $response = new Response();
         $loginServiceMock = $this->getMockBuilder(LoginServiceInterface::class)->disableOriginalConstructor()->getMock();
-        $loginServiceMock->expects($this->once())->method('login')->willThrowException(new LoginException('Your username or password is not correct'));
+        $loginServiceMock->expects($this->once())->method('login')->willReturn(null);
         $sessionServiceMock = $this->getMockBuilder(SessionServiceInterface::class)->disableOriginalConstructor()->getMock();
 
         $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock);

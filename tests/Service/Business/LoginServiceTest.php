@@ -33,25 +33,6 @@ class LoginServiceTest extends TestCase
         $this->assertEquals($expectedUser->getId(), $userResult->getId());
     }
 
-    /**
-     * @dataProvider loginSuccessProvider
-     * @param array $params
-     * @param array $expected
-     * @return void
-     * @throws LoginException
-     */
-    public function testLoginFailWithUserNotInDatabase(array $params, array $expected): void
-    {
-        $loginRequest = new LoginRequest();
-        $loginRequest->fromArray($params);
-        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $userRepositoryMock->expects($this->once())->method('findByUsername')->willReturn(null);
-
-        $loginService = new LoginService($userRepositoryMock);
-        $this->expectException(LoginException::class);
-        $loginService->login($loginRequest);
-
-    }
 
     /**
      * @dataProvider loginWrongPasswordProvider
@@ -65,11 +46,29 @@ class LoginServiceTest extends TestCase
         $loginRequest = new LoginRequest();
         $loginRequest->fromArray($params);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $userRepositoryMock->expects($this->once())->method('findByUsername')->willReturn($params['userReturn']);
+        $userRepositoryMock->expects($this->once())->method('findByUsername')->willReturn($expected['user']);
 
         $loginService = new LoginService($userRepositoryMock);
-        $this->expectException(LoginException::class);
-        $loginService->login($loginRequest);
+        $isLogin = $loginService->login($loginRequest);
+        $this->assertNull($isLogin);
+    }
+
+    /**
+     * @dataProvider loginWrongPasswordProvider
+     * @param array $params
+     * @param array $expected
+     * @return void
+     */
+    public function testLoginFailWithAccountNotInDatabase(array $params, array $expected): void
+    {
+        $loginRequest = new LoginRequest();
+        $loginRequest->fromArray($params);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+        $userRepositoryMock->expects($this->once())->method('findByUsername')->willReturn(null);
+
+        $loginService = new LoginService($userRepositoryMock);
+        $isLogin = $loginService->login($loginRequest);
+        $this->assertNull($isLogin);
     }
 
     public function loginSuccessProvider()
@@ -120,7 +119,6 @@ class LoginServiceTest extends TestCase
                 'params' => [
                     'username' => 'admin',
                     'password' => '1234567',
-                    'userReturn' => $this->getUser(1, 'admin', $this->hashPassword('12345678')),
                 ],
                 'expected' => [
                     'user' => $this->getUser(1, 'admin', $this->hashPassword('12345678'))
@@ -130,7 +128,6 @@ class LoginServiceTest extends TestCase
                 'params' => [
                     'username' => 'khoa',
                     'password' => '12345678',
-                    'userReturn' => $this->getUser(2, 'khoa', $this->hashPassword('123456')),
                 ],
                 'expected' => [
                     'user' => $this->getUser(2, 'khoa', $this->hashPassword('123456'))
