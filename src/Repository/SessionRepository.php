@@ -15,21 +15,24 @@ class SessionRepository
         $this->connection = Database::getConnection();
     }
 
-    public function save(SessionModel $session): SessionModel
+    public function save(SessionModel $session): SessionModel|bool
     {
         $statement = $this->connection->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");
-        $statement->execute([
+        $insertSuccess = $statement->execute([
             $session->getSessID(),
             $session->getSessData(),
             $session->getSessLifetime()
         ]);
+        if (!$insertSuccess) {
+            return false;
+        }
         return $session;
     }
 
-    public function deleteById($sessionID): void
+    public function deleteById($sessionID): bool
     {
         $statement = $this->connection->prepare("DELETE FROM sessions WHERE sess_id = '$sessionID' ");
-        $statement->execute();
+        return $statement->execute();
     }
 
     public function findById($sessionID): SessionModel

@@ -10,12 +10,12 @@ echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" method="post">
     </h1>
     <label for="inputEmail" class="sr-only">Username</label>
     <input type="text" name="username" id="username" class="form-control" placeholder="Username"
-           value="<?= $data['username'] ?>"
+           value="<?= $data['username'] ?? '' ?>"
            required
            autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
-           value="<?= $data['password'] ?>" required>
+           value="<?= $data['password'] ?? '' ?>" required>
     <div class="checkbox mb-3">
         <label>
             <input type="checkbox" value="remember-me"> Remember me
@@ -24,7 +24,7 @@ echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" method="post">
     <input type="hidden" name="token" value="<?= $_SESSION['token'] ?? '' ?>">
     <?php
 
-    if (array_key_exists('error', $data)) {
+    if ($data != null && array_key_exists('error', $data)) {
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
         ' . $data["error"] . '
     </div>';

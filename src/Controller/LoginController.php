@@ -2,6 +2,7 @@
 
 namespace Khoatran\CarForRent\Controller;
 
+use Exception;
 use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Exception\ValidationException;
@@ -18,8 +19,12 @@ class LoginController
     protected Response $response;
     protected SessionServiceInterface $sessionService;
 
-    public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
-    {
+    public function __construct(
+        Request $request,
+        Response $response,
+        LoginServiceInterface $loginService,
+        SessionServiceInterface $sessionService
+    ) {
         $this->request = $request;
         $this->response = $response;
         $this->loginService = $loginService;
@@ -47,19 +52,23 @@ class LoginController
     {
         $loginRequest = new LoginRequest();
         $loginRequest = $loginRequest->fromArray($this->request->getBody());
+        $errorMessage = "";
         try {
             $loginRequest->validate();
             $userLogin = $this->loginService->login($loginRequest);
-            $this->sessionService->setUserId($userLogin->getId());
-
-            return $this->response->redirect('/');
-        } catch (ValidationException|LoginException $error) {
-            return $this->response->renderView('login', [
-                'username' => $loginRequest->getUsername() ?? "",
-                'password' => '',
-                'error' => $error->getMessage(),
-            ]);
+            if ($userLogin !== null) {
+                $this->sessionService->setUserId($userLogin->getId());
+                return $this->response->redirect('/');
+            }
+            $errorMessage = "Username or password is incorrect";
+        } catch (Exception $exception) {
+            $errorMessage = 'The our system went something wrong!';
         }
+        return $this->response->renderView('login', [
+            'username' => $loginRequest->getUsername() ?? "",
+            'password' => '',
+            'error' => $errorMessage,
+        ]);
     }
 
     /**
@@ -67,7 +76,10 @@ class LoginController
      */
     public function logout(): Response
     {
-        $this->sessionService->destroyUser();
+        $isLogout = $this->sessionService->destroyUser();
+        if ($isLogout) {
+            return $this->response->redirect('/login');
+        }
         return $this->response->redirect('/');
     }
 }

@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\App;
 
 use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Service\ServiceProvider;
 use ReflectionException;
 
@@ -13,10 +14,8 @@ class Application
      * @throws ReflectionException
      * @throws \Exception
      */
-    public function run(): void
+    public function run($request, $responseView, $provider): void
     {
-        $request = new Request();
-        $provider = new ServiceProvider();
         $container = $provider->getContainer();
 
         $path = $request->getPath();
@@ -24,16 +23,22 @@ class Application
         $response = Route::$routes[$method][$path] ?? false;
 
         if (!$response) {
-            View::render('_404');
+            $responseView->renderView('_404');
+            View::display($responseView);
+            return;
         }
         $callback = $response[0];
         $middlewares = $response[1];
         foreach ($middlewares as $middleware) {
             $middlewareHandle = $container->make($middleware);
-            $middlewareHandle->run();
+            $isNext = $middlewareHandle->run();
+            if (gettype($isNext) == 'boolean') {
+                continue;
+            }
+            View::display($isNext);
         }
         if (is_string($callback)) {
-            View::render($callback);
+            $responseView->renderView($callback);
         }
 
         if (gettype($callback) == 'object') {
