@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\App;
 
 use Exception;
+use Khoatran\CarForRent\Http\Response;
 
 class View
 {
@@ -22,14 +23,40 @@ class View
     public static function display($response): void
     {
         if ($response->getRedirectUrl() !== null) {
-            static::redirect($response->getRedirectUrl());
+            static::handleRedirect($response);
             return;
         }
+
+        if ($response->getTemplate() !== null) {
+            static::handleViewTemplate($response);
+            return;
+        }
+
+        static::handleViewJson($response);
+    }
+
+    public static function handleViewJson(Response $response)
+    {
+        $data = $response->getData();
+        $statusCode = $response->getStatusCode();
+        $dataResponse = json_encode($data);
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code($statusCode);
+        print_r($dataResponse);
+    }
+
+    public static function handleViewTemplate(Response $response): void
+    {
         $template = $response->getTemplate();
         $data = $response->getData();
         $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         require __DIR__ . "/../View/Layout/header.php";
         require __DIR__ . "/../View/$template.php";
         require __DIR__ . "/../View/Layout/footer.php";
+    }
+
+    public static function handleRedirect(Response $response): void
+    {
+        static::redirect($response->getRedirectUrl());
     }
 }
