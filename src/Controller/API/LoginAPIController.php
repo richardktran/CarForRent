@@ -37,7 +37,7 @@ class LoginAPIController
     public function login(): Response
     {
         $loginRequest = new LoginRequest();
-        $loginRequest = $loginRequest->fromArray($this->request->getBody());
+        $loginRequest = $loginRequest->fromArray($this->request->getRequestJsonBody());
         $errorMessage = "";
         try {
             $loginRequest->validate();

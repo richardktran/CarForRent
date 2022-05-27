@@ -37,4 +37,14 @@ class Request
         }
         return $body;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestJsonBody(): mixed
+    {
+        $data = file_get_contents('php://input');
+
+        return json_decode($data, true);
+    }
 }
