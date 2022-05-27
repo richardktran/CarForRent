@@ -11,7 +11,7 @@ class SessionModel
     /**
      * @return string|null
      */
-    public function getSessID(): string|null
+    public function getSessID(): string | null
     {
         return $this->sessID ?? null;
     }
@@ -27,7 +27,7 @@ class SessionModel
     /**
      * @return string
      */
-    public function getSessData(): string|null
+    public function getSessData(): string | null
     {
         return $this->sessData ?? null;
     }
@@ -43,7 +43,7 @@ class SessionModel
     /**
      * @return int
      */
-    public function getSessLifetime(): int|null
+    public function getSessLifetime(): int | null
     {
         return $this->sessLifetime ?? null;
     }

@@ -6,5 +6,5 @@ use Khoatran\CarForRent\Http\Response;
 
 interface MiddlewareInterface
 {
-    public function run(): Response|bool;
+    public function run(): Response | bool;
 }

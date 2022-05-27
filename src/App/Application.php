@@ -16,6 +16,7 @@ class Application
      */
     public function run($request, $responseView, $provider): void
     {
+        (new DotEnv(__DIR__ . '/../../.env'))->load();
         $container = $provider->getContainer();
 
         $path = $request->getPath();

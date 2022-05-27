@@ -7,27 +7,31 @@ use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Request\LoginRequest;
-use Khoatran\CarForRent\Resources\UserResource;
+use Khoatran\CarForRent\Service\Business\TokenService;
+use Khoatran\CarForRent\Transformer\UserTransformer;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
-class LoginControllerAPI
+class LoginAPIController
 {
     protected LoginServiceInterface $loginService;
     protected Request $request;
     protected Response $response;
-    protected UserResource $userResource;
+    protected UserTransformer $userTransformer;
+    protected TokenService $tokenService;
 
     public function __construct(
         Request $request,
         Response $response,
         LoginServiceInterface $loginService,
-        UserResource $userResource
+        UserTransformer $userTransformer,
+        TokenService $tokenService
     ) {
         $this->request = $request;
         $this->response = $response;
         $this->loginService = $loginService;
-        $this->userResource = $userResource;
+        $this->userTransformer = $userTransformer;
+        $this->tokenService = $tokenService;
     }
 
     public function login(): Response
@@ -51,8 +55,12 @@ class LoginControllerAPI
                 'message' => $errorMessage,
             ], Response::HTTP_UNAUTHORIZED);
         }
+        $token = $this->tokenService->generate($userLogin);
         return $this->response->toJson([
-            'data' => $this->userResource->toArray($userLogin),
+            'data' => [
+                ...$this->userTransformer->toArray($userLogin),
+                'token' => $token
+            ],
             'message' => $errorMessage,
         ], Response::HTTP_OK);
     }

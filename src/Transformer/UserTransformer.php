@@ -1,10 +1,10 @@
 <?php
 
-namespace Khoatran\CarForRent\Resources;
+namespace Khoatran\CarForRent\Transformer;
 
 use Khoatran\CarForRent\Model\UserModel;
 
-class UserResource
+class UserTransformer
 {
     public function toArray(UserModel $user): array
     {

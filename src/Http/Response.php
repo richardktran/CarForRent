@@ -104,6 +104,4 @@ class Response
         $this->setData([...$data]);
         return $this;
     }
-
-
 }
