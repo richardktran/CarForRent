@@ -81,7 +81,7 @@ class Response
     }
 
 
-    public function renderView($template, array $data = null): self
+    public function renderView($template, array $data = null, int $statusCode = 200): self
     {
         $this->setTemplate($template);
         if ($data != null) {
@@ -89,6 +89,7 @@ class Response
         } else {
             $this->setData(null);
         }
+        $this->setStatusCode($statusCode);
         return $this;
     }
 

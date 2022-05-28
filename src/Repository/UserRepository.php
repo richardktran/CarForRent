@@ -28,7 +28,7 @@ class UserRepository
             $this->user->setPassword($row['password']);
             $this->user->setFullName($row['full_name']);
             $this->user->setPhoneNumber($row['phone_number']);
-            $this->user->setType($row['type']);
+            $this->user->setRole($row['role']);
             return $this->user;
         } else {
             return null;
@@ -48,7 +48,7 @@ class UserRepository
                 $user->setPassword($row['password']);
                 $user->setFullName($row['full_name']);
                 $user->setPhoneNumber($row['phone_number']);
-                $user->setType($row['type']);
+                $user->setRole($row['role']);
 
                 return $user;
             } else {

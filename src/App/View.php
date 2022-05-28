@@ -33,6 +33,8 @@ class View
         }
 
         static::handleViewJson($response);
+
+        exit();
     }
 
     public static function handleViewJson(Response $response)
@@ -49,6 +51,7 @@ class View
     {
         $template = $response->getTemplate();
         $data = $response->getData();
+        http_response_code($response->getStatusCode());
         $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         require __DIR__ . "/../View/Layout/header.php";
         require __DIR__ . "/../View/$template.php";

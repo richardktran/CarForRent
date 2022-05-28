@@ -47,4 +47,12 @@ class Request
 
         return json_decode($data, true);
     }
+
+    /**
+     * @return string|null
+     */
+    public function getHeaderToken(): ?string
+    {
+        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    }
 }

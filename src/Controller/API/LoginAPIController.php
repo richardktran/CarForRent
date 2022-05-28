@@ -12,7 +12,7 @@ use Khoatran\CarForRent\Transformer\UserTransformer;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
-class LoginAPIController
+class LoginAPIController extends AbstractAPIController
 {
     protected LoginServiceInterface $loginService;
     protected Request $request;
@@ -21,14 +21,14 @@ class LoginAPIController
     protected TokenService $tokenService;
 
     public function __construct(
-        Request $request,
-        Response $response,
+        Request               $request,
+        Response              $response,
         LoginServiceInterface $loginService,
-        UserTransformer $userTransformer,
-        TokenService $tokenService
-    ) {
-        $this->request = $request;
-        $this->response = $response;
+        UserTransformer       $userTransformer,
+        TokenService          $tokenService
+    )
+    {
+        parent::__construct($request, $response);
         $this->loginService = $loginService;
         $this->userTransformer = $userTransformer;
         $this->tokenService = $tokenService;
@@ -55,7 +55,7 @@ class LoginAPIController
                 'message' => $errorMessage,
             ], Response::HTTP_UNAUTHORIZED);
         }
-        $token = $this->tokenService->generate($userLogin);
+        $token = $this->tokenService->generate($userLogin->getId());
         return $this->response->toJson([
             'data' => [
                 ...$this->userTransformer->toArray($userLogin),

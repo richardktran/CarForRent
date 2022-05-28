@@ -2,12 +2,10 @@
 
 namespace Khoatran\CarForRent\Controller;
 
-use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Service\Business\SessionService;
 
-class HomeController extends AbstractController
+class NotFoundController extends AbstractController
 {
     public function __construct(Request $request, Response $response)
     {
@@ -19,6 +17,6 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->response->renderView('home');
+        return $this->response->renderView('_404', statusCode: 404);
     }
 }

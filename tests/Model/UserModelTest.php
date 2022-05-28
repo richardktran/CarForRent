@@ -58,8 +58,8 @@ class UserModelTest extends TestCase
     public function testGetType()
     {
         $userModel = new UserModel();
-        $userModel->setType(0);
-        $result = $userModel->getType();
+        $userModel->setRole(0);
+        $result = $userModel->getRole();
 
         $this->assertEquals(0, $result);
     }

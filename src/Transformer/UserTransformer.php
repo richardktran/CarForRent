@@ -13,7 +13,7 @@ class UserTransformer
             'username' => $user->getUsername(),
             'fullName' => $user->getFullname(),
             'phoneNumber' => $user->getPhoneNumber(),
-            'type' => $user->getType(),
+            'role' => $user->getRole(),
         ];
     }
 }

@@ -4,12 +4,32 @@ namespace Khoatran\CarForRent\Model;
 
 class UserModel
 {
+    public const ROLE_GUEST = 'ROLE_GUEST';
+    public const ROLE_MEMBER = 'ROLE_MEMBER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     private int $id;
     private string $username;
     private string $password;
     private string $fullName;
     private string $phoneNumber;
-    private int $type;
+    private string $role;
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
 
     /**
      * @return int
@@ -101,21 +121,4 @@ class UserModel
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getType(): int
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param int $type
-     * @return $this
-     */
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-        return $this;
-    }
 }

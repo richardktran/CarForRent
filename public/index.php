@@ -13,7 +13,5 @@ ini_set('display_errors', '1');
 
 RouteManage::run();
 $app = new Application();
-$request = new Request();
-$responseView = new Response();
-$provider = new ServiceProvider();
-$app->run($request, $responseView, $provider);
+
+$app->run();
