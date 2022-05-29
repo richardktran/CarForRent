@@ -7,7 +7,7 @@ use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Service\Business\SessionService;
 
-class HomeController extends AbstractController
+class CarController extends AbstractController
 {
     public function __construct(Request $request, Response $response)
     {

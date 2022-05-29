@@ -5,6 +5,7 @@ namespace Khoatran\CarForRent\App;
 use Khoatran\CarForRent\Acl\Acl;
 use Khoatran\CarForRent\Controller\NotFoundController;
 use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Service\ServiceProvider;
 use ReflectionException;
 
@@ -17,11 +18,13 @@ class Application
     const METHOD_INDEX = 1;
 
     private Request $request;
+    private Response $response;
     private ServiceProvider $provider;
 
     public function __construct()
     {
         $this->request = new Request();
+        $this->response = new Response();
         $this->provider = new ServiceProvider();
     }
 
@@ -38,6 +41,8 @@ class Application
 
         $aclAccept = $this->runAcl($route);
         if (!$aclAccept) {
+            $response = $this->response->renderView('_403', null, Response::HTTP_FORBIDDEN);
+            View::display($response);
             return;
         }
 

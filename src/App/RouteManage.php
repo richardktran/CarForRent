@@ -4,7 +4,7 @@ namespace Khoatran\CarForRent\App;
 
 use Khoatran\CarForRent\Controller\API\CarAPIController;
 use Khoatran\CarForRent\Controller\API\LoginAPIController;
-use Khoatran\CarForRent\Controller\HomeController;
+use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Middleware\AuthenticateMiddleware;
 use Khoatran\CarForRent\Model\UserModel;
@@ -25,7 +25,7 @@ class RouteManage
 
     public static function appRoutes(): void
     {
-        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/', [CarController::class, 'index'], role: UserModel::ROLE_MEMBER);
         Route::get('/login', [LoginController::class, 'index']);
         Route::post('/login', [LoginController::class, 'login']);
         Route::post('/logout', [LoginController::class, 'logout']);

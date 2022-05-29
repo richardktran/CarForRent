@@ -26,10 +26,16 @@ class TokenService
         return JWT::encode($payload, $this->secretToken, 'HS256');
     }
 
+    /**
+     * @throws UnauthenticatedException
+     */
     public function validateToken($token): array
     {
-        $decoded = JWT::decode($token, new Key($this->secretToken, 'HS256'));
-
+        try {
+            $decoded = JWT::decode($token, new Key($this->secretToken, 'HS256'));
+        } catch (\Exception $e) {
+            throw new UnauthenticatedException('Token is invalid');
+        }
         return (array)$decoded;
     }
 
@@ -41,13 +47,13 @@ class TokenService
     public function getTokenPayload(?string $authorizationToken): array
     {
         if ($authorizationToken === null) {
-            throw new UnauthenticatedException();
+            throw new UnauthenticatedException("Token is not provided");
         }
         $token = str_replace('Bearer ', '', $authorizationToken);
         $payload = $this->validateToken($token);
         if ($payload) {
             return $payload;
         }
-        throw new UnauthenticatedException();
+        throw new UnauthenticatedException("Token is invalid");
     }
 }

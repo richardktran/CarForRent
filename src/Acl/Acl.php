@@ -2,21 +2,26 @@
 
 namespace Khoatran\CarForRent\Acl;
 
+use Exception;
+use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\UnauthenticatedException;
 use Khoatran\CarForRent\Exception\UnauthorizedException;
 use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Service\Business\TokenService;
 
 class Acl implements AclInterface
 {
     private Request $request;
+    private Response $response;
     private TokenService $tokenService;
     private UserRepository $userRepository;
 
-    public function __construct(Request $request, TokenService $tokenService, UserRepository $userRepository)
+    public function __construct(Request $request, Response $response, TokenService $tokenService, UserRepository $userRepository)
     {
         $this->request = $request;
+        $this->response = $response;
         $this->tokenService = $tokenService;
         $this->userRepository = $userRepository;
     }
@@ -40,11 +45,8 @@ class Acl implements AclInterface
                 return true;
             }
             throw new UnauthorizedException('You don\'t have permission to access this resource');
-        } catch (UnauthenticatedException $e) {
-            throw $e;
-        } catch (UnauthorizedException $e) {
-            throw $e;
+        } catch (Exception $e) {
+            return false;
         }
-
     }
 }

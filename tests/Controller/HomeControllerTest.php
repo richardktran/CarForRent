@@ -2,7 +2,7 @@
 
 namespace Khoatran\Tests\Controller;
 
-use Khoatran\CarForRent\Controller\HomeController;
+use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ class HomeControllerTest extends TestCase
     {
         $request = new Request();
         $response = new Response();
-        $loginController = new HomeController($request, $response);
+        $loginController = new CarController($request, $response);
         $loginController = $loginController->index();
 
         $expectedResult = new Response();

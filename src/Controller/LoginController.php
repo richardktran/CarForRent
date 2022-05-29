@@ -9,19 +9,22 @@ use Khoatran\CarForRent\Exception\ValidationException;
 use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Service\Business\TokenService;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
 class LoginController extends AbstractController
 {
-    protected LoginServiceInterface $loginService;
-    protected SessionServiceInterface $sessionService;
+    private LoginServiceInterface $loginService;
+    private SessionServiceInterface $sessionService;
+    private TokenService $tokenService;
 
-    public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService)
+    public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService, TokenService $tokenService)
     {
         parent::__construct($request, $response);
         $this->loginService = $loginService;
         $this->sessionService = $sessionService;
+        $this->tokenService = $tokenService;
     }
 
     /**
