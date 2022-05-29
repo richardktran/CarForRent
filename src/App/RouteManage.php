@@ -20,12 +20,12 @@ class RouteManage
     public static function apiRoutes(): void
     {
         Route::post('/api/login', [LoginAPIController::class, 'login']);
-        Route::get('/api/cars', [CarAPIController::class, 'index'], role: UserModel::ROLE_MEMBER);
+        Route::get('/api/cars', [CarAPIController::class, 'index']);
     }
 
     public static function appRoutes(): void
     {
-        Route::get('/', [CarController::class, 'index'], role: UserModel::ROLE_MEMBER);
+        Route::get('/', [CarController::class, 'index']);
         Route::get('/login', [LoginController::class, 'index']);
         Route::post('/login', [LoginController::class, 'login']);
         Route::post('/logout', [LoginController::class, 'logout']);

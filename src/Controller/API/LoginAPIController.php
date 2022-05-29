@@ -21,13 +21,12 @@ class LoginAPIController extends AbstractAPIController
     protected TokenService $tokenService;
 
     public function __construct(
-        Request               $request,
-        Response              $response,
+        Request $request,
+        Response $response,
         LoginServiceInterface $loginService,
-        UserTransformer       $userTransformer,
-        TokenService          $tokenService
-    )
-    {
+        UserTransformer $userTransformer,
+        TokenService $tokenService
+    ) {
         parent::__construct($request, $response);
         $this->loginService = $loginService;
         $this->userTransformer = $userTransformer;

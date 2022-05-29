@@ -16,12 +16,11 @@ use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 class LoginController extends AbstractController
 {
     private LoginServiceInterface $loginService;
-    private SessionServiceInterface $sessionService;
     private TokenService $tokenService;
 
     public function __construct(Request $request, Response $response, LoginServiceInterface $loginService, SessionServiceInterface $sessionService, TokenService $tokenService)
     {
-        parent::__construct($request, $response);
+        parent::__construct($request, $response, $sessionService);
         $this->loginService = $loginService;
         $this->sessionService = $sessionService;
         $this->tokenService = $tokenService;

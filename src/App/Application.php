@@ -65,8 +65,8 @@ class Application
         $container = $this->provider->getContainer();
         $controller = $container->make($currenController);
         $response = $controller->{$action}();
-
-        View::display($response);
+        $isLogin = $controller->isLogin();
+        View::display($response, $isLogin);
     }
 
 

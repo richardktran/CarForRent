@@ -20,7 +20,7 @@ class View
      * @param $response
      * @return void
      */
-    public static function display($response): void
+    public static function display($response, bool $isLogin = false): void
     {
         if ($response->getRedirectUrl() !== null) {
             static::handleRedirect($response);
@@ -28,7 +28,7 @@ class View
         }
 
         if ($response->getTemplate() !== null) {
-            static::handleViewTemplate($response);
+            static::handleViewTemplate($response, $isLogin);
             return;
         }
 
@@ -47,13 +47,23 @@ class View
         print_r($dataResponse);
     }
 
-    public static function handleViewTemplate(Response $response): void
+    public static function handleViewTemplate(Response $response, bool $isLogin = false): void
     {
         $template = $response->getTemplate();
         $data = $response->getData();
+        if ($data === null) {
+            $data = [];
+        }
+        $data = [
+            ...$data,
+            'isLogin' => $isLogin
+        ];
         http_response_code($response->getStatusCode());
         $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         require __DIR__ . "/../View/Layout/header.php";
+        if ($template !== 'login') {
+            require __DIR__ . "/../View/Layout/navbar.php";
+        }
         require __DIR__ . "/../View/$template.php";
         require __DIR__ . "/../View/Layout/footer.php";
     }

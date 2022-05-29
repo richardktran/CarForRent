@@ -120,5 +120,4 @@ class UserModel
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-
 }
