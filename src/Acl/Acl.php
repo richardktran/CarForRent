@@ -36,26 +36,25 @@ class Acl implements AclInterface
      */
     public function checkPermission(string $role): bool
     {
-        try {
-            $authorizationToken = $this->request->getToken();
-            $sessionToken = $this->sessionService->isLogin();
-            if ($authorizationToken == null && !$sessionToken) {
-                throw new UnauthorizedException('You don\'t have permission to access this resource');
-            }
-            if ($sessionToken) {
-                $userId = $this->sessionService->getUserToken();
-            } else {
-                $tokenPayload = $this->tokenService->getTokenPayload($authorizationToken);
-                $userId = $tokenPayload['sub'];
-            }
-            
-            $user = $this->userRepository->findById($userId);
-            if ($user->getRole() === $role) {
-                return true;
-            }
-            throw new UnauthorizedException('You don\'t have permission to access this resource');
-        } catch (Exception $e) {
-            return false;
+        $authorizationToken = $this->request->getToken();
+        $sessionToken = $this->sessionService->isLogin();
+        if ($authorizationToken == null && !$sessionToken) {
+            throw new UnauthenticatedException("You are not authenticated");
         }
+        if ($sessionToken) {
+            $userId = $this->sessionService->getUserToken();
+        } else {
+            $tokenPayload = $this->tokenService->getTokenPayload($authorizationToken);
+            if (!$tokenPayload) {
+                throw new UnauthenticatedException("You are not authenticated");
+            }
+            $userId = $tokenPayload['sub'];
+        }
+
+        $user = $this->userRepository->findById($userId);
+        if ($user->getRole() === $role) {
+            return true;
+        }
+        throw new UnauthorizedException("You are not authorized");
     }
 }

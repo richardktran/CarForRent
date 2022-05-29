@@ -41,19 +41,19 @@ class TokenService
 
     /**
      * @param string|null $authorizationToken
-     * @return array
+     * @return array|bool
      * @throws UnauthenticatedException
      */
-    public function getTokenPayload(?string $authorizationToken): array
+    public function getTokenPayload(?string $authorizationToken): array|bool
     {
         if ($authorizationToken === null) {
-            throw new UnauthenticatedException("Token is not provided");
+            return false;
         }
         $token = str_replace('Bearer ', '', $authorizationToken);
         $payload = $this->validateToken($token);
         if ($payload) {
             return $payload;
         }
-        throw new UnauthenticatedException("Token is invalid");
+        return false;
     }
 }

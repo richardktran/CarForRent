@@ -4,6 +4,7 @@ namespace Khoatran\CarForRent\App;
 
 use Khoatran\CarForRent\Acl\Acl;
 use Khoatran\CarForRent\Controller\NotFoundController;
+use Khoatran\CarForRent\Exception\UnauthenticatedException;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Service\Business\SessionService;
@@ -40,18 +41,16 @@ class Application
 
         $route = $this->getRoute();
 
+
+        $aclAccept = $this->runAcl($route);
+        if (!$aclAccept) {
+            return;
+        }
+
         $middlewareAccept = $this->runMiddlewares($route);
         if (!$middlewareAccept) {
             return;
         }
-
-        $aclAccept = $this->runAcl($route);
-        if (!$aclAccept) {
-            $response = $this->response->renderView('_403', null, Response::HTTP_FORBIDDEN);
-            View::display($response);
-            return;
-        }
-
 
         if (!$route) {
             $currenController = NotFoundController::class;
@@ -123,10 +122,21 @@ class Application
         }
         $container = $this->provider->getContainer();
         $acl = $container->make(Acl::class);
-        $aclAccept = $acl->checkPermission($route[static::ROLE_INDEX]);
-        if (!$aclAccept) {
+
+        try {
+            $aclAccept = $acl->checkPermission($route[static::ROLE_INDEX]);
+        } catch (\Exception $e) {
+            $statusCode = $e->getCode();
+            $message = $e->getMessage();
+            if ($e instanceof UnauthenticatedException) {
+                $response = $this->response->redirect('/login');
+            } else {
+                $response = $this->response->renderView('_403', ['message' => $message], $statusCode);
+            }
+            View::display($response);
             return false;
         }
+
         return true;
     }
 }
