@@ -65,7 +65,10 @@ class Application
         $container = $this->provider->getContainer();
         $controller = $container->make($currenController);
         $response = $controller->{$action}();
-        $isLogin = $controller->isLogin();
+        $isLogin = false;
+        if (!$this->isAPI()) {
+            $isLogin = $controller->isLogin();
+        }
         View::display($response, $isLogin);
     }
 

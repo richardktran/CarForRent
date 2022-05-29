@@ -4,22 +4,28 @@ namespace Khoatran\CarForRent\Controller\API;
 
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
+use Khoatran\CarForRent\Service\Contracts\CarServiceInterface;
+use Khoatran\CarForRent\Transformer\CarTransformer;
 
 class CarAPIController extends AbstractAPIController
 {
-    public function __construct(Request $request, Response $response)
+    private CarServiceInterface $carService;
+    private CarTransformer $carTransformer;
+
+    public function __construct(Request $request, Response $response, CarServiceInterface $carService, CarTransformer $carTransformer)
     {
         parent::__construct($request, $response);
+        $this->carService = $carService;
+        $this->carTransformer = $carTransformer;
     }
 
-    public function index(): Response
+    public function listCars(): Response
     {
-        return $this->response->toJson(
-            [
-                'name' => 'Car For Rent API',
-                'version' => '1.0'
-            ],
-            Response::HTTP_OK
-        );
+        $cars = $this->carService->getAll();
+        $results = [];
+        foreach ($cars as $car) {
+            $results[] = $this->carTransformer->toArray($car);
+        }
+        return $this->response->toJson(['data' => $results], 200);
     }
 }

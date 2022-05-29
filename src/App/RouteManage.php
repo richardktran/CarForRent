@@ -20,7 +20,7 @@ class RouteManage
     public static function apiRoutes(): void
     {
         Route::post('/api/login', [LoginAPIController::class, 'login']);
-        Route::get('/api/cars', [CarAPIController::class, 'index']);
+        Route::get('/api/cars', [CarAPIController::class, 'listCars']);
     }
 
     public static function appRoutes(): void

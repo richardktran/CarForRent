@@ -51,9 +51,11 @@ class View
     {
         $template = $response->getTemplate();
         $data = $response->getData();
+
         if ($data === null) {
             $data = [];
         }
+
         $data = [
             ...$data,
             'isLogin' => $isLogin
