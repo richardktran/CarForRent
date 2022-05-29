@@ -129,7 +129,9 @@ class Application
             $statusCode = $e->getCode();
             $message = $e->getMessage();
             if ($e instanceof UnauthenticatedException) {
-                $response = $this->response->redirect('/login');
+                $apiResponse = $this->response->toJson(['message' => $message], Response::HTTP_BAD_REQUEST);
+                $appResponse = $this->response->redirect('/login');
+                $response = $this->isAPI() ? $apiResponse : $appResponse;
             } else {
                 $response = $this->response->renderView('_403', ['message' => $message], $statusCode);
             }
