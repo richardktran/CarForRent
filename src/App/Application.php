@@ -6,6 +6,7 @@ use Khoatran\CarForRent\Acl\Acl;
 use Khoatran\CarForRent\Controller\NotFoundController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
+use Khoatran\CarForRent\Service\Business\SessionService;
 use Khoatran\CarForRent\Service\ServiceProvider;
 use ReflectionException;
 
@@ -39,6 +40,11 @@ class Application
 
         $route = $this->getRoute();
 
+        $middlewareAccept = $this->runMiddlewares($route);
+        if (!$middlewareAccept) {
+            return;
+        }
+
         $aclAccept = $this->runAcl($route);
         if (!$aclAccept) {
             $response = $this->response->renderView('_403', null, Response::HTTP_FORBIDDEN);
@@ -46,10 +52,6 @@ class Application
             return;
         }
 
-        $middlewareAccept = $this->runMiddlewares($route);
-        if (!$middlewareAccept) {
-            return;
-        }
 
         if (!$route) {
             $currenController = NotFoundController::class;
@@ -74,6 +76,13 @@ class Application
         $method = $this->request->getMethod();
         return Route::$routes[$method][$path] ?? false;
     }
+
+    private function isAPI(): bool
+    {
+        $path = $this->request->getPath();
+        return str_starts_with($path, '/api');
+    }
+
 
     /**
      * @param $route

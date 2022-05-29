@@ -53,7 +53,8 @@ class LoginController extends AbstractController
             $loginRequest->validate();
             $userLogin = $this->loginService->login($loginRequest);
             if ($userLogin !== null) {
-                $this->sessionService->setUserId($userLogin->getId());
+                $token = $this->tokenService->generate($userLogin->getId());
+                $this->sessionService->setUserToken($token);
                 return $this->response->redirect('/');
             }
             $errorMessage = "Username or password is incorrect";

@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\Http;
 
 use Khoatran\CarForRent\App\View;
+use Khoatran\CarForRent\Service\Business\SessionService;
 
 class Request
 {
@@ -48,10 +49,15 @@ class Request
         return json_decode($data, true);
     }
 
+    private function getHeaderToken(): ?string
+    {
+        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    }
+
     /**
      * @return string|null
      */
-    public function getHeaderToken(): ?string
+    public function getToken(): ?string
     {
         return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
     }

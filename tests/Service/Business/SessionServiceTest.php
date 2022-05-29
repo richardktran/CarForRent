@@ -20,7 +20,7 @@ class SessionServiceTest extends TestCase
         $user = $this->getUser(1, 'user1', 'password');
         $userRepositoryMock->expects($this->once())->method('findById')->willReturn($user);
         $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
-        $userIdResult = $session->getUserId();
+        $userIdResult = $session->getUserToken();
         $this->assertEquals(1, $userIdResult);
     }
 
@@ -31,7 +31,7 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock->expects($this->once())->method('findById')->willReturn($sessionModel);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
         $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
-        $userIdResult = $session->getUserId();
+        $userIdResult = $session->getUserToken();
         $this->assertEquals(null, $userIdResult);
     }
 
@@ -45,7 +45,7 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock->expects($this->once())->method('save')->willReturn($sessionModel);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
         $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
-        $setResult = $session->setUserId(1);
+        $setResult = $session->setUserToken(1);
         $this->assertTrue($setResult);
     }
 
@@ -58,7 +58,7 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock->expects($this->once())->method('save')->willReturn(false);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
         $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
-        $setResult = $session->setUserId(1);
+        $setResult = $session->setUserToken(1);
         $this->assertFalse($setResult);
     }
 
@@ -90,8 +90,8 @@ class SessionServiceTest extends TestCase
 
     public function testUserIsLogin()
     {
-        $sessionServiceMock = $this->getMockBuilder(SessionService::class)->onlyMethods(['getUserId'])->disableOriginalConstructor()->getMock();
-        $sessionServiceMock->method('getUserId')->willReturn(1);
+        $sessionServiceMock = $this->getMockBuilder(SessionService::class)->onlyMethods(['getUserToken'])->disableOriginalConstructor()->getMock();
+        $sessionServiceMock->method('getUserToken')->willReturn(1);
         $isLoginResult = $sessionServiceMock->isLogin();
         $this->assertTrue($isLoginResult);
 
