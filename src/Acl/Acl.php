@@ -39,14 +39,14 @@ class Acl implements AclInterface
         $authorizationToken = $this->request->getToken();
         $sessionToken = $this->sessionService->isLogin();
         if ($authorizationToken == null && !$sessionToken) {
-            throw new UnauthenticatedException("You are not authenticated");
+            throw new UnauthenticatedException();
         }
         if ($sessionToken) {
             $userId = $this->sessionService->getUserToken();
         } else {
             $tokenPayload = $this->tokenService->getTokenPayload($authorizationToken);
             if (!$tokenPayload) {
-                throw new UnauthenticatedException("You are not authenticated");
+                throw new UnauthenticatedException();
             }
             $userId = $tokenPayload['sub'];
         }
@@ -55,6 +55,6 @@ class Acl implements AclInterface
         if ($user->getRole() === $role) {
             return true;
         }
-        throw new UnauthorizedException("You are not authorized");
+        throw new UnauthorizedException();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Khoatran\CarForRent\App;
 
+use Exception;
 use Khoatran\CarForRent\Acl\Acl;
 use Khoatran\CarForRent\Controller\NotFoundController;
 use Khoatran\CarForRent\Exception\UnauthenticatedException;
@@ -33,7 +34,7 @@ class Application
     /**
      * @return void
      * @throws ReflectionException
-     * @throws \Exception
+     * @throws Exception
      */
     public function run(): void
     {
@@ -125,13 +126,15 @@ class Application
 
         try {
             $aclAccept = $acl->checkPermission($route[static::ROLE_INDEX]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $statusCode = $e->getCode();
             $message = $e->getMessage();
             if ($e instanceof UnauthenticatedException) {
-                $apiResponse = $this->response->toJson(['message' => $message], Response::HTTP_BAD_REQUEST);
-                $appResponse = $this->response->redirect('/login');
-                $response = $this->isAPI() ? $apiResponse : $appResponse;
+                if ($this->isAPI()) {
+                    $response = $this->response->toJson(['message' => $message], Response::HTTP_BAD_REQUEST);
+                } else {
+                    $response = $this->response->redirect('/login');
+                }
             } else {
                 $response = $this->response->renderView('_403', ['message' => $message], $statusCode);
             }
