@@ -67,9 +67,16 @@ class Application
         $response = $controller->{$action}();
         $isLogin = false;
         if (!$this->isAPI()) {
-            $isLogin = $controller->isLogin();
+            $isLogin = $this->isLogin();
         }
         View::display($response, $isLogin);
+    }
+
+    private function isLogin()
+    {
+        $container = $this->provider->getContainer();
+        $sessionService = $container->make(SessionService::class);
+        return $sessionService->isLogin();
     }
 
 
@@ -141,7 +148,7 @@ class Application
             } else {
                 $response = $this->response->renderView('_403', ['message' => $message], $statusCode);
             }
-            View::display($response);
+            View::display($response, $this->isLogin());
             return false;
         }
 
