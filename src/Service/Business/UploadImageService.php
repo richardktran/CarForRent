@@ -18,7 +18,7 @@ class UploadImageService
         $s3Client = new S3Client([
             'version' => 'latest',
             'region' => 'ap-southeast-1',
-            'credentials' => ['key' => getenv('S3_ACCESS_KEY_ID'), 'secret' => 'S3_SECRET_ACCESS_KEY']
+            'credentials' => ['key' => getenv('S3_ACCESS_KEY_ID'), 'secret' => getenv('S3_SECRET_ACCESS_KEY')]
         ]);
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             throw new UploadFileException();
@@ -50,19 +50,21 @@ class UploadImageService
             throw new UploadFileException("Error: Please select a valid file format.");
         }
 
-        if (move_uploaded_file($file["tmp_name"], "upload/" . $filename)) {
+
+        if (move_uploaded_file($file["tmp_name"], __DIR__ . "/../../../public/upload/" . $filename)) {
             $bucket = 'carforrent';
-            $file_Path = __DIR__ . '/upload/' . $filename;
+            $file_Path = __DIR__ . "/../../../public/upload/" . $filename;
             $key = basename($file_Path);
             try {
                 $result = $s3Client->putObject([
                     'Bucket' => $bucket,
                     'Key' => $key,
-                    'Body' => fopen($file_Path, 'r'),
-                    'ACL' => 'public-read',
+                    'SourceFile' => $file_Path,
                 ]);
+
                 return $result->get('ObjectURL');
             } catch (S3Exception $e) {
+                var_dump($e->getMessage());
                 return null;
             }
         } else {

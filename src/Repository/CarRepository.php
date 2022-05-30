@@ -69,7 +69,7 @@ class CarRepository
 
     public function insert(CarRequest $carRequest): ?string
     {
-        $statement = $this->connection->prepare("INSERT INTO cars(name,description,type, price,brand, production_year, owner) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $statement = $this->connection->prepare("INSERT INTO cars(name,description,type, price,brand, production_year, owner, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         try {
             $statement->execute([
                 $carRequest->getName(),
@@ -78,7 +78,8 @@ class CarRepository
                 $carRequest->getPrice(),
                 $carRequest->getBrand(),
                 $carRequest->getProductionYear(),
-                $carRequest->getOwnerId()
+                $carRequest->getOwnerId(),
+                $carRequest->getImage()
             ]);
         } catch (\PDOException $e) {
             return null;
