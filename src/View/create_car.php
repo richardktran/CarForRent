@@ -3,7 +3,7 @@
 
         <h4 class="mt-5">Create your new car</h4>
         <p>An example of the extended form with typical checkout inputs.</p>
-        <form action="/store" method="post">
+        <form action="/store" method="post" enctype="multipart/form-data">
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <div class="row mb-4">
                 <div class="col">
@@ -45,10 +45,10 @@
                 <textarea class="form-control" name="description" id="form6Example7" rows="4"></textarea>
             </div>
 
-            <!--            <div class="form-group">-->
-            <!--                <label for="exampleFormControlFile1">Image</label>-->
-            <!--                <input type="file" class="form-control-file" id="exampleFormControlFile1">-->
-            <!--            </div>-->
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Image</label>
+                <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+            </div>
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary btn-block mb-4">Create</button>

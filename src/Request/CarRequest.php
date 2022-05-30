@@ -149,7 +149,7 @@ class CarRequest
         $this->setName($requestBody['name']);
         $this->setDescription($requestBody['description']);
         $this->setType($requestBody['type']);
-        $this->setImage($requestBody['image']);
+//        $this->setImage($requestBody['image']);
         $this->setPrice($requestBody['price']);
         $this->setBrand($requestBody['brand']);
         $this->setProductionYear($requestBody['production_year']);

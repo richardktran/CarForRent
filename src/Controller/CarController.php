@@ -8,6 +8,7 @@ use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Model\CarModel;
 use Khoatran\CarForRent\Request\CarRequest;
 use Khoatran\CarForRent\Service\Business\SessionService;
+use Khoatran\CarForRent\Service\Business\UploadImageService;
 use Khoatran\CarForRent\Service\Contracts\CarServiceInterface;
 use Khoatran\CarForRent\Transformer\CarTransformer;
 
@@ -16,6 +17,7 @@ class CarController extends AbstractController
     private CarServiceInterface $carService;
     private CarTransformer $carTransformer;
     private CarRequest $carRequest;
+    private UploadImageService $uploadImageService;
 
     public function __construct(
         Request $request,
@@ -23,12 +25,14 @@ class CarController extends AbstractController
         SessionService $sessionService,
         CarServiceInterface $carService,
         CarTransformer $carTransformer,
-        CarRequest $carRequest
+        CarRequest $carRequest,
+        UploadImageService $uploadImageService
     ) {
         parent::__construct($request, $response, $sessionService);
         $this->carService = $carService;
         $this->carTransformer = $carTransformer;
         $this->carRequest = $carRequest;
+        $this->uploadImageService = $uploadImageService;
     }
 
     /**
@@ -61,8 +65,13 @@ class CarController extends AbstractController
 
         try {
             $errorMessage = [...$errorMessage, $carRequest->validate()];
+            $isUploadImage = $this->uploadImageService->upload($_FILES['image']);
+            var_dump($isUploadImage);
+            die();
             $car = $this->carService->save($carRequest);
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            die();
             $car = new CarModel();
             $errorMessage[] = 'The our system went something wrong!';
         }
