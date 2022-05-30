@@ -3,9 +3,7 @@
 <form class="form-signin" action="<?php
 
 echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" method="post">
-    <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
-         height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in
         <in></in>
     </h1>
     <label for="inputEmail" class="sr-only">Username</label>

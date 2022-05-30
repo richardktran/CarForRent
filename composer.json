@@ -19,7 +19,8 @@
   "require": {
     "ext-pdo": "*",
     "ext-xdebug": "*",
-    "firebase/php-jwt": "^6.2"
+    "firebase/php-jwt": "^6.2",
+    "aws/aws-sdk-php-resources": "^0.3.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "3.*",

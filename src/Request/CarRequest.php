@@ -1,36 +1,15 @@
 <?php
 
-namespace Khoatran\CarForRent\Model;
+namespace Khoatran\CarForRent\Request;
 
-use DateTime;
+use Khoatran\CarForRent\Exception\ValidationException;
 
-class CarModel
+class CarRequest
 {
-    private int $id;
     private string $name;
     private string $description;
     private string $type;
-    private string $image;
-    private int $price;
-    private string $brand;
-    private int $productionYear;
-    private int $ownerId;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
+    private ?string $image;
 
     /**
      * @return string
@@ -81,19 +60,19 @@ class CarModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImage(): string
+    public function getImage(): ?string
     {
-        return $this->image;
+        return $this->image ?? "";
     }
 
     /**
-     * @param ?string $image
+     * @param string|null $image
      */
     public function setImage(?string $image): void
     {
-        $this->image = $image ?? 'https://images.unsplash.com/photo-1583267746897-2cf415887172?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80';
+        $this->image = $image;
     }
 
     /**
@@ -159,4 +138,55 @@ class CarModel
     {
         $this->ownerId = $ownerId;
     }
+
+    private int $price;
+    private string $brand;
+    private int $productionYear;
+    private int $ownerId;
+
+    public function fromArray(array $requestBody): self
+    {
+        $this->setName($requestBody['name']);
+        $this->setDescription($requestBody['description']);
+        $this->setType($requestBody['type']);
+        $this->setImage($requestBody['image']);
+        $this->setPrice($requestBody['price']);
+        $this->setBrand($requestBody['brand']);
+        $this->setProductionYear($requestBody['production_year']);
+        $this->setOwnerId($requestBody['owner_id']);
+        return $this;
+    }
+
+
+    public function validate(): bool|array
+    {
+        $errors = [];
+        if (empty($this->getName())) {
+            $errors[] = 'Name is required';
+        }
+        if (empty($this->getDescription())) {
+            $errors[] = 'Description is required';
+        }
+        if (empty($this->getType())) {
+            $errors[] = 'Type is required';
+        }
+        if (empty($this->getImage())) {
+            $errors[] = 'Image is required';
+        }
+        if (empty($this->getPrice())) {
+            $errors[] = 'Price is required';
+        }
+        if (empty($this->getBrand())) {
+            $errors[] = 'Brand is required';
+        }
+        if (empty($this->getProductionYear())) {
+            $errors[] = 'Production year is required';
+        }
+        if (empty($errors)) {
+            return true;
+        }
+        return $errors;
+    }
+
+
 }
