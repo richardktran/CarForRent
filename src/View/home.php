@@ -9,10 +9,25 @@
                             <img src="<?= $car['image'] ?>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title"><?= $car['name'] ?></h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Richard K Tran</h6>
+                                <div class="rent-price">
+                                    <strong>$<?= $car['price'] ?></strong><span class="mx-1">/</span>day
+                                </div>
+                                <div class="d-block d-md-flex mb-3 border-bottom pb-3">
+                                    <div class="listing-feature pr-4">
+                                        <span class="caption"><strong>Type:</strong></span>
+                                        <span class="number"><?= $car['type'] ?></span>
+                                    </div>
+                                    <div class="listing-feature pr-4">
+                                        <span class="caption"><strong>Brand:</strong></span>
+                                        <span class="number"><?= $car['brand'] ?></span>
+                                    </div>
+                                    <div class="listing-feature pr-4">
+                                        <span class="caption"><strong>Year:</strong></span>
+                                        <span class="number"><?= $car['productYear'] ?></span>
+                                    </div>
+                                </div>
                                 <p class="card-text"><?= $car['description'] ?></p>
-                                <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-                                <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
+                                <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
                             </div>
                         </div>
                     </div>
