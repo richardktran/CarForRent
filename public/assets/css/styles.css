@@ -1,9 +1,14 @@
 html,
 body {
+    padding: 0;
+    border: 0;
+    margin: 0;
     height: 100%;
 }
 
-body {
+.login-wrapper {
+    width: 100%;
+    height: 100%;
     display: -ms-flexbox;
     display: -webkit-box;
     display: flex;
@@ -51,4 +56,10 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.card-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
