@@ -63,7 +63,7 @@ class UploadImageService
                     'Key' => $key,
                     'SourceFile' => $file_Path,
                 ]);
-
+                unlink($path . $filename);
                 return $result->get('ObjectURL');
             } catch (S3Exception $e) {
                 return null;
