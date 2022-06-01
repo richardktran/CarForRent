@@ -1,5 +1,3 @@
-# How to install rent car
-
 # 🥇About the project
 
 **The car for rent project** is built to help people who want to rent a car to travel, picnic, or do whatever. As a
@@ -14,15 +12,11 @@ Validator. Besides that, this project integrates with the S3 service of AWS Clou
 
 ## Setup Environment
 
----
-
 - Follow this article to install Nginx in Ubuntu
   20.04: [Click here](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04)
 - Create an account to use the S3 service in AWS.
 
 ## Usage
-
----
 
 - Clone project to local:
 
