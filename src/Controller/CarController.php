@@ -20,15 +20,14 @@ class CarController extends AbstractController
     private UploadImageService $uploadImageService;
 
     public function __construct(
-        Request             $request,
-        Response            $response,
-        SessionService      $sessionService,
+        Request $request,
+        Response $response,
+        SessionService $sessionService,
         CarServiceInterface $carService,
-        CarTransformer      $carTransformer,
-        CarRequest          $carRequest,
-        UploadImageService  $uploadImageService
-    )
-    {
+        CarTransformer $carTransformer,
+        CarRequest $carRequest,
+        UploadImageService $uploadImageService
+    ) {
         parent::__construct($request, $response, $sessionService);
         $this->carService = $carService;
         $this->carTransformer = $carTransformer;
@@ -75,6 +74,6 @@ class CarController extends AbstractController
             $errorMessage[] = 'The our system went something wrong!';
         }
 
-        return $this->response->redirect('/create');
+        return $this->response->redirect('/');
     }
 }
