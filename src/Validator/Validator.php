@@ -2,7 +2,7 @@
 
 namespace Khoatran\CarForRent\Validator;
 
-class Validator
+abstract class Validator
 {
     public string $name;
     public $value;
@@ -39,6 +39,9 @@ class Validator
 
     public function pattern($name)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         if ($name == 'array') {
             if (!is_array($this->value)) {
                 $this->errors[$this->name] = 'Field format ' . $this->name . ' invalid.';
@@ -54,6 +57,9 @@ class Validator
 
     public function customPattern($pattern)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         $regex = '/^(' . $pattern . ')$/u';
         if ($this->value != '' && !preg_match($regex, $this->value)) {
             $this->errors[$this->name] = 'Field format ' . $this->name . ' invailid.';
@@ -63,14 +69,21 @@ class Validator
 
     public function required()
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         if ((isset($this->file) && $this->file['error'] == 4) || ($this->value == '' || $this->value == null)) {
-            $this->errors[$this->name] = 'Field value ' . $this->name . ' is required.';
+            $this->errors[$this->name] = 'This field is required.';
         }
         return $this;
     }
 
+
     public function min($length)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         if (is_string($this->value)) {
             if (strlen($this->value) < $length) {
                 $this->errors[$this->name] = 'Field value ' . $this->name . ' less than the minimum value';
@@ -85,6 +98,9 @@ class Validator
 
     public function max($length)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         if (is_string($this->value)) {
             if (strlen($this->value) > $length) {
                 $this->errors[$this->name] = 'Field value' . $this->name . ' higher than the maximum value';
@@ -99,11 +115,17 @@ class Validator
 
     public function purify($string)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 
     public function equal($value)
     {
+        if (!empty($this->errors[$this->name])) {
+            return $this;
+        }
         if ($this->value != $value) {
             $this->errors[$this->name] = 'Field value ' . $this->name . ' not match.';
         }

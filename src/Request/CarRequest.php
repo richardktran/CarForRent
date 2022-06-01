@@ -86,9 +86,13 @@ class CarRequest
     /**
      * @param int $price
      */
-    public function setPrice(int $price): void
+    public function setPrice($price): void
     {
-        $this->price = $price;
+        if (is_numeric($price)) {
+            $this->price = $price;
+        } else {
+            $this->price = 0;
+        }
     }
 
     /**

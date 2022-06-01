@@ -4,17 +4,19 @@ namespace Khoatran\CarForRent\Validator;
 
 use Khoatran\CarForRent\Request\LoginRequest;
 
-class LoginValidator
+class LoginValidator extends Validator
 {
-    public function validateUserLogin(LoginRequest $user)
+    /**
+     * @param LoginRequest $user
+     * @return array|bool
+     */
+    public function validateUserLogin(LoginRequest $user): array|bool
     {
-        $validator = new Validator();
-        $validator->name('username')->value($user->getUsername())->min(3)->max(70)->required();
-        $validator->name('password')->value($user->getPassword())->min(3)->max(255)->required();
-        if ($validator->isSuccess()) {
+        $this->name('username')->value($user->getUsername())->min(3)->max(70)->required();
+        $this->name('password')->value($user->getPassword())->min(3)->max(255)->required();
+        if ($this->isSuccess()) {
             return true;
-        } else {
-            return $validator->getErrors();
         }
+        return $this->getErrors();
     }
 }
