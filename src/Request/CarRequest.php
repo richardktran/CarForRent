@@ -122,9 +122,13 @@ class CarRequest
     /**
      * @param int $productionYear
      */
-    public function setProductionYear(int $productionYear): void
+    public function setProductionYear($productionYear): void
     {
-        $this->productionYear = $productionYear;
+        if (is_numeric($productionYear)) {
+            $this->productionYear = $productionYear;
+        } else {
+            $this->productionYear = 2022;
+        }
     }
 
     /**
