@@ -62,6 +62,14 @@
                                                     <div class="form-notch-middle" style="width: 67.2px;"></div>
                                                     <div class="form-notch-trailing"></div>
                                                 </div>
+                                                <div style="color: red; font-style: italic;">
+                                                    <?php
+                                                    $error = array_key_exists('error', $data) ? $data['error'] : "";
+                                                    $usernameError = $error != "" && array_key_exists('username',
+                                                        $error) ? $error['username'] : "";
+                                                    echo $usernameError;
+                                                    ?>
+                                                </div>
                                             </div>
 
                                             <div class="form-outline mb-4">
@@ -75,13 +83,22 @@
                                                     <div class="form-notch-middle" style="width: 64px;"></div>
                                                     <div class="form-notch-trailing"></div>
                                                 </div>
+                                                <div style="color: red; font-style: italic;">
+                                                    <?php
+                                                    $error = array_key_exists('error', $data) ? $data['error'] : "";
+                                                    $usernameError = $error != "" && array_key_exists('password',
+                                                        $error) ? $error['password'] : "";
+                                                    echo $usernameError;
+                                                    ?>
+                                                </div>
                                             </div>
                                             <input type="hidden" name="token" value="<?= $_SESSION['token'] ?? '' ?>">
                                             <?php
 
-                                            if ($data != null && array_key_exists('error', $data)) {
+                                            if ($data != null && array_key_exists('error',
+                                                    $data) && array_key_exists('incorrect', $data["error"])) {
                                                 echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ' . $data["error"] . '
+        ' . $data["error"]["incorrect"] . '
     </div>';
                                             }
 
