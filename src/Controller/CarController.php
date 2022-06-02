@@ -93,7 +93,6 @@ class CarController extends AbstractController
                 $carRequest = $this->carRequest->fromArray($requestBody);
 
                 $this->carService->save($carRequest);
-//                return $this->response->redirect('/');
                 return $this->response->renderView('create_car', [
                     'success' => true,
                 ]);

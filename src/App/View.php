@@ -63,7 +63,7 @@ class View
         http_response_code($response->getStatusCode());
         $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         require __DIR__ . "/../View/Layout/header.php";
-        if ($template !== 'login') {
+        if ($template !== 'login' && !str_starts_with($template, '_')) {
             require __DIR__ . "/../View/Layout/navbar.php";
         }
         require __DIR__ . "/../View/$template.php";
