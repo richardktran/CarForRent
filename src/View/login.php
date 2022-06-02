@@ -13,7 +13,7 @@
                     background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 
                     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-                    background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+                    background: linear-gradient(to right, rgba(45, 185, 204, 1), #35848f);
                 }
 
                 @media (min-width: 768px) {
@@ -105,7 +105,7 @@
                                             ?>
 
                                             <div class="text-center pt-1 mb-5 pb-1">
-                                                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                                <button class="btn border-0 py-3 btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                                                         type="submit">Sign in
                                                 </button>
                                                 <a class="text-muted" href="#!">Forgot password?</a>
