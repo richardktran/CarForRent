@@ -113,8 +113,8 @@
 
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">Don't have an account? &nbsp;</p>
-                                                <button type="button" class="btn btn-outline-danger"> Create new
-                                                </button>
+                                                <a href="/register" class="btn btn-outline-danger"> Create new
+                                                </a>
                                             </div>
 
                                         </form>
