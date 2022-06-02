@@ -21,10 +21,19 @@ $image = array_key_exists('image', $car) ? $car['image'] : "";
     <div class="container py-3 rounded-lg ">
 
         <div class="my-3 p-3 px-5 rounded shadow-lg bg-white ">
+            <?php
 
-            <h4 class="mt-5">Create your new car</h4>
+            if ($data != null && array_key_exists('success', $data)) {
+                echo '<div class="alert alert-primary alert-dismissible mt-5 fade show" role="alert">
+        Your new car has been created successfully!
+    </div>';
+            }
+
+            ?>
+            <h4 class="mt-3">Create your new car</h4>
             <p>An example of the extended form with typical checkout inputs.</p>
             <form action="/create" method="post" enctype="multipart/form-data">
+
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label class="form-label" for="form6Example1">Name</label>
