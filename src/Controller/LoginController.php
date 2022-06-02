@@ -74,7 +74,7 @@ class LoginController extends AbstractController
         } catch (Exception $exception) {
             $errorMessage = ['incorrect' => 'The our system went something wrong!'];
         }
-        
+
         return $this->response->renderView('login', [
             'username' => $loginRequest->getUsername() ?? "",
             'password' => '',
@@ -88,9 +88,6 @@ class LoginController extends AbstractController
     public function logout(): Response
     {
         $isLogout = $this->sessionService->destroyUser();
-        if ($isLogout) {
-            return $this->response->redirect('/login');
-        }
         return $this->response->redirect('/');
     }
 }
