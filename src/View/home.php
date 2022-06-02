@@ -1,4 +1,16 @@
-<main role="main">
+<main role="main ">
+    <section class="banner-area" id="home">
+        <div class="container">
+            <div class="row fullscreen d-flex align-items-center justify-content-center" style="height: 795px;">
+                <div class="banner-content col-lg-10">
+                    <h3 class="text-white text-uppercase">Now you can feel the Heat</h3>
+                    <h1>
+                        Smart New Future
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">

@@ -7,6 +7,30 @@ body {
     font-family: 'Signika', sans-serif;
 }
 
+.banner-area {
+    padding-bottom: 80px;
+    background-color: #f8f9fa !important;
+    background: url("../images/car-bg.png") center;
+    background-size: cover;
+}
+
+.banner-content {
+    margin-top: -450px;
+    text-align: center;
+}
+
+.banner-content h1 {
+    font-size: 45px;
+}
+
+.banner-content h1 {
+    color: #fff;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1em;
+    margin-top: 20px;
+}
+
 .login-wrapper {
     width: 100%;
     height: 100%;
