@@ -1,21 +1,21 @@
 <?php
-$error = array_key_exists('error', $data) ? $data['error'] : [];
-$car = array_key_exists('car', $data) ? $data['car'] : [];
-$nameError = array_key_exists('car_name', $error) ? $error['car_name'] : "";
-$typeError = array_key_exists('car_type', $error) ? $error['car_type'] : "";
-$brandError = array_key_exists('car_brand', $error) ? $error['car_brand'] : "";
-$yearError = array_key_exists('car_year', $error) ? $error['car_year'] : "";
-$priceError = array_key_exists('car_price', $error) ? $error['car_price'] : "";
-$descriptionError = array_key_exists('car_description', $error) ? $error['car_description'] : "";
-$imageError = array_key_exists('image', $error) ? $error['image'] : "";
+$error = isset($data) && array_key_exists('error', $data) ? $data['error'] : [];
+$car = isset($data) && array_key_exists('car', $data) ? $data['car'] : [];
+$nameError = isset($data) && array_key_exists('car_name', $error) ? $error['car_name'] : "";
+$typeError = isset($data) && array_key_exists('car_type', $error) ? $error['car_type'] : "";
+$brandError = isset($data) && array_key_exists('car_brand', $error) ? $error['car_brand'] : "";
+$yearError = isset($data) && array_key_exists('car_year', $error) ? $error['car_year'] : "";
+$priceError = isset($data) && array_key_exists('car_price', $error) ? $error['car_price'] : "";
+$descriptionError = isset($data) && array_key_exists('car_description', $error) ? $error['car_description'] : "";
+$imageError = isset($data) && array_key_exists('image', $error) ? $error['image'] : "";
 
-$name = array_key_exists('name', $car) ? $car['name'] : "";
-$type = array_key_exists('type', $car) ? $car['type'] : "";
-$brand = array_key_exists('brand', $car) ? $car['brand'] : "";
-$year = array_key_exists('productYear', $car) ? $car['productYear'] : "";
-$price = array_key_exists('price', $car) ? $car['price'] : "";
-$description = array_key_exists('description', $car) ? $car['description'] : "";
-$image = array_key_exists('image', $car) ? $car['image'] : "";
+$name = isset($data) && array_key_exists('name', $car) ? $car['name'] : "";
+$type = isset($data) && array_key_exists('type', $car) ? $car['type'] : "";
+$brand = isset($data) && array_key_exists('brand', $car) ? $car['brand'] : "";
+$year = isset($data) && array_key_exists('productYear', $car) ? $car['productYear'] : "";
+$price = isset($data) && array_key_exists('price', $car) ? $car['price'] : "";
+$description = isset($data) && array_key_exists('description', $car) ? $car['description'] : "";
+$image = isset($data) && array_key_exists('image', $car) ? $car['image'] : "";
 ?>
 <main role="main" class="bg-light">
     <div class="container py-3 rounded-lg ">
