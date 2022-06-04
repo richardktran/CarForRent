@@ -5,14 +5,26 @@
       "Khoatran\\CarForRent\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Khoatran\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "Dang Khoa Tran",
       "email": "richardktran.dev@gmail.com"
     }
   ],
-  "require": {},
+  "require": {
+    "ext-pdo": "*",
+    "ext-xdebug": "*",
+    "firebase/php-jwt": "^6.2",
+    "aws/aws-sdk-php": "^3.224"
+  },
   "require-dev": {
-    "squizlabs/php_codesniffer": "3.*"
+    "squizlabs/php_codesniffer": "3.*",
+    "phpunit/phpunit": "^9.5",
+    "vimeo/psalm": "^4.23"
   }
 }

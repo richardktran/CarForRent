@@ -1,14 +1,17 @@
 <?php
-
+session_start();
 require __DIR__ . '/../vendor/autoload.php';
 
-use Khoatran\CarForRent\Application;
-use Khoatran\CarForRent\Controller\UserController;
+use Khoatran\CarForRent\App\Application;
+use Khoatran\CarForRent\App\RouteManage;
+use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Http\Response;
+use Khoatran\CarForRent\Service\ServiceProvider;
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-include '../src/routes.php';
-$app = new Application();
 
+RouteManage::run();
+$app = new Application();
 
 $app->run();

@@ -2,13 +2,25 @@
 
 namespace Khoatran\CarForRent\Controller;
 
+use Khoatran\CarForRent\Http\Request;
+use Khoatran\CarForRent\Http\Response;
+
 class NotFoundController
 {
-    /**
-     * @return string
-     */
-    public function index(): string
+    protected Request $request;
+    protected Response $response;
+
+    public function __construct(Request $request, Response $response)
     {
-        return "Page not found";
+        $this->request = $request;
+        $this->response = $response;
+    }
+
+    /**
+     * @return Response
+     */
+    public function index(): Response
+    {
+        return $this->response->renderView('_404', data: [], statusCode: 404);
     }
 }

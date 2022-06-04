@@ -1,2 +1,6 @@
 /vendor/
 /.idea/
+.env
+/coverage/
+.phpunit.result.cache
+/.phpunit.cache
