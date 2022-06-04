@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\Database\Database;
+use Khoatran\CarForRent\Exception\UnauthenticatedException;
 use Khoatran\CarForRent\Model\SessionModel;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
@@ -10,31 +11,40 @@ use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 
 class SessionService implements SessionServiceInterface
 {
-    public static string $userIdKey = 'user_id';
+    public static string $userTokenKey = 'user_token';
     protected SessionRepository $sessionRepository;
     private UserRepository $userRepository;
+    private TokenService $tokenService;
 
-    public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository)
+    public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository, TokenService $tokenService)
     {
         $this->sessionRepository = $sessionRepository;
         $this->userRepository = $userRepository;
+        $this->tokenService = $tokenService;
     }
 
-    public function getUserId(): ?int
+    public function getUserToken(): ?int
     {
-        $sessionId = $_COOKIE[self::$userIdKey] ?? '';
+        $sessionId = $_COOKIE[self::$userTokenKey] ?? '';
         $session = $this->sessionRepository->findById($sessionId);
         if ($session->getSessID() == null) {
             return null;
         }
-        return $this->userRepository->findById($session->getSessData())->getId();
+        $token = $session->getSessData();
+        try {
+            $payload = $this->tokenService->validateToken($token);
+        } catch (UnauthenticatedException $e) {
+            return null;
+        }
+        $userId = $payload['sub'];
+        return $this->userRepository->findById($userId)->getId();
     }
 
-    public function setUserId(int $userId): bool
+    public function setUserToken(string $token): bool
     {
         $session = new SessionModel();
         $session->setSessID(uniqid());
-        $session->setSessData($userId);
+        $session->setSessData($token);
         $lifetime = time() + (60 * 60 * 24);
         $session->setSessLifetime($lifetime);
 
@@ -42,25 +52,25 @@ class SessionService implements SessionServiceInterface
         if (getType($sessionSaved) == 'boolean' && !$sessionSaved) {
             return false;
         }
-        setcookie(self::$userIdKey, $session->getSessID(), $lifetime, '/');
-        $_SESSION[self::$userIdKey] = $userId;
+        setcookie(self::$userTokenKey, $session->getSessID(), $lifetime, '/');
+        $_SESSION[self::$userTokenKey] = $token;
         return true;
     }
 
     public function destroyUser(): bool
     {
-        $sessionId = $_COOKIE[self::$userIdKey] ?? '';
+        $sessionId = $_COOKIE[self::$userTokenKey] ?? '';
         $checkDeleteSession = $this->sessionRepository->deleteById($sessionId);
         if (!$checkDeleteSession) {
             return false;
         }
-        setcookie(self::$userIdKey, '', 1, '/');
-        unset($_SESSION[self::$userIdKey]);
+        setcookie(self::$userTokenKey, '', 1, '/');
+        unset($_SESSION[self::$userTokenKey]);
         return true;
     }
 
     public function isLogin(): bool
     {
-        return $this->getUserId() != null;
+        return $this->getUserToken() != null;
     }
 }

@@ -20,7 +20,7 @@ class AuthenticateMiddleware implements MiddlewareInterface
     /**
      * @return Response|bool
      */
-    public function run(): Response|bool
+    public function run(): Response | bool
     {
         if (!$this->sessionService->isLogin()) {
             return $this->response->redirect('/login');

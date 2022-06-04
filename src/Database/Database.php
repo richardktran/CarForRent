@@ -18,7 +18,6 @@ class Database
      */
     public static function getConnection(): PDO
     {
-        (new DotEnv(__DIR__ . '/../../.env'))->load();
         if (empty(self::$connection)) {
             $db_info = array(
                 "db_host" => getenv('DATABASE_HOST'),

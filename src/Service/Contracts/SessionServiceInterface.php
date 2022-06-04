@@ -4,9 +4,9 @@ namespace Khoatran\CarForRent\Service\Contracts;
 
 interface SessionServiceInterface
 {
-    public function getUserId(): ?int;
+    public function getUserToken(): ?int;
 
-    public function setUserId(int $userId): bool;
+    public function setUserToken(string $token): bool;
 
     public function destroyUser(): bool;
 

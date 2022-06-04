@@ -1,13 +1,12 @@
 <?php
 
-namespace Khoatran\CarForRent\Controller;
+namespace Khoatran\CarForRent\Controller\API;
 
-use Khoatran\CarForRent\App\View;
+use Khoatran\CarForRent\Controller\AbstractController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Service\Business\SessionService;
 
-class HomeController
+class AbstractAPIController
 {
     protected Request $request;
     protected Response $response;
@@ -16,13 +15,5 @@ class HomeController
     {
         $this->request = $request;
         $this->response = $response;
-    }
-
-    /**
-     * @return Response
-     */
-    public function index(): Response
-    {
-        return $this->response->renderView('home');
     }
 }

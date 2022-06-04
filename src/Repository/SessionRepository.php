@@ -15,7 +15,7 @@ class SessionRepository
         $this->connection = Database::getConnection();
     }
 
-    public function save(SessionModel $session): SessionModel|bool
+    public function save(SessionModel $session): SessionModel | bool
     {
         $statement = $this->connection->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");
         $insertSuccess = $statement->execute([

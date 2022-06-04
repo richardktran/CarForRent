@@ -3,6 +3,7 @@
 namespace Khoatran\CarForRent\Http;
 
 use Khoatran\CarForRent\App\View;
+use Khoatran\CarForRent\Service\Business\SessionService;
 
 class Request
 {
@@ -36,5 +37,28 @@ class Request
             $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
         }
         return $body;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestJsonBody(): mixed
+    {
+        $data = file_get_contents('php://input');
+
+        return json_decode($data, true);
+    }
+
+    private function getHeaderToken(): ?string
+    {
+        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getToken(): ?string
+    {
+        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
     }
 }
