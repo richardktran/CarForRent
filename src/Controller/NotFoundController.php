@@ -5,11 +5,15 @@ namespace Khoatran\CarForRent\Controller;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 
-class NotFoundController extends AbstractController
+class NotFoundController
 {
+    protected Request $request;
+    protected Response $response;
+
     public function __construct(Request $request, Response $response)
     {
-        parent::__construct($request, $response);
+        $this->request = $request;
+        $this->response = $response;
     }
 
     /**
@@ -17,6 +21,6 @@ class NotFoundController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->response->renderView('_404', statusCode: 404);
+        return $this->response->renderView('_404', data: [], statusCode: 404);
     }
 }
