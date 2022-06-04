@@ -39,6 +39,15 @@ class Request
         return $body;
     }
 
+    public function getFile(): array
+    {
+        $files = [];
+        foreach ($_FILES as $key => $value) {
+            $files[$key] = $value;
+        }
+        return $files;
+    }
+
     /**
      * @return mixed
      */
