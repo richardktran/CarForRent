@@ -11,6 +11,7 @@ use Khoatran\CarForRent\Service\Business\TokenService;
 use Khoatran\CarForRent\Transformer\UserTransformer;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
+use Khoatran\CarForRent\Validator\LoginValidator;
 
 class LoginAPIController extends AbstractAPIController
 {
@@ -19,48 +20,48 @@ class LoginAPIController extends AbstractAPIController
     protected Response $response;
     protected UserTransformer $userTransformer;
     protected TokenService $tokenService;
+    protected LoginRequest $loginRequest;
+    protected LoginValidator $loginValidator;
 
     public function __construct(
-        Request $request,
-        Response $response,
+        Request               $request,
+        Response              $response,
         LoginServiceInterface $loginService,
-        UserTransformer $userTransformer,
-        TokenService $tokenService
-    ) {
+        UserTransformer       $userTransformer,
+        TokenService          $tokenService,
+        LoginRequest          $loginRequest,
+        LoginValidator        $loginValidator
+    )
+    {
         parent::__construct($request, $response);
         $this->loginService = $loginService;
         $this->userTransformer = $userTransformer;
         $this->tokenService = $tokenService;
+        $this->loginRequest = $loginRequest;
+        $this->loginValidator = $loginValidator;
     }
 
     public function login(): Response
     {
-        $loginRequest = new LoginRequest();
-        $loginRequest = $loginRequest->fromArray($this->request->getRequestJsonBody());
-        $errorMessage = "";
-        try {
-            $loginRequest->validate();
-        } catch (ValidationException $exception) {
-            $errorMessage = $exception->getMessage();
+        $loginRequest = $this->loginRequest->fromArray($this->request->getRequestJsonBody());
+        $loginValidator = $this->loginValidator->validateUserLogin($loginRequest);
+        if (!empty($loginValidator)) {
             return $this->response->toJson([
-                'message' => $errorMessage,
+                'message' => $loginValidator,
             ], Response::HTTP_BAD_REQUEST);
         }
 
         $userLogin = $this->loginService->login($loginRequest);
-        if ($userLogin == null) {
-            $errorMessage = "Username or password is incorrect";
+        if ($userLogin === null) {
             return $this->response->toJson([
-                'message' => $errorMessage,
+                'message' => "Username or password is incorrect",
             ], Response::HTTP_UNAUTHORIZED);
         }
         $token = $this->tokenService->generate($userLogin->getId());
         return $this->response->toJson([
-            'data' => [
-                ...$this->userTransformer->toArray($userLogin),
-                'token' => $token
-            ],
-            'message' => $errorMessage,
+            'data' => $this->userTransformer->toArray($userLogin),
+            'token' => $token,
         ], Response::HTTP_OK);
+
     }
 }

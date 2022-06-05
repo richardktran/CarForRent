@@ -137,6 +137,7 @@ abstract class Validator
         if (!$this->isSuccess()) {
             return $this->errors;
         }
+        return [];
     }
 
 

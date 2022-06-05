@@ -2,25 +2,21 @@
 
 namespace Khoatran\CarForRent\Repository;
 
-use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\CarModel;
-use Khoatran\CarForRent\Model\UserModel;
 use Khoatran\CarForRent\Request\CarRequest;
 use PDO;
 
-class CarRepository
+class CarRepository extends BaseRepository
 {
-    private PDO $connection;
-
     public function __construct()
     {
-        $this->connection = Database::getConnection();
+        parent::__construct();
     }
 
     public function findAll(int $offset, int $limit): array
     {
         $sql = "SELECT * FROM cars LIMIT :off, :lim";
-        $statement = $this->connection->prepare($sql);
+        $statement = $this->getConnection()->prepare($sql);
         $statement->bindValue(':off', $offset, PDO::PARAM_INT);
         $statement->bindValue(':lim', $limit, PDO::PARAM_INT);
         $statement->execute();
@@ -44,7 +40,7 @@ class CarRepository
 
     public function findById($id): ?CarModel
     {
-        $statement = $this->connection->prepare("SELECT * FROM cars WHERE id = ? ");
+        $statement = $this->getConnection()->prepare("SELECT * FROM cars WHERE id = ? ");
         $statement->execute([$id]);
 
         try {
@@ -69,7 +65,9 @@ class CarRepository
 
     public function insert(CarRequest $carRequest): ?string
     {
-        $statement = $this->connection->prepare("INSERT INTO cars(name,description,type, price,brand, production_year, owner, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $query = "INSERT INTO cars(name,description,type, price,brand, production_year, owner, image) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $statement = $this->getConnection()->prepare($query);
         try {
             $statement->execute([
                 $carRequest->getName(),

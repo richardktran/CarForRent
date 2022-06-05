@@ -24,11 +24,15 @@ class ImageValidator extends FileValidator
         return $this;
     }
 
-    public function validateImage($image)
+    /**
+     * @param $image
+     * @return array
+     */
+    public function validateImage($image): array
     {
-        $isValidate = $this->name('image')->setFile($image)->required()->checkSize(10)->isImage();
+        $this->name('image')->setFile($image)->required()->checkSize(10)->isImage();
         if ($this->isSuccess()) {
-            return true;
+            return [];
         }
         return $this->getErrors();
     }

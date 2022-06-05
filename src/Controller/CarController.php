@@ -20,24 +20,18 @@ class CarController extends AbstractController
 {
     private CarServiceInterface $carService;
     private CarTransformer $carTransformer;
-    private CarRequest $carRequest;
-    private CarValidator $carValidator;
 
     public function __construct(
         Request             $request,
         Response            $response,
         SessionService      $sessionService,
         CarServiceInterface $carService,
-        CarTransformer      $carTransformer,
-        CarRequest          $carRequest,
-        CarValidator        $carValidator,
+        CarTransformer      $carTransformer
     )
     {
         parent::__construct($request, $response, $sessionService);
         $this->carService = $carService;
         $this->carTransformer = $carTransformer;
-        $this->carRequest = $carRequest;
-        $this->carValidator = $carValidator;
     }
 
     /**
@@ -58,15 +52,15 @@ class CarController extends AbstractController
         return $this->response->renderView('create_car');
     }
 
-    public function store(): Response
+    public function store(CarRequest $carRequest, CarValidator $carValidator): Response
     {
         $owner = $this->sessionService->getUserToken();
         $requestBody = $this->request->getBody();
         $requestBody['owner_id'] = $owner;
-        $carRequest = $this->carRequest->fromArray($requestBody);
-        $carValidator = $this->carValidator->validateCar($carRequest);
+        $carRequest = $carRequest->fromArray($requestBody);
+        $carValidator = $carValidator->validateCar($carRequest);
 
-        if (!is_bool($carValidator)) {
+        if (!empty($carValidator)) {
             return $this->response->renderView('create_car', [
                 'error' => $carValidator,
                 'car' => $this->carTransformer->requestToArray($carRequest),

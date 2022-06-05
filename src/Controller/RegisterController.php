@@ -16,13 +16,14 @@ class RegisterController extends AbstractController
     private RegisterService $registerService;
 
     public function __construct(
-        Request $request,
-        Response $response,
+        Request                 $request,
+        Response                $response,
         SessionServiceInterface $sessionService,
-        RegisterRequest $registerRequest,
-        RegisterValidator $registerValidator,
-        RegisterService $registerService
-    ) {
+        RegisterRequest         $registerRequest,
+        RegisterValidator       $registerValidator,
+        RegisterService         $registerService
+    )
+    {
         parent::__construct($request, $response, $sessionService);
         $this->registerRequest = $registerRequest;
         $this->registerValidator = $registerValidator;
@@ -43,14 +44,12 @@ class RegisterController extends AbstractController
             $errorMessage = [];
             $requestBody = $this->request->getBody();
             $this->registerRequest->fromArray($requestBody);
-            $validate = $this->registerValidator->validateUserRegister($this->registerRequest);
-            if (!is_bool($validate)) {
-                $errorMessage = $validate;
-            }
-            if (empty($errorMessage)) {
+            $validateError = $this->registerValidator->validateUserRegister($this->registerRequest);
+            if (empty($validateError)) {
                 $this->registerService->register($this->registerRequest);
                 return $this->response->redirect('/login');
             }
+            $errorMessage = $validateError;
         } catch (\Exception $exception) {
             $errorMessage = ['incorrect' => $exception->getMessage()];
         }

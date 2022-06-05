@@ -6,18 +6,13 @@ use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Model\SessionModel;
 use PDO;
 
-class SessionRepository
+class SessionRepository extends BaseRepository
 {
-    protected PDO $connection;
 
-    public function __construct()
-    {
-        $this->connection = Database::getConnection();
-    }
 
-    public function save(SessionModel $session): SessionModel | bool
+    public function save(SessionModel $session): SessionModel|bool
     {
-        $statement = $this->connection->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");
+        $statement = $this->getConnection()->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");
         $insertSuccess = $statement->execute([
             $session->getSessID(),
             $session->getSessData(),
@@ -31,14 +26,14 @@ class SessionRepository
 
     public function deleteById($sessionID): bool
     {
-        $statement = $this->connection->prepare("DELETE FROM sessions WHERE sess_id = '$sessionID' ");
-        return $statement->execute();
+        $statement = $this->getConnection()->prepare("DELETE FROM sessions WHERE sess_id = ? ");
+        return $statement->execute([$sessionID]);
     }
 
     public function findById($sessionID): SessionModel
     {
-        $statement = $this->connection->prepare("SELECT * FROM sessions WHERE sess_id = '$sessionID' ");
-        $statement->execute();
+        $statement = $this->getConnection()->prepare("SELECT * FROM sessions WHERE sess_id = ? ");
+        $statement->execute([$sessionID]);
 
         try {
             $session = new SessionModel();

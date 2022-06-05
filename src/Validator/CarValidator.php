@@ -31,8 +31,8 @@ class CarValidator extends Validator
         $files = $this->request->getFile();
         $imageValidator = $this->imageValidator->validateImage($files['image']);
 
-        if ($this->isSuccess() && $imageValidator) {
-            return true;
+        if ($this->isSuccess() && empty($imageValidator)) {
+            return [];
         } else {
             return array_merge($this->getErrors(), $imageValidator);
         }

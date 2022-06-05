@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 
 /**
  * @link https://viblo.asia/p/tu-build-1-dependency-injection-container-voi-php-gDVK2mye5Lj
@@ -34,23 +35,14 @@ class Container
      * @return mixed|object
      * @throws ReflectionException
      */
-    public function make($abstract, array $parameters = [])
+    public function make($class, array $parameters = [])
     {
-        if (!isset($this->instances[$abstract])) {
-            $this->bind($abstract);
+        if (!isset($this->instances[$class])) {
+            $this->bind($class);
         }
 
-        return $this->resolve($this->instances[$abstract], $parameters);
-    }
+        $concrete = $this->instances[$class];
 
-    /**
-     * @param $concrete
-     * @param $parameters
-     * @return mixed|object
-     * @throws ReflectionException
-     */
-    protected function resolve($concrete, $parameters)
-    {
         if ($concrete instanceof Closure) {
             return $concrete($this, $parameters);
         }
@@ -61,16 +53,41 @@ class Container
             throw new Exception("Class {$concrete} is not instantiable");
         }
 
-        $constructor = $reflector->getConstructor();
+        $methods = $reflector->getConstructor();
 
-        if (is_null($constructor)) {
+        if (empty($methods)) {
             return $reflector->newInstance();
         }
 
-        $parameters = $constructor->getParameters();
+        $parameters = $methods->getParameters();
         $dependencies = $this->resolveDependencies($parameters);
 
         return $reflector->newInstanceArgs($dependencies);
+    }
+
+
+    /**
+     * @throws ReflectionException
+     */
+    public function callMethod($callable, $parameters = [])
+    {
+        $callbackClass = $callable[0];
+        $callbackMethod = $callable[1] ?? '__invoke';
+
+        $methodReflection = new ReflectionMethod($callbackClass, $callbackMethod);
+
+        $parameters = $methodReflection->getParameters();
+
+        $dependencies = [];
+
+        foreach ($parameters as $param) {
+            $dependency = new ReflectionClass($param->getType()->getName());
+            $dependencies[] = $this->make($dependency->name);
+        }
+
+        $initClass = $this->make($callbackClass, $parameters);
+
+        return $methodReflection->invoke($initClass, ...$dependencies);
     }
 
     /**

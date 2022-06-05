@@ -20,20 +20,23 @@ class LoginController extends AbstractController
     private LoginServiceInterface $loginService;
     private TokenService $tokenService;
     private LoginValidator $loginValidator;
+    private LoginRequest $loginRequest;
 
     public function __construct(
-        Request $request,
-        Response $response,
-        LoginServiceInterface $loginService,
-        LoginValidator $loginValidator,
+        Request                 $request,
+        Response                $response,
+        LoginServiceInterface   $loginService,
+        LoginValidator          $loginValidator,
         SessionServiceInterface $sessionService,
-        TokenService $tokenService
-    ) {
+        TokenService            $tokenService,
+        LoginRequest            $loginRequest
+    )
+    {
         parent::__construct($request, $response, $sessionService);
         $this->loginService = $loginService;
-        $this->sessionService = $sessionService;
         $this->tokenService = $tokenService;
         $this->loginValidator = $loginValidator;
+        $this->loginRequest = $loginRequest;
     }
 
     /**
@@ -55,12 +58,11 @@ class LoginController extends AbstractController
      */
     public function login(): Response
     {
-        $loginRequest = new LoginRequest();
-        $loginRequest = $loginRequest->fromArray($this->request->getBody());
+        $loginRequest = $this->loginRequest->fromArray($this->request->getBody());
         $errorMessage = [];
         try {
             $loginValidator = $this->loginValidator->validateUserLogin($loginRequest);
-            if (getType($loginValidator) == 'boolean' && $loginValidator) {
+            if (empty($loginValidator)) {
                 $userLogin = $this->loginService->login($loginRequest);
                 if ($userLogin !== null) {
                     $token = $this->tokenService->generate($userLogin->getId());

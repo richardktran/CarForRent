@@ -15,7 +15,7 @@ class RegisterValidator extends Validator
 
         $this->name('confirmPassword')->value($registerRequest->getConfirmPassword())->required()->equal($registerRequest->getPassword());
         if ($this->isSuccess()) {
-            return true;
+            return [];
         }
         return $this->getErrors();
     }
