@@ -34,24 +34,21 @@ class LoginController extends AbstractController
     }
 
     /**
-     * @return Response
-     */
-    public function index(): Response
-    {
-        if ($this->sessionService->isLogin()) {
-            return $this->response->redirect('/');
-        }
-        return $this->response->renderView('login', [
-            'username' => '',
-            'password' => '',
-        ]);
-    }
-
-    /**
+     * @param LoginRequest $loginRequest
+     * @param LoginValidator $loginValidator
      * @return Response
      */
     public function login(LoginRequest $loginRequest, LoginValidator $loginValidator): Response
     {
+        if ($this->request->isGet()) {
+            if ($this->sessionService->isLogin()) {
+                return $this->response->redirect('/');
+            }
+            return $this->response->renderView('login', [
+                'username' => '',
+                'password' => '',
+            ]);
+        }
         $loginRequest = $loginRequest->fromArray($this->request->getBody());
 
         $loginValidator = $loginValidator->validateUserLogin($loginRequest);
@@ -59,7 +56,7 @@ class LoginController extends AbstractController
             return $this->response->renderView('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
-                'error' => $loginValidator,
+                'errors' => $loginValidator,
             ]);
         }
         $userLogin = $this->loginService->login($loginRequest);
@@ -67,7 +64,7 @@ class LoginController extends AbstractController
             return $this->response->renderView('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
-                'error' => ["incorrect" => "Username or password is incorrect"],
+                'message' => "Username or password is incorrect",
             ]);
         }
         $token = $this->tokenService->generate($userLogin->getId());

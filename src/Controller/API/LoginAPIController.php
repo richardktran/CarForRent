@@ -41,7 +41,7 @@ class LoginAPIController extends AbstractAPIController
         $loginValidator = $loginValidator->validateUserLogin($loginRequest);
         if (!empty($loginValidator)) {
             return $this->response->toJson([
-                'message' => $loginValidator,
+                'errors' => $loginValidator,
             ], Response::HTTP_BAD_REQUEST);
         }
 

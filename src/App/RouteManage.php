@@ -27,11 +27,11 @@ class RouteManage
     public static function appRoutes(): void
     {
         Route::get('/', [CarController::class, 'index']);
+        Route::get('/create', [CarController::class, 'store'], role: UserModel::ROLE_ADMIN);
         Route::post('/create', [CarController::class, 'store'], role: UserModel::ROLE_ADMIN);
-        Route::get('/create', [CarController::class, 'create'], role: UserModel::ROLE_ADMIN);
-        Route::get('/login', [LoginController::class, 'index']);
-        Route::get('/register', [RegisterController::class, 'index']);
+        Route::get('/login', [LoginController::class, 'login']);
         Route::post('/login', [LoginController::class, 'login']);
+        Route::get('/register', [RegisterController::class, 'register']);
         Route::post('/register', [RegisterController::class, 'register']);
         Route::post('/logout', [LoginController::class, 'logout']);
     }

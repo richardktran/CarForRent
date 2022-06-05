@@ -64,7 +64,7 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = array_key_exists('error', $data) ? $data['error'] : "";
+                                                    $error = array_key_exists('errors', $data) ? $data['errors'] : "";
                                                     $usernameError = $error != "" && array_key_exists('username',
                                                         $error) ? $error['username'] : "";
                                                     echo $usernameError;
@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = array_key_exists('error', $data) ? $data['error'] : "";
+                                                    $error = array_key_exists('errors', $data) ? $data['errors'] : "";
                                                     $usernameError = $error != "" && array_key_exists('password',
                                                         $error) ? $error['password'] : "";
                                                     echo $usernameError;
@@ -95,10 +95,9 @@
                                             <input type="hidden" name="token" value="<?= $_SESSION['token'] ?? '' ?>">
                                             <?php
 
-                                            if ($data != null && array_key_exists('error',
-                                                    $data) && array_key_exists('incorrect', $data["error"])) {
+                                            if ($data != null && array_key_exists('message', $data)) {
                                                 echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ' . $data["error"]["incorrect"] . '
+        ' . $data["message"] . '
     </div>';
                                             }
 

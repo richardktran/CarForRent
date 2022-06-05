@@ -24,36 +24,29 @@ class RegisterController extends AbstractController
         $this->registerService = $registerService;
     }
 
-    public function index(): Response
-    {
-        if ($this->sessionService->isLogin()) {
-            return $this->response->redirect('/');
-        }
-        return $this->response->renderView('register');
-    }
 
-    public function register(RegisterRequest $registerRequest, RegisterValidator $registerValidator)
+    public function register(RegisterRequest $registerRequest, RegisterValidator $registerValidator): Response
     {
-        try {
-            $errorMessage = [];
-            $requestBody = $this->request->getBody();
-            $registerRequest->fromArray($requestBody);
-            $validateError = $registerValidator->validateUserRegister($registerRequest);
-            if (empty($validateError)) {
-                $this->registerService->register($registerRequest);
-                return $this->response->redirect('/login');
+        if ($this->request->isGet()) {
+            if ($this->sessionService->isLogin()) {
+                return $this->response->redirect('/');
             }
-            $errorMessage = $validateError;
-        } catch (\Exception $exception) {
-            $errorMessage = ['incorrect' => $exception->getMessage()];
+
+            return $this->response->renderView('register');
         }
-        return $this->response->renderView('register', [
-            'username' => $registerRequest->getUsername() ?? '',
-            'phoneNumber' => $registerRequest->getPhoneNumber() ?? '',
-            'fullName' => $registerRequest->getFullName() ?? '',
-            'error' => $errorMessage,
-        ]);
+        $requestBody = $this->request->getBody();
+        $registerRequest->fromArray($requestBody);
+        $validateError = $registerValidator->validateUserRegister($registerRequest);
+        if (!empty($validateError)) {
+            return $this->response->renderView('register', [
+                'username' => $registerRequest->getUsername() ?? '',
+                'phoneNumber' => $registerRequest->getPhoneNumber() ?? '',
+                'fullName' => $registerRequest->getFullName() ?? '',
+                'errors' => $validateError,
+            ]);
+        }
+        $this->registerService->register($registerRequest);
 
-
+        return $this->response->redirect('/login');
     }
 }

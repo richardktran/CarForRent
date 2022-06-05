@@ -47,13 +47,11 @@ class CarController extends AbstractController
         return $this->response->renderView('home', ['cars' => $results]);
     }
 
-    public function create(): Response
-    {
-        return $this->response->renderView('create_car');
-    }
-
     public function store(CarRequest $carRequest, CarValidator $carValidator): Response
     {
+        if ($this->request->isGet()) {
+            return $this->response->renderView('create_car');
+        }
         $owner = $this->sessionService->getUserToken();
         $requestBody = $this->request->getBody();
         $requestBody['owner_id'] = $owner;

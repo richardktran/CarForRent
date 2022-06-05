@@ -61,8 +61,8 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = isset($data) && array_key_exists('error',
-                                                        $data) ? $data['error'] : "";
+                                                    $error = isset($data) && array_key_exists('errors',
+                                                        $data) ? $data['errors'] : "";
                                                     $fullNameError = $error != "" && array_key_exists('fullName',
                                                         $error) ? $error['fullName'] : "";
                                                     echo $fullNameError;
@@ -86,8 +86,8 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = isset($data) && array_key_exists('error',
-                                                        $data) ? $data['error'] : "";
+                                                    $error = isset($data) && array_key_exists('errors',
+                                                        $data) ? $data['errors'] : "";
                                                     $phoneNumberError = $error != "" && array_key_exists('phoneNumber',
                                                         $error) ? $error['phoneNumber'] : "";
                                                     echo $phoneNumberError;
@@ -110,8 +110,8 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = isset($data) && array_key_exists('error',
-                                                        $data) ? $data['error'] : "";
+                                                    $error = isset($data) && array_key_exists('errors',
+                                                        $data) ? $data['errors'] : "";
                                                     $usernameError = $error != "" && array_key_exists('username',
                                                         $error) ? $error['username'] : "";
                                                     echo $usernameError;
@@ -132,8 +132,8 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = isset($data) && array_key_exists('error',
-                                                        $data) ? $data['error'] : "";
+                                                    $error = isset($data) && array_key_exists('errors',
+                                                        $data) ? $data['errors'] : "";
                                                     $usernameError = $error != "" && array_key_exists('password',
                                                         $error) ? $error['password'] : "";
                                                     echo $usernameError;
@@ -155,8 +155,8 @@
                                                 </div>
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
-                                                    $error = isset($data) && array_key_exists('error',
-                                                        $data) ? $data['error'] : "";
+                                                    $error = isset($data) && array_key_exists('errors',
+                                                        $data) ? $data['errors'] : "";
                                                     $usernameError = $error != "" && array_key_exists('confirmPassword',
                                                         $error) ? $error['confirmPassword'] : "";
                                                     echo $usernameError;

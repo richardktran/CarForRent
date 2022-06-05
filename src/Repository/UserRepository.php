@@ -60,7 +60,7 @@ class UserRepository extends BaseRepository
         try {
             $statement->execute([
                 $user->getUsername(),
-                password_hash($user->getPassword(), PASSWORD_BCRYPT),
+                $user->getPassword(),
                 $user->getFullName(),
                 $user->getPhoneNumber()
             ]);

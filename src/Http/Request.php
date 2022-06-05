@@ -19,6 +19,11 @@ class Request
         return substr($path, 0, strpos($path, '?'));
     }
 
+    public function isGet(): bool
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+
     /**
      * @return string
      */
