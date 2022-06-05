@@ -24,5 +24,4 @@ abstract class BaseRepository
     {
         return $this->connection;
     }
-
 }

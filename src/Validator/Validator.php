@@ -148,6 +148,4 @@ abstract class Validator
         }
         return false;
     }
-
-
 }

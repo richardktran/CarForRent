@@ -195,6 +195,4 @@ class CarRequest
         }
         return $errors;
     }
-
-
 }

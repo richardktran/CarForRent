@@ -63,11 +63,6 @@ class Request
         return json_decode($data, true);
     }
 
-    private function getHeaderToken(): ?string
-    {
-        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-    }
-
     /**
      * @return string|null
      */

@@ -14,12 +14,11 @@ class RegisterController extends AbstractController
     private RegisterService $registerService;
 
     public function __construct(
-        Request                 $request,
-        Response                $response,
+        Request $request,
+        Response $response,
         SessionServiceInterface $sessionService,
-        RegisterService         $registerService
-    )
-    {
+        RegisterService $registerService
+    ) {
         parent::__construct($request, $response, $sessionService);
         $this->registerService = $registerService;
     }

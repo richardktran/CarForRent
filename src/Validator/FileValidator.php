@@ -2,7 +2,6 @@
 
 namespace Khoatran\CarForRent\Validator;
 
-
 abstract class FileValidator extends Validator
 {
     protected $file;
@@ -44,6 +43,4 @@ abstract class FileValidator extends Validator
         }
         return $this;
     }
-
-
 }

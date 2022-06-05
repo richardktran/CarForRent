@@ -2,7 +2,6 @@
 
 namespace Khoatran\CarForRent\Validator;
 
-
 class ImageValidator extends FileValidator
 {
     public function isImage(): self

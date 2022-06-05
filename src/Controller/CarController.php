@@ -22,13 +22,12 @@ class CarController extends AbstractController
     private CarTransformer $carTransformer;
 
     public function __construct(
-        Request             $request,
-        Response            $response,
-        SessionService      $sessionService,
+        Request $request,
+        Response $response,
+        SessionService $sessionService,
         CarServiceInterface $carService,
-        CarTransformer      $carTransformer
-    )
-    {
+        CarTransformer $carTransformer
+    ) {
         parent::__construct($request, $response, $sessionService);
         $this->carService = $carService;
         $this->carTransformer = $carTransformer;

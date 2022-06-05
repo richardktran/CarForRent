@@ -24,6 +24,21 @@ class RequestTest extends TestCase
         $this->assertEquals($expected, $request->getPath());
     }
 
+    public function testIsGet()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $request = new Request();
+        $this->assertTrue($request->isGet());
+    }
+
+    public function testGetToken()
+    {
+        $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer 12345';
+        $request = new Request();
+        $this->assertEquals('Bearer 12345', $request->getToken());
+    }
+
+
     /**
      * @dataProvider getMethodProvider
      * @return void

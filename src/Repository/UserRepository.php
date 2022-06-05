@@ -9,7 +9,6 @@ use PDO;
 
 class UserRepository extends BaseRepository
 {
-
     public function findByUsername($username): ?UserModel
     {
         $statement = $this->getConnection()->prepare("SELECT * FROM users WHERE username = ? ");

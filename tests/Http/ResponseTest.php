@@ -73,4 +73,11 @@ class ResponseTest extends TestCase
             [['name' => 'Khoa', 'age' => 22]],
         ];
     }
+
+    public function testGetJson()
+    {
+        $response = new Response();
+        $response->setData(['name' => 'Khoa']);
+        $this->assertEquals(['name' => 'Khoa'], $response->toJson(['name' => 'Khoa'])->getData());
+    }
 }

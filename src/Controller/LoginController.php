@@ -13,21 +13,22 @@ use Khoatran\CarForRent\Service\Business\TokenService;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 use Khoatran\CarForRent\Validator\LoginValidator;
+
 use function PHPUnit\Framework\throwException;
 
 class LoginController extends AbstractController
 {
+    const LOGIN_FAIL_MESSAGE = 'Username or password is not correct';
     private LoginServiceInterface $loginService;
     private TokenService $tokenService;
 
     public function __construct(
-        Request                 $request,
-        Response                $response,
-        LoginServiceInterface   $loginService,
+        Request $request,
+        Response $response,
+        LoginServiceInterface $loginService,
         SessionServiceInterface $sessionService,
-        TokenService            $tokenService,
-    )
-    {
+        TokenService $tokenService,
+    ) {
         parent::__construct($request, $response, $sessionService);
         $this->loginService = $loginService;
         $this->tokenService = $tokenService;
@@ -64,7 +65,7 @@ class LoginController extends AbstractController
             return $this->response->renderView('login', [
                 'username' => $loginRequest->getUsername() ?? "",
                 'password' => '',
-                'message' => "Username or password is incorrect",
+                'message' => self::LOGIN_FAIL_MESSAGE,
             ]);
         }
         $token = $this->tokenService->generate($userLogin->getId());

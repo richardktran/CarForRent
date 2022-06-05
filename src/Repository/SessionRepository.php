@@ -8,8 +8,6 @@ use PDO;
 
 class SessionRepository extends BaseRepository
 {
-
-
     public function save(SessionModel $session): SessionModel|bool
     {
         $statement = $this->getConnection()->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");

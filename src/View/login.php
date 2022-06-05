@@ -65,8 +65,10 @@
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
                                                     $error = array_key_exists('errors', $data) ? $data['errors'] : "";
-                                                    $usernameError = $error != "" && array_key_exists('username',
-                                                        $error) ? $error['username'] : "";
+                                                    $usernameError = $error != "" && array_key_exists(
+                                                        'username',
+                                                        $error
+                                                    ) ? $error['username'] : "";
                                                     echo $usernameError;
                                                     ?>
                                                 </div>
@@ -86,8 +88,10 @@
                                                 <div style="color: red; font-style: italic;">
                                                     <?php
                                                     $error = array_key_exists('errors', $data) ? $data['errors'] : "";
-                                                    $usernameError = $error != "" && array_key_exists('password',
-                                                        $error) ? $error['password'] : "";
+                                                    $usernameError = $error != "" && array_key_exists(
+                                                        'password',
+                                                        $error
+                                                    ) ? $error['password'] : "";
                                                     echo $usernameError;
                                                     ?>
                                                 </div>
