@@ -11,22 +11,16 @@ use Khoatran\CarForRent\Validator\RegisterValidator;
 
 class RegisterController extends AbstractController
 {
-    private RegisterRequest $registerRequest;
-    private RegisterValidator $registerValidator;
     private RegisterService $registerService;
 
     public function __construct(
         Request                 $request,
         Response                $response,
         SessionServiceInterface $sessionService,
-        RegisterRequest         $registerRequest,
-        RegisterValidator       $registerValidator,
         RegisterService         $registerService
     )
     {
         parent::__construct($request, $response, $sessionService);
-        $this->registerRequest = $registerRequest;
-        $this->registerValidator = $registerValidator;
         $this->registerService = $registerService;
     }
 
@@ -38,15 +32,15 @@ class RegisterController extends AbstractController
         return $this->response->renderView('register');
     }
 
-    public function register()
+    public function register(RegisterRequest $registerRequest, RegisterValidator $registerValidator)
     {
         try {
             $errorMessage = [];
             $requestBody = $this->request->getBody();
-            $this->registerRequest->fromArray($requestBody);
-            $validateError = $this->registerValidator->validateUserRegister($this->registerRequest);
+            $registerRequest->fromArray($requestBody);
+            $validateError = $registerValidator->validateUserRegister($registerRequest);
             if (empty($validateError)) {
-                $this->registerService->register($this->registerRequest);
+                $this->registerService->register($registerRequest);
                 return $this->response->redirect('/login');
             }
             $errorMessage = $validateError;
@@ -54,9 +48,9 @@ class RegisterController extends AbstractController
             $errorMessage = ['incorrect' => $exception->getMessage()];
         }
         return $this->response->renderView('register', [
-            'username' => $this->registerRequest->getUsername() ?? '',
-            'phoneNumber' => $this->registerRequest->getPhoneNumber() ?? '',
-            'fullName' => $this->registerRequest->getFullName() ?? '',
+            'username' => $registerRequest->getUsername() ?? '',
+            'phoneNumber' => $registerRequest->getPhoneNumber() ?? '',
+            'fullName' => $registerRequest->getFullName() ?? '',
             'error' => $errorMessage,
         ]);
 

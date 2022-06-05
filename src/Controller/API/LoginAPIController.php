@@ -20,8 +20,6 @@ class LoginAPIController extends AbstractAPIController
     protected Response $response;
     protected UserTransformer $userTransformer;
     protected TokenService $tokenService;
-    protected LoginRequest $loginRequest;
-    protected LoginValidator $loginValidator;
 
     public function __construct(
         Request               $request,
@@ -29,22 +27,18 @@ class LoginAPIController extends AbstractAPIController
         LoginServiceInterface $loginService,
         UserTransformer       $userTransformer,
         TokenService          $tokenService,
-        LoginRequest          $loginRequest,
-        LoginValidator        $loginValidator
     )
     {
         parent::__construct($request, $response);
         $this->loginService = $loginService;
         $this->userTransformer = $userTransformer;
         $this->tokenService = $tokenService;
-        $this->loginRequest = $loginRequest;
-        $this->loginValidator = $loginValidator;
     }
 
-    public function login(): Response
+    public function login(LoginRequest $loginRequest, LoginValidator $loginValidator): Response
     {
-        $loginRequest = $this->loginRequest->fromArray($this->request->getRequestJsonBody());
-        $loginValidator = $this->loginValidator->validateUserLogin($loginRequest);
+        $loginRequest = $loginRequest->fromArray($this->request->getRequestJsonBody());
+        $loginValidator = $loginValidator->validateUserLogin($loginRequest);
         if (!empty($loginValidator)) {
             return $this->response->toJson([
                 'message' => $loginValidator,

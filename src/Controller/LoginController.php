@@ -19,24 +19,18 @@ class LoginController extends AbstractController
 {
     private LoginServiceInterface $loginService;
     private TokenService $tokenService;
-    private LoginValidator $loginValidator;
-    private LoginRequest $loginRequest;
 
     public function __construct(
         Request                 $request,
         Response                $response,
         LoginServiceInterface   $loginService,
-        LoginValidator          $loginValidator,
         SessionServiceInterface $sessionService,
         TokenService            $tokenService,
-        LoginRequest            $loginRequest
     )
     {
         parent::__construct($request, $response, $sessionService);
         $this->loginService = $loginService;
         $this->tokenService = $tokenService;
-        $this->loginValidator = $loginValidator;
-        $this->loginRequest = $loginRequest;
     }
 
     /**
@@ -56,32 +50,29 @@ class LoginController extends AbstractController
     /**
      * @return Response
      */
-    public function login(): Response
+    public function login(LoginRequest $loginRequest, LoginValidator $loginValidator): Response
     {
-        $loginRequest = $this->loginRequest->fromArray($this->request->getBody());
-        $errorMessage = [];
-        try {
-            $loginValidator = $this->loginValidator->validateUserLogin($loginRequest);
-            if (empty($loginValidator)) {
-                $userLogin = $this->loginService->login($loginRequest);
-                if ($userLogin !== null) {
-                    $token = $this->tokenService->generate($userLogin->getId());
-                    $this->sessionService->setUserToken($token);
-                    return $this->response->redirect('/');
-                }
-                $errorMessage = ["incorrect" => "Username or password is incorrect"];
-            } else {
-                $errorMessage = $loginValidator;
-            }
-        } catch (Exception $exception) {
-            $errorMessage = ['incorrect' => 'The our system went something wrong!'];
-        }
+        $loginRequest = $loginRequest->fromArray($this->request->getBody());
 
-        return $this->response->renderView('login', [
-            'username' => $loginRequest->getUsername() ?? "",
-            'password' => '',
-            'error' => $errorMessage,
-        ]);
+        $loginValidator = $loginValidator->validateUserLogin($loginRequest);
+        if (!empty($loginValidator)) {
+            return $this->response->renderView('login', [
+                'username' => $loginRequest->getUsername() ?? "",
+                'password' => '',
+                'error' => $loginValidator,
+            ]);
+        }
+        $userLogin = $this->loginService->login($loginRequest);
+        if ($userLogin == null) {
+            return $this->response->renderView('login', [
+                'username' => $loginRequest->getUsername() ?? "",
+                'password' => '',
+                'error' => ["incorrect" => "Username or password is incorrect"],
+            ]);
+        }
+        $token = $this->tokenService->generate($userLogin->getId());
+        $this->sessionService->setUserToken($token);
+        return $this->response->redirect('/');
     }
 
     /**
