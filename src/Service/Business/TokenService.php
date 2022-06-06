@@ -21,7 +21,7 @@ class TokenService
     /**
      * @return array|false|string
      */
-    public function getSecretToken(): bool|array|string
+    public function getSecretToken(): bool | array | string
     {
         return $this->secretToken;
     }
@@ -29,7 +29,7 @@ class TokenService
     /**
      * @param array|false|string $secretToken
      */
-    public function setSecretToken(bool|array|string $secretToken): void
+    public function setSecretToken(bool | array | string $secretToken): void
     {
         $this->secretToken = $secretToken;
     }
@@ -61,7 +61,7 @@ class TokenService
      * @return array|bool
      * @throws UnauthenticatedException
      */
-    public function getTokenPayload(?string $authorizationToken): array|bool
+    public function getTokenPayload(?string $authorizationToken): array | bool
     {
         if ($authorizationToken === null) {
             return false;

@@ -11,7 +11,9 @@
         </h5>
 
         <nav class="my-2 my-md-0 mr-md-3">
-            <?php if ($data != null && $data['isLogin'] == true) { ?>
+            <?php
+
+            if ($data != null && $data['isLogin'] == true) { ?>
                 <a class="btn btn-primary" href="/create">Create car</a>
             <?php } ?>
 

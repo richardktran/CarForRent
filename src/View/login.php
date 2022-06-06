@@ -44,7 +44,9 @@
                                         </div>
 
                                         <form
-                                                action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"
+                                                action="<?php
+
+                                                echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"
                                                 method="post"
                                         >
                                             <p>Please login to your account</p>

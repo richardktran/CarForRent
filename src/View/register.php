@@ -43,7 +43,9 @@
                                         </div>
 
                                         <form
-                                                action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"
+                                                action="<?php
+
+                                                echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"
                                                 method="post"
                                         >
                                             <div class="form-outline mb-4">

@@ -79,7 +79,7 @@ class Application
     }
 
 
-    private function getRoute(): array|bool
+    private function getRoute(): array | bool
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
@@ -98,7 +98,7 @@ class Application
      * @return bool
      * @throws ReflectionException
      */
-    private function runMiddlewares(bool|array $route): bool
+    private function runMiddlewares(bool | array $route): bool
     {
         $container = $this->provider->getContainer();
         $middlewares = $route ? $route[static::MIDDLEWARE_INDEX] : [];
@@ -121,7 +121,7 @@ class Application
      * @return bool
      * @throws ReflectionException
      */
-    private function runAcl(bool|array $route): bool
+    private function runAcl(bool | array $route): bool
     {
         if (!$route) {
             return true;

@@ -1,4 +1,5 @@
 <?php
+
 $error = isset($data) && array_key_exists('error', $data) ? $data['error'] : [];
 $car = isset($data) && array_key_exists('car', $data) ? $data['car'] : [];
 $nameError = isset($data) && array_key_exists('car_name', $error) ? $error['car_name'] : "";

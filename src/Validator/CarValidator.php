@@ -20,7 +20,7 @@ class CarValidator extends Validator
      * @param CarRequest $car
      * @return array|bool
      */
-    public function validateCar(CarRequest $car): array|bool
+    public function validateCar(CarRequest $car): array | bool
     {
         $this->name('car_name')->value($car->getName())->required()->max(70);
         $this->name('car_type')->value($car->getType())->required()->min(3)->max(255);

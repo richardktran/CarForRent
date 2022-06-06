@@ -165,6 +165,4 @@ class CarRequest
         $this->setOwnerId($requestBody['owner_id']);
         return $this;
     }
-
-
 }

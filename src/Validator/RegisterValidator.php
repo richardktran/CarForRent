@@ -14,7 +14,7 @@ class RegisterValidator extends Validator
         $this->userRepository = $userRepository;
     }
 
-    public function validateUserRegister(RegisterRequest $registerRequest): bool|array
+    public function validateUserRegister(RegisterRequest $registerRequest): bool | array
     {
         $existUser = $this->userRepository->findByUsername($registerRequest->getUsername());
         if ($existUser != null) {

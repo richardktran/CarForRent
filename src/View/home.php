@@ -40,7 +40,9 @@
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">
-                <?php foreach ($data['cars'] as $car) { ?>
+                <?php
+
+                foreach ($data['cars'] as $car) { ?>
                     <div class="col-sm-3 pt-3">
                         <div class="card shadow-sm" id={id}>
                             <img
