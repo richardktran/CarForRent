@@ -13,73 +13,64 @@ use Khoatran\CarForRent\Service\Business\TokenService;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 use Khoatran\CarForRent\Validator\LoginValidator;
+
 use function PHPUnit\Framework\throwException;
 
 class LoginController extends AbstractController
 {
+    const LOGIN_FAIL_MESSAGE = 'Username or password is not correct';
     private LoginServiceInterface $loginService;
     private TokenService $tokenService;
-    private LoginValidator $loginValidator;
 
     public function __construct(
         Request $request,
         Response $response,
         LoginServiceInterface $loginService,
-        LoginValidator $loginValidator,
         SessionServiceInterface $sessionService,
-        TokenService $tokenService
+        TokenService $tokenService,
     ) {
         parent::__construct($request, $response, $sessionService);
         $this->loginService = $loginService;
-        $this->sessionService = $sessionService;
         $this->tokenService = $tokenService;
-        $this->loginValidator = $loginValidator;
     }
 
     /**
+     * @param LoginRequest $loginRequest
+     * @param LoginValidator $loginValidator
      * @return Response
      */
-    public function index(): Response
+    public function login(LoginRequest $loginRequest, LoginValidator $loginValidator): Response
     {
-        if ($this->sessionService->isLogin()) {
-            return $this->response->redirect('/');
-        }
-        return $this->response->renderView('login', [
-            'username' => '',
-            'password' => '',
-        ]);
-    }
-
-    /**
-     * @return Response
-     */
-    public function login(): Response
-    {
-        $loginRequest = new LoginRequest();
-        $loginRequest = $loginRequest->fromArray($this->request->getBody());
-        $errorMessage = [];
-        try {
-            $loginValidator = $this->loginValidator->validateUserLogin($loginRequest);
-            if (getType($loginValidator) == 'boolean' && $loginValidator) {
-                $userLogin = $this->loginService->login($loginRequest);
-                if ($userLogin !== null) {
-                    $token = $this->tokenService->generate($userLogin->getId());
-                    $this->sessionService->setUserToken($token);
-                    return $this->response->redirect('/');
-                }
-                $errorMessage = ["incorrect" => "Username or password is incorrect"];
-            } else {
-                $errorMessage = $loginValidator;
+        if ($this->request->isGet()) {
+            if ($this->sessionService->isLogin()) {
+                return $this->response->redirect('/');
             }
-        } catch (Exception $exception) {
-            $errorMessage = ['incorrect' => 'The our system went something wrong!'];
+            return $this->response->renderView('login', [
+                'username' => '',
+                'password' => '',
+            ]);
         }
+        $loginRequest = $loginRequest->fromArray($this->request->getBody());
 
-        return $this->response->renderView('login', [
-            'username' => $loginRequest->getUsername() ?? "",
-            'password' => '',
-            'error' => $errorMessage,
-        ]);
+        $loginValidator = $loginValidator->validateUserLogin($loginRequest);
+        if (!empty($loginValidator)) {
+            return $this->response->renderView('login', [
+                'username' => $loginRequest->getUsername() ?? "",
+                'password' => '',
+                'errors' => $loginValidator,
+            ]);
+        }
+        $userLogin = $this->loginService->login($loginRequest);
+        if ($userLogin == null) {
+            return $this->response->renderView('login', [
+                'username' => $loginRequest->getUsername() ?? "",
+                'password' => '',
+                'message' => self::LOGIN_FAIL_MESSAGE,
+            ]);
+        }
+        $token = $this->tokenService->generate($userLogin->getId());
+        $this->sessionService->setUserToken($token);
+        return $this->response->redirect('/');
     }
 
     /**

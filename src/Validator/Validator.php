@@ -113,14 +113,6 @@ abstract class Validator
         return $this;
     }
 
-    public function purify($string)
-    {
-        if (!empty($this->errors[$this->name])) {
-            return $this;
-        }
-        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-    }
-
     public function equal($value)
     {
         if (!empty($this->errors[$this->name])) {
@@ -137,6 +129,7 @@ abstract class Validator
         if (!$this->isSuccess()) {
             return $this->errors;
         }
+        return [];
     }
 
 
@@ -147,6 +140,4 @@ abstract class Validator
         }
         return false;
     }
-
-
 }

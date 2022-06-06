@@ -19,6 +19,11 @@ class Request
         return substr($path, 0, strpos($path, '?'));
     }
 
+    public function isGet(): bool
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+
     /**
      * @return string
      */
@@ -39,6 +44,15 @@ class Request
         return $body;
     }
 
+    public function getFile(): array
+    {
+        $files = [];
+        foreach ($_FILES as $key => $value) {
+            $files[$key] = $value;
+        }
+        return $files;
+    }
+
     /**
      * @return mixed
      */
@@ -47,11 +61,6 @@ class Request
         $data = file_get_contents('php://input');
 
         return json_decode($data, true);
-    }
-
-    private function getHeaderToken(): ?string
-    {
-        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
     }
 
     /**

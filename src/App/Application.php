@@ -63,8 +63,7 @@ class Application
         }
 
         $container = $this->provider->getContainer();
-        $controller = $container->make($currenController);
-        $response = $controller->{$action}();
+        $response = $container->callMethod([$currenController, $action]);
         $isLogin = false;
         if (!$this->isAPI()) {
             $isLogin = $this->isLogin();

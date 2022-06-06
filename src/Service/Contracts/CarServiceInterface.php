@@ -9,5 +9,5 @@ interface CarServiceInterface
 {
     public function getAll(): array;
 
-    public function save(CarRequest $carRequest): CarModel;
+    public function save(CarRequest $carRequest): ?CarModel;
 }

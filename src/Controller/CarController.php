@@ -20,29 +20,17 @@ class CarController extends AbstractController
 {
     private CarServiceInterface $carService;
     private CarTransformer $carTransformer;
-    private CarRequest $carRequest;
-    private UploadImageService $uploadImageService;
-    private ImageValidator $imageValidator;
-    private CarValidator $carValidator;
 
     public function __construct(
         Request $request,
         Response $response,
         SessionService $sessionService,
         CarServiceInterface $carService,
-        CarTransformer $carTransformer,
-        CarRequest $carRequest,
-        UploadImageService $uploadImageService,
-        ImageValidator $imageValidator,
-        CarValidator $carValidator,
+        CarTransformer $carTransformer
     ) {
         parent::__construct($request, $response, $sessionService);
         $this->carService = $carService;
         $this->carTransformer = $carTransformer;
-        $this->carRequest = $carRequest;
-        $this->uploadImageService = $uploadImageService;
-        $this->imageValidator = $imageValidator;
-        $this->carValidator = $carValidator;
     }
 
     /**
@@ -58,55 +46,26 @@ class CarController extends AbstractController
         return $this->response->renderView('home', ['cars' => $results]);
     }
 
-    public function create(): Response
+    public function store(CarRequest $carRequest, CarValidator $carValidator): Response
     {
-        return $this->response->renderView('create_car');
-    }
-
-    public function store(): Response
-    {
-        $errorMessage = [];
-
-        try {
-            $requestBody = $this->request->getBody();
-            $requestBody = [
-                ...$requestBody,
-                'image' => "",
-                'owner_id' => $this->sessionService->getUserToken()
-            ];
-            $carRequest = $this->carRequest->fromArray($requestBody);
-            $carValidator = $this->carValidator->validateCar($carRequest);
-            $fileValidator = $this->imageValidator->validateImage($_FILES['image']);
-
-
-            $errorMessage = array_merge(is_bool($fileValidator) && $fileValidator ? [] : $fileValidator,
-                is_bool($carValidator) && $carValidator ? [] : $carValidator);
-            if (empty($errorMessage)) {
-                $isUploadImage = $this->uploadImageService->upload($_FILES['image']);
-                if ($isUploadImage == null) {
-                    throw new UploadFileException("Upload image fail");
-                }
-                $requestBody = [
-                    ...$requestBody,
-                    'image' => $isUploadImage,
-                ];
-                $carRequest = $this->carRequest->fromArray($requestBody);
-
-                $this->carService->save($carRequest);
-                return $this->response->renderView('create_car', [
-                    'success' => true,
-                ]);
-            }
-
-        } catch (\Exception $e) {
-            if (empty($errorMessage)) {
-                $errorMessage = $e->getMessage();
-            }
+        if ($this->request->isGet()) {
+            return $this->response->renderView('create_car');
         }
-        return $this->response->renderView('create_car', [
-            'error' => $errorMessage,
-            'car' => $this->carTransformer->requestToArray($carRequest),
-        ]);
+        $owner = $this->sessionService->getUserToken();
+        $requestBody = $this->request->getBody();
+        $requestBody['owner_id'] = $owner;
+        $carRequest = $carRequest->fromArray($requestBody);
+        $carValidator = $carValidator->validateCar($carRequest);
 
+        if (!empty($carValidator)) {
+            return $this->response->renderView('create_car', [
+                'error' => $carValidator,
+                'car' => $this->carTransformer->requestToArray($carRequest),
+            ]);
+        }
+        $this->carService->save($carRequest);
+        return $this->response->renderView('create_car', [
+            'success' => true,
+        ]);
     }
 }

@@ -33,8 +33,6 @@ class View
         }
 
         static::handleViewJson($response);
-
-        exit();
     }
 
     public static function handleViewJson(Response $response)

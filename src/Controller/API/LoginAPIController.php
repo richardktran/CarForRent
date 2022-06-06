@@ -11,6 +11,7 @@ use Khoatran\CarForRent\Service\Business\TokenService;
 use Khoatran\CarForRent\Transformer\UserTransformer;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
+use Khoatran\CarForRent\Validator\LoginValidator;
 
 class LoginAPIController extends AbstractAPIController
 {
@@ -25,7 +26,7 @@ class LoginAPIController extends AbstractAPIController
         Response $response,
         LoginServiceInterface $loginService,
         UserTransformer $userTransformer,
-        TokenService $tokenService
+        TokenService $tokenService,
     ) {
         parent::__construct($request, $response);
         $this->loginService = $loginService;
@@ -33,34 +34,26 @@ class LoginAPIController extends AbstractAPIController
         $this->tokenService = $tokenService;
     }
 
-    public function login(): Response
+    public function login(LoginRequest $loginRequest, LoginValidator $loginValidator): Response
     {
-        $loginRequest = new LoginRequest();
         $loginRequest = $loginRequest->fromArray($this->request->getRequestJsonBody());
-        $errorMessage = "";
-        try {
-            $loginRequest->validate();
-        } catch (ValidationException $exception) {
-            $errorMessage = $exception->getMessage();
+        $loginValidator = $loginValidator->validateUserLogin($loginRequest);
+        if (!empty($loginValidator)) {
             return $this->response->toJson([
-                'message' => $errorMessage,
+                'errors' => $loginValidator,
             ], Response::HTTP_BAD_REQUEST);
         }
 
         $userLogin = $this->loginService->login($loginRequest);
-        if ($userLogin == null) {
-            $errorMessage = "Username or password is incorrect";
+        if ($userLogin === null) {
             return $this->response->toJson([
-                'message' => $errorMessage,
+                'message' => "Username or password is incorrect",
             ], Response::HTTP_UNAUTHORIZED);
         }
         $token = $this->tokenService->generate($userLogin->getId());
         return $this->response->toJson([
-            'data' => [
-                ...$this->userTransformer->toArray($userLogin),
-                'token' => $token
-            ],
-            'message' => $errorMessage,
+            'data' => $this->userTransformer->toArray($userLogin),
+            'token' => $token,
         ], Response::HTTP_OK);
     }
 }

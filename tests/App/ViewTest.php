@@ -71,4 +71,20 @@ class ViewTest extends TestCase
         $this->assertEquals(['username' => 'richardktran', 'password' => '123456', 'error' => 'error'], $data);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @return void
+     */
+    public function testDisplayWithJson()
+    {
+        $_SERVER["REQUEST_URI"] = '/login';
+        $response = new Response();
+        $response = $response->toJson(
+            ['username' => 'richardktran', 'password' => '123456', 'error' => 'error']);
+
+        View::display($response);
+        $data = $response->getData();
+        $this->assertEquals(['username' => 'richardktran', 'password' => '123456', 'error' => 'error'], $data);
+    }
+
 }

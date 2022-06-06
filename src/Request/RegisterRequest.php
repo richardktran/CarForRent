@@ -2,12 +2,18 @@
 
 namespace Khoatran\CarForRent\Request;
 
+use Khoatran\CarForRent\Helpers\Utils;
+use Khoatran\CarForRent\Model\UserModel;
+
 class RegisterRequest
 {
+    use Utils;
+
     private string $username;
     private string $password;
     private string $fullName;
     private string $phoneNumber;
+    private string $confirmPassword;
 
     /**
      * @return string
@@ -40,8 +46,6 @@ class RegisterRequest
     {
         $this->phoneNumber = $phoneNumber;
     }
-
-    private string $confirmPassword;
 
 
     public function __construct()
@@ -107,5 +111,15 @@ class RegisterRequest
         $this->setFullName($params['fullName']);
         $this->setPhoneNumber($params['phoneNumber']);
         return $this;
+    }
+
+    public function toModel(): UserModel
+    {
+        $user = new UserModel();
+        $user->setUsername($this->getUsername());
+        $user->setPassword($this->hashPassword($this->getPassword()));
+        $user->setPhoneNumber($this->getPhoneNumber());
+        $user->setFullName($this->getFullName());
+        return $user;
     }
 }
