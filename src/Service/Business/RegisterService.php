@@ -27,7 +27,6 @@ class RegisterService
         $user->setPassword($this->hashPassword($registerRequest->getPassword()));
         $user->setPhoneNumber($registerRequest->getPhoneNumber());
         $user->setFullName($registerRequest->getFullName());
-        $this->userRepository->insertUser($user);
-        return true;
+        return $this->userRepository->insertUser($user);
     }
 }

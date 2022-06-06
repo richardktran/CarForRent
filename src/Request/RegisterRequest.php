@@ -8,6 +8,7 @@ class RegisterRequest
     private string $password;
     private string $fullName;
     private string $phoneNumber;
+    private string $confirmPassword;
 
     /**
      * @return string
@@ -40,8 +41,6 @@ class RegisterRequest
     {
         $this->phoneNumber = $phoneNumber;
     }
-
-    private string $confirmPassword;
 
 
     public function __construct()

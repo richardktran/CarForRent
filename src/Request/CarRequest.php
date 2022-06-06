@@ -10,6 +10,11 @@ class CarRequest
     private string $description;
     private string $type;
     private ?string $image;
+    private int $price;
+    private string $brand;
+    private int $productionYear;
+    private int $ownerId;
+
 
     /**
      * @return string
@@ -147,10 +152,6 @@ class CarRequest
         $this->ownerId = $ownerId;
     }
 
-    private int $price;
-    private string $brand;
-    private int $productionYear;
-    private int $ownerId;
 
     public function fromArray(array $requestBody): self
     {
@@ -166,33 +167,4 @@ class CarRequest
     }
 
 
-    public function validate(): bool|array
-    {
-        $errors = [];
-        if (empty($this->getName())) {
-            $errors[] = 'Name is required';
-        }
-        if (empty($this->getDescription())) {
-            $errors[] = 'Description is required';
-        }
-        if (empty($this->getType())) {
-            $errors[] = 'Type is required';
-        }
-        if (empty($this->getImage())) {
-            $errors[] = 'Image is required';
-        }
-        if (empty($this->getPrice())) {
-            $errors[] = 'Price is required';
-        }
-        if (empty($this->getBrand())) {
-            $errors[] = 'Brand is required';
-        }
-        if (empty($this->getProductionYear())) {
-            $errors[] = 'Production year is required';
-        }
-        if (empty($errors)) {
-            return true;
-        }
-        return $errors;
-    }
 }

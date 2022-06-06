@@ -2,11 +2,13 @@
 
 namespace Khoatran\Tests\Service\Business;
 
+use Khoatran\CarForRent\Exception\UnauthenticatedException;
 use Khoatran\CarForRent\Model\SessionModel;
 use Khoatran\CarForRent\Model\UserModel;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Service\Business\SessionService;
+use Khoatran\CarForRent\Service\Business\TokenService;
 use PHPUnit\Framework\TestCase;
 
 class SessionServiceTest extends TestCase
@@ -19,9 +21,28 @@ class SessionServiceTest extends TestCase
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
         $user = $this->getUser(1, 'user1', 'password');
         $userRepositoryMock->expects($this->once())->method('findById')->willReturn($user);
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $tokenMock->expects($this->once())->method('validateToken')->willReturn(['sub' => 1, 'iat' => 1654489219]);
+
+
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $userIdResult = $session->getUserToken();
         $this->assertEquals(1, $userIdResult);
+    }
+
+    public function testGetUserIdFromSessionsInvalidToken()
+    {
+        $sessionModel = $this->getSession('dfsafads11dsfad', '1', 60 * 60 * 24);
+        $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
+        $sessionRepositoryMock->expects($this->once())->method('findById')->willReturn($sessionModel);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $tokenMock->expects($this->once())->method('validateToken')->willThrowException(new UnauthenticatedException());
+
+
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
+        $userId = $session->getUserToken();
+        $this->assertNull($userId);
     }
 
     public function testGetUserIdFromSessionsFail()
@@ -30,7 +51,8 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('findById')->willReturn($sessionModel);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $userIdResult = $session->getUserToken();
         $this->assertEquals(null, $userIdResult);
     }
@@ -44,7 +66,8 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('save')->willReturn($sessionModel);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $setResult = $session->setUserToken(1);
         $this->assertTrue($setResult);
     }
@@ -56,8 +79,9 @@ class SessionServiceTest extends TestCase
     {
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('save')->willReturn(false);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $setResult = $session->setUserToken(1);
         $this->assertFalse($setResult);
     }
@@ -70,7 +94,8 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('deleteById')->willReturn(true);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $destroyResult = $session->destroyUser();
         $this->assertTrue($destroyResult);
     }
@@ -83,7 +108,8 @@ class SessionServiceTest extends TestCase
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('deleteById')->willReturn(false);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
-        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock);
+        $tokenMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
+        $session = new SessionService($sessionRepositoryMock, $userRepositoryMock, $tokenMock);
         $destroyResult = $session->destroyUser();
         $this->assertFalse($destroyResult);
     }

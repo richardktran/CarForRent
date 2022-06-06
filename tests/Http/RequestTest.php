@@ -81,17 +81,4 @@ class RequestTest extends TestCase
         ];
     }
 
-    /**
-     * @return void
-     */
-    public function testGetBodySuccess()
-    {
-        $this->setBackupGlobals(true);
-        $_POST['username'] = 'admin';
-        $_POST['password'] = '123456';
-        $request = new Request();
-        $result = $request->getBody();
-        $this->assertEquals('admin', $result['username']);
-        $this->assertEquals('123456', $result['password']);
-    }
 }
