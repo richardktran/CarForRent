@@ -6,6 +6,7 @@ use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Controller\RegisterController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
+use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Request\RegisterRequest;
 use Khoatran\CarForRent\Service\Business\RegisterService;
@@ -26,13 +27,14 @@ class RegisterControllerTest extends TestCase
             'password' => '12345678'
         ]);
         $response = new Response();
-        $registerService = $this->getMockBuilder(RegisterService::class)->disableOriginalConstructor()->getMock();
 
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $registerRequestMock = $this->getMockBuilder(RegisterRequest::class)->disableOriginalConstructor()->getMock();
         $registerValidatorMock = $this->getMockBuilder(RegisterValidator::class)->disableOriginalConstructor()->getMock();
 
-        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $registerService);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+
+        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $userRepositoryMock);
         $registerController = $registerController->register($registerRequestMock, $registerValidatorMock);
 
         $expectedResult = new Response();
@@ -49,7 +51,6 @@ class RegisterControllerTest extends TestCase
             'password' => '12345678'
         ]);
         $response = new Response();
-        $registerService = $this->getMockBuilder(RegisterService::class)->disableOriginalConstructor()->getMock();
 
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $registerRequestMock = $this->getMockBuilder(RegisterRequest::class)->disableOriginalConstructor()->getMock();
@@ -59,7 +60,9 @@ class RegisterControllerTest extends TestCase
             'password' => 'password invalid'
         ]);
 
-        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $registerService);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+
+        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $userRepositoryMock);
         $registerController = $registerController->register($registerRequestMock, $registerValidatorMock);
 
         $expectedResult = new Response();
@@ -73,13 +76,14 @@ class RegisterControllerTest extends TestCase
         $requestMock = $this->getMockBuilder(Request::class)->getMock();
         $requestMock->expects($this->once())->method('isGet')->willReturn(true);
         $response = new Response();
-        $registerService = $this->getMockBuilder(RegisterService::class)->disableOriginalConstructor()->getMock();
 
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $registerRequestMock = $this->getMockBuilder(RegisterRequest::class)->disableOriginalConstructor()->getMock();
         $registerValidatorMock = $this->getMockBuilder(RegisterValidator::class)->disableOriginalConstructor()->getMock();
 
-        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $registerService);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+
+        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $userRepositoryMock);
         $registerController = $registerController->register($registerRequestMock, $registerValidatorMock);
 
         $expectedResult = new Response();
@@ -93,14 +97,15 @@ class RegisterControllerTest extends TestCase
         $requestMock = $this->getMockBuilder(Request::class)->getMock();
         $requestMock->expects($this->once())->method('isGet')->willReturn(true);
         $response = new Response();
-        $registerService = $this->getMockBuilder(RegisterService::class)->disableOriginalConstructor()->getMock();
 
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $sessionServiceMock->expects($this->once())->method('isLogin')->willReturn(true);
         $registerRequestMock = $this->getMockBuilder(RegisterRequest::class)->disableOriginalConstructor()->getMock();
         $registerValidatorMock = $this->getMockBuilder(RegisterValidator::class)->disableOriginalConstructor()->getMock();
 
-        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $registerService);
+        $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
+
+        $registerController = new RegisterController($requestMock, $response, $sessionServiceMock, $userRepositoryMock);
         $registerController = $registerController->register($registerRequestMock, $registerValidatorMock);
 
         $expectedResult = new Response();

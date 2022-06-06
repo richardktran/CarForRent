@@ -4,23 +4,23 @@ namespace Khoatran\CarForRent\Controller;
 
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
+use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\RegisterRequest;
-use Khoatran\CarForRent\Service\Business\RegisterService;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
 use Khoatran\CarForRent\Validator\RegisterValidator;
 
 class RegisterController extends AbstractController
 {
-    private RegisterService $registerService;
+    private UserRepository $userRepository;
 
     public function __construct(
         Request $request,
         Response $response,
         SessionServiceInterface $sessionService,
-        RegisterService $registerService
+        UserRepository $userRepository
     ) {
         parent::__construct($request, $response, $sessionService);
-        $this->registerService = $registerService;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -44,7 +44,7 @@ class RegisterController extends AbstractController
                 'errors' => $validateError,
             ]);
         }
-        $this->registerService->register($registerRequest);
+        $this->userRepository->insertUser($registerRequest->toModel());
 
         return $this->response->redirect('/login');
     }

@@ -30,7 +30,7 @@ class CarService implements CarServiceInterface
      * @return CarModel
      * @throws UploadFileException
      */
-    public function save(CarRequest $carRequest): CarModel
+    public function save(CarRequest $carRequest): ?CarModel
     {
         $isUploadImage = $this->uploadImageService->upload($_FILES['image']);
         if ($isUploadImage == null) {
@@ -38,12 +38,10 @@ class CarService implements CarServiceInterface
         }
         $carRequest->setImage($isUploadImage);
         $insertId = $this->carRepository->insert($carRequest);
-        if (!$insertId) {
-            return new CarModel();
-        }
+
         $car = $this->carRepository->findById($insertId);
         if ($car === null) {
-            return new CarModel();
+            return null;
         }
         return $car;
     }
