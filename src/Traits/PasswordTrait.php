@@ -1,6 +1,6 @@
 <?php
 
-namespace Khoatran\CarForRent\Helpers;
+namespace Khoatran\CarForRent\Traits;
 
 trait Utils
 {
