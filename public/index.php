@@ -8,8 +8,6 @@ use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
 use Khoatran\CarForRent\Service\ServiceProvider;
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 
 RouteManage::run();
 $app = new Application();
