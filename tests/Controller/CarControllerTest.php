@@ -5,7 +5,7 @@ namespace Khoatran\Tests\Controller;
 use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Request\CarRequest;
 use Khoatran\CarForRent\Service\Business\CarService;
 use Khoatran\CarForRent\Service\Business\SessionService;
@@ -121,9 +121,9 @@ class CarControllerTest extends TestCase
         $this->assertEquals(true, array_key_exists('success', $response->getData()));
     }
 
-    private function getCar(int $id, string $name, string $description, string $image, int $price): CarModel
+    private function getCar(int $id, string $name, string $description, string $image, int $price): Car
     {
-        $car = new CarModel();
+        $car = new Car();
         $car->setId($id);
         $car->setName($name);
         $car->setDescription($description);

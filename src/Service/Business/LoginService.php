@@ -3,7 +3,7 @@
 namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\Exception\LoginException;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Service\Contracts\LoginServiceInterface;
@@ -19,9 +19,9 @@ class LoginService implements LoginServiceInterface
 
     /**
      * @param LoginRequest $loginRequest
-     * @return UserModel|null
+     * @return User|null
      */
-    public function login(LoginRequest $loginRequest): ?UserModel
+    public function login(LoginRequest $loginRequest): ?User
     {
         $user = $this->userRepository->findByUsername($loginRequest->getUsername());
         if ($user == null) {

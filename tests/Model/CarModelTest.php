@@ -2,15 +2,15 @@
 
 namespace Khoatran\Tests\Model;
 
-use Khoatran\CarForRent\Model\CarModel;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\Car;
+use Khoatran\CarForRent\Model\User;
 use PHPUnit\Framework\TestCase;
 
-class CarModelTest extends TestCase
+class CarTest extends TestCase
 {
     public function testGetId()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setId(1);
         $result = $carModel->getId();
 
@@ -19,7 +19,7 @@ class CarModelTest extends TestCase
 
     public function testGetName()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setName("KIA");
         $result = $carModel->getName();
 
@@ -28,7 +28,7 @@ class CarModelTest extends TestCase
 
     public function testGetDescription()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setDescription("Description");
         $result = $carModel->getDescription();
 
@@ -37,7 +37,7 @@ class CarModelTest extends TestCase
 
     public function testGetType()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setType("Type");
         $result = $carModel->getType();
 
@@ -46,7 +46,7 @@ class CarModelTest extends TestCase
 
     public function testGetImage()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setImage("https://image.com/image.jpg");
         $result = $carModel->getImage();
 
@@ -55,7 +55,7 @@ class CarModelTest extends TestCase
 
     public function testGetPrice()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setPrice(23);
         $result = $carModel->getPrice();
 
@@ -64,7 +64,7 @@ class CarModelTest extends TestCase
 
     public function testGetBrand()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setBrand("Brand");
         $result = $carModel->getBrand();
 
@@ -73,7 +73,7 @@ class CarModelTest extends TestCase
 
     public function testGetProductionYear()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setProductionYear("2022");
         $result = $carModel->getProductionYear();
 
@@ -82,7 +82,7 @@ class CarModelTest extends TestCase
 
     public function testGetOwnerId()
     {
-        $carModel = new CarModel();
+        $carModel = new Car();
         $carModel->setOwnerId(23);
         $result = $carModel->getOwnerId();
 

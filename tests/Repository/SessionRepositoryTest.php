@@ -2,8 +2,8 @@
 
 namespace Khoatran\Tests\Repository;
 
-use Khoatran\CarForRent\Model\SessionModel;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\Session;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ class SessionRepositoryTest extends TestCase
 {
     public function testFindByIdSuccess()
     {
-        $session = new SessionModel();
+        $session = new Session();
         $sessionRepository = new SessionRepository();
         $session->setSessID(uniqid());
         $session->setSessData("1");

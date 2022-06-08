@@ -3,8 +3,8 @@
 namespace Khoatran\Tests\Service\Business;
 
 use Khoatran\CarForRent\Exception\UnauthenticatedException;
-use Khoatran\CarForRent\Model\SessionModel;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\Session;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Service\Business\SessionService;
@@ -47,7 +47,7 @@ class SessionServiceTest extends TestCase
 
     public function testGetUserIdFromSessionsFail()
     {
-        $sessionModel = new SessionModel();
+        $sessionModel = new Session();
         $sessionRepositoryMock = $this->getMockBuilder(SessionRepository::class)->disableOriginalConstructor()->getMock();
         $sessionRepositoryMock->expects($this->once())->method('findById')->willReturn($sessionModel);
         $userRepositoryMock = $this->getMockBuilder(UserRepository::class)->disableOriginalConstructor()->getMock();
@@ -123,18 +123,18 @@ class SessionServiceTest extends TestCase
 
     }
 
-    private function getSession(string $id, string $data, int $lifeTime): SessionModel
+    private function getSession(string $id, string $data, int $lifeTime): Session
     {
-        $sessionModel = new SessionModel();
+        $sessionModel = new Session();
         $sessionModel->setSessID($id);
         $sessionModel->setSessData($data);
         $sessionModel->setSessLifetime($lifeTime);
         return $sessionModel;
     }
 
-    private function getUser(int $id, string $username, string $password): UserModel
+    private function getUser(int $id, string $username, string $password): User
     {
-        $user = new UserModel();
+        $user = new User();
         $user->setId($id);
         $user->setUsername($username);
         $user->setPassword($password);

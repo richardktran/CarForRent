@@ -3,7 +3,7 @@
 namespace Khoatran\Tests\Service\Business;
 
 use Khoatran\CarForRent\Exception\UploadFileException;
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Repository\CarRepository;
 use Khoatran\CarForRent\Request\CarRequest;
 use Khoatran\CarForRent\Service\Business\CarService;
@@ -68,9 +68,9 @@ class CarServiceTest extends TestCase
         $this->assertEquals($carMock->getName(), $car->getName());
     }
 
-    private function getCar(int $id, string $name, string $description, string $image, int $price): CarModel
+    private function getCar(int $id, string $name, string $description, string $image, int $price): Car
     {
-        $car = new CarModel();
+        $car = new Car();
         $car->setId($id);
         $car->setName($name);
         $car->setDescription($description);

@@ -4,7 +4,7 @@ namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\Database\Database;
 use Khoatran\CarForRent\Exception\UnauthenticatedException;
-use Khoatran\CarForRent\Model\SessionModel;
+use Khoatran\CarForRent\Model\Session;
 use Khoatran\CarForRent\Repository\SessionRepository;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Service\Contracts\SessionServiceInterface;
@@ -16,8 +16,11 @@ class SessionService implements SessionServiceInterface
     private UserRepository $userRepository;
     private TokenService $tokenService;
 
-    public function __construct(SessionRepository $sessionRepository, UserRepository $userRepository, TokenService $tokenService)
-    {
+    public function __construct(
+        SessionRepository $sessionRepository,
+        UserRepository $userRepository,
+        TokenService $tokenService
+    ) {
         $this->sessionRepository = $sessionRepository;
         $this->userRepository = $userRepository;
         $this->tokenService = $tokenService;
@@ -42,7 +45,7 @@ class SessionService implements SessionServiceInterface
 
     public function setUserToken(string $token): bool
     {
-        $session = new SessionModel();
+        $session = new Session();
         $session->setSessID(uniqid());
         $session->setSessData($token);
         $lifetime = time() + (60 * 60 * 24);

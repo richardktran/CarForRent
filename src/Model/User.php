@@ -2,7 +2,7 @@
 
 namespace Khoatran\CarForRent\Model;
 
-class UserModel
+class User
 {
     public const ROLE_GUEST = 'ROLE_GUEST';
     public const ROLE_MEMBER = 'ROLE_MEMBER';

@@ -4,7 +4,7 @@ namespace Khoatran\CarForRent\Model;
 
 use DateTime;
 
-class CarModel
+class Car
 {
     private int $id;
     private string $name;

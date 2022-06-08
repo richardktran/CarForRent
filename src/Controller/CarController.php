@@ -6,7 +6,7 @@ use Khoatran\CarForRent\App\View;
 use Khoatran\CarForRent\Exception\UploadFileException;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Request\CarRequest;
 use Khoatran\CarForRent\Service\Business\SessionService;
 use Khoatran\CarForRent\Service\Business\UploadImageService;

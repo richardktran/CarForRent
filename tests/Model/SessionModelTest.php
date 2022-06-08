@@ -3,14 +3,14 @@
 namespace Khoatran\Tests\Model;
 
 
-use Khoatran\CarForRent\Model\SessionModel;
+use Khoatran\CarForRent\Model\Session;
 use PHPUnit\Framework\TestCase;
 
-class SessionModelTest extends TestCase
+class SessionTest extends TestCase
 {
     public function testGetSessId()
     {
-        $userModel = new SessionModel();
+        $userModel = new Session();
         $userModel->setSessId('234132jh43jh5j423h');
         $result = $userModel->getSessId();
 
@@ -19,7 +19,7 @@ class SessionModelTest extends TestCase
 
     public function testGetSessData()
     {
-        $userModel = new SessionModel();
+        $userModel = new Session();
         $userModel->setSessData('1');
         $result = $userModel->getSessData();
 
@@ -28,7 +28,7 @@ class SessionModelTest extends TestCase
 
     public function testGetSessLifetime()
     {
-        $userModel = new SessionModel();
+        $userModel = new Session();
         $userModel->setSessLifetime('1');
         $result = $userModel->getSessLifetime();
 

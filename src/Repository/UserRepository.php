@@ -4,18 +4,18 @@ namespace Khoatran\CarForRent\Repository;
 
 use Exception;
 use Khoatran\CarForRent\Database\Database;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use PDO;
 
 class UserRepository extends BaseRepository
 {
-    public function findByUsername($username): ?UserModel
+    public function findByUsername($username): ?User
     {
         $statement = $this->getConnection()->prepare("SELECT * FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
         if ($row = $statement->fetch()) {
-            $user = new UserModel();
+            $user = new User();
             $user->setId($row['id']);
             $user->setUsername($row['username']);
             $user->setPassword($row['password']);
@@ -28,14 +28,14 @@ class UserRepository extends BaseRepository
         }
     }
 
-    public function findById($id): ?UserModel
+    public function findById($id): ?User
     {
         $statement = $this->getConnection()->prepare("SELECT * FROM users WHERE id = ? ");
         $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
-                $user = new UserModel();
+                $user = new User();
                 $user->setId($row['id']);
                 $user->setUsername($row['username']);
                 $user->setPassword($row['password']);
@@ -52,7 +52,7 @@ class UserRepository extends BaseRepository
         }
     }
 
-    public function insertUser(UserModel $user): bool
+    public function insertUser(User $user): bool
     {
         $query = "INSERT INTO users (username, password, full_name, phone_number) VALUES(?, ?, ?, ?)";
         $statement = $this->getConnection()->prepare($query);

@@ -6,7 +6,7 @@ use Khoatran\CarForRent\Controller\API\LoginAPIController;
 use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Service\Business\SessionService;
 use Khoatran\CarForRent\Service\Business\TokenService;
@@ -17,12 +17,12 @@ use PHPUnit\Framework\TestCase;
 
 class LoginAPIControllerTest extends TestCase
 {
-    protected UserModel $user;
+    protected User $user;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->user = new UserModel();
+        $this->user = new User();
         $this->user->setId(1);
         $this->user->setUsername('admin');
         $this->user->setPassword('12345678');

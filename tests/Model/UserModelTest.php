@@ -2,17 +2,17 @@
 
 namespace Khoatran\Tests\Model;
 
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use PHPUnit\Framework\TestCase;
 
-class UserModelTest extends TestCase
+class UserTest extends TestCase
 {
     /**
      * @return void
      */
     public function testGetId()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setId(1);
         $result = $userModel->getId();
 
@@ -21,7 +21,7 @@ class UserModelTest extends TestCase
 
     public function testGetUsername()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setUsername('admin');
         $result = $userModel->getUsername();
 
@@ -30,7 +30,7 @@ class UserModelTest extends TestCase
 
     public function testGetPassword()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setPassword('admin');
         $result = $userModel->getPassword();
 
@@ -39,7 +39,7 @@ class UserModelTest extends TestCase
 
     public function testGetFullName()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setFullName('Tran Dang Khoa');
         $result = $userModel->getFullName();
 
@@ -48,7 +48,7 @@ class UserModelTest extends TestCase
 
     public function testGetPhoneNumber()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setPhoneNumber('0947685343');
         $result = $userModel->getPhoneNumber();
 
@@ -57,7 +57,7 @@ class UserModelTest extends TestCase
 
     public function testGetType()
     {
-        $userModel = new UserModel();
+        $userModel = new User();
         $userModel->setRole(0);
         $result = $userModel->getRole();
 

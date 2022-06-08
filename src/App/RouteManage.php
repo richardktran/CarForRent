@@ -8,7 +8,7 @@ use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Controller\RegisterController;
 use Khoatran\CarForRent\Middleware\AuthenticateMiddleware;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 
 class RouteManage
 {
@@ -27,8 +27,8 @@ class RouteManage
     public static function appRoutes(): void
     {
         Route::get('/', [CarController::class, 'index']);
-        Route::get('/create', [CarController::class, 'store'], role: UserModel::ROLE_ADMIN);
-        Route::post('/create', [CarController::class, 'store'], role: UserModel::ROLE_ADMIN);
+        Route::get('/create', [CarController::class, 'store'], role: User::ROLE_ADMIN);
+        Route::post('/create', [CarController::class, 'store'], role: User::ROLE_ADMIN);
         Route::get('/login', [LoginController::class, 'login']);
         Route::post('/login', [LoginController::class, 'login']);
         Route::get('/register', [RegisterController::class, 'register']);

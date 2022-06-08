@@ -3,7 +3,7 @@
 namespace Khoatran\Tests\Service\Business;
 
 use Khoatran\CarForRent\Exception\LoginException;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Service\Business\LoginService;
@@ -102,9 +102,9 @@ class LoginServiceTest extends TestCase
         return password_hash($password, PASSWORD_BCRYPT);
     }
 
-    private function getUser(int $id, string $username, string $password): UserModel
+    private function getUser(int $id, string $username, string $password): User
     {
-        $user = new UserModel();
+        $user = new User();
         $user->setId($id);
         $user->setUsername($username);
         $user->setPassword($password);

@@ -3,12 +3,12 @@
 namespace Khoatran\CarForRent\Repository;
 
 use Khoatran\CarForRent\Database\Database;
-use Khoatran\CarForRent\Model\SessionModel;
+use Khoatran\CarForRent\Model\Session;
 use PDO;
 
 class SessionRepository extends BaseRepository
 {
-    public function save(SessionModel $session): SessionModel | bool
+    public function save(Session $session): Session|bool
     {
         $statement = $this->getConnection()->prepare("INSERT INTO sessions (sess_id, sess_data, sess_lifetime) VALUES(?, ?, ?)");
         $insertSuccess = $statement->execute([
@@ -28,13 +28,13 @@ class SessionRepository extends BaseRepository
         return $statement->execute([$sessionID]);
     }
 
-    public function findById($sessionID): SessionModel
+    public function findById($sessionID): Session
     {
         $statement = $this->getConnection()->prepare("SELECT * FROM sessions WHERE sess_id = ? ");
         $statement->execute([$sessionID]);
 
         try {
-            $session = new SessionModel();
+            $session = new Session();
             if ($row = $statement->fetch()) {
                 $session->setSessID($row['sess_id']);
                 $session->setSessData($row['sess_data']);

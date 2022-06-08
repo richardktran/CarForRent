@@ -3,7 +3,7 @@
 namespace Khoatran\CarForRent\Service\Business;
 
 use Khoatran\CarForRent\Exception\UploadFileException;
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Repository\CarRepository;
 use Khoatran\CarForRent\Request\CarRequest;
 use Khoatran\CarForRent\Service\Contracts\CarServiceInterface;
@@ -27,10 +27,10 @@ class CarService implements CarServiceInterface
 
     /**
      * @param CarRequest $carRequest
-     * @return CarModel
+     * @return Car
      * @throws UploadFileException
      */
-    public function save(CarRequest $carRequest): ?CarModel
+    public function save(CarRequest $carRequest): ?Car
     {
         $isUploadImage = $this->uploadImageService->upload($_FILES['image']);
         if ($isUploadImage == null) {

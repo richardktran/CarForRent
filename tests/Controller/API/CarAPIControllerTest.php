@@ -6,7 +6,7 @@ use Khoatran\CarForRent\Controller\API\CarAPIController;
 use Khoatran\CarForRent\Controller\CarController;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Service\Business\CarService;
 use Khoatran\CarForRent\Service\Business\SessionService;
 use Khoatran\CarForRent\Transformer\CarTransformer;
@@ -34,9 +34,9 @@ class CarAPIControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    private function getCar(int $id, string $name, string $description, string $image, int $price): CarModel
+    private function getCar(int $id, string $name, string $description, string $image, int $price): Car
     {
-        $car = new CarModel();
+        $car = new Car();
         $car->setId($id);
         $car->setName($name);
         $car->setDescription($description);

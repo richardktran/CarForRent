@@ -2,7 +2,7 @@
 
 namespace Khoatran\Tests\Transformer;
 
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Transformer\UserTransformer;
 use PHPUnit\Framework\TestCase;
 
@@ -26,9 +26,9 @@ class UserTransformerTest extends TestCase
 
     }
 
-    private function getUser(): UserModel
+    private function getUser(): User
     {
-        $user = new UserModel();
+        $user = new User();
         $user->setId(1);
         $user->setUsername('admin');
         $user->setFullName('Admin User');

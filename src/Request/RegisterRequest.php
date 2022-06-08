@@ -3,7 +3,7 @@
 namespace Khoatran\CarForRent\Request;
 
 use Khoatran\CarForRent\Helpers\Utils;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 
 class RegisterRequest
 {
@@ -113,9 +113,9 @@ class RegisterRequest
         return $this;
     }
 
-    public function toModel(): UserModel
+    public function toModel(): User
     {
-        $user = new UserModel();
+        $user = new User();
         $user->setUsername($this->getUsername());
         $user->setPassword($this->hashPassword($this->getPassword()));
         $user->setPhoneNumber($this->getPhoneNumber());

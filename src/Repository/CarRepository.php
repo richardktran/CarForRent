@@ -2,7 +2,7 @@
 
 namespace Khoatran\CarForRent\Repository;
 
-use Khoatran\CarForRent\Model\CarModel;
+use Khoatran\CarForRent\Model\Car;
 use Khoatran\CarForRent\Request\CarRequest;
 use PDO;
 
@@ -23,7 +23,7 @@ class CarRepository extends BaseRepository
         $rows = $statement->fetchAll();
         $cars = [];
         foreach ($rows as $row) {
-            $car = new CarModel();
+            $car = new Car();
             $car->setId($row['id']);
             $car->setName($row['name']);
             $car->setDescription($row['description']);
@@ -38,13 +38,13 @@ class CarRepository extends BaseRepository
         return $cars;
     }
 
-    public function findById($id): ?CarModel
+    public function findById($id): ?Car
     {
         $statement = $this->getConnection()->prepare("SELECT * FROM cars WHERE id = ? ");
         $statement->execute([$id]);
 
         try {
-            $car = new CarModel();
+            $car = new Car();
             if ($row = $statement->fetch()) {
                 $car->setName($row['name']);
                 $car->setDescription($row['description']);

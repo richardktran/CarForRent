@@ -6,7 +6,7 @@ use Khoatran\CarForRent\Controller\LoginController;
 use Khoatran\CarForRent\Exception\LoginException;
 use Khoatran\CarForRent\Http\Request;
 use Khoatran\CarForRent\Http\Response;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Request\LoginRequest;
 use Khoatran\CarForRent\Service\Business\SessionService;
 use Khoatran\CarForRent\Service\Business\TokenService;
@@ -17,12 +17,12 @@ use PHPUnit\Framework\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    protected UserModel $user;
+    protected User $user;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->user = new UserModel();
+        $this->user = new User();
         $this->user->setId(1);
         $this->user->setUsername('admin');
         $this->user->setPassword('12345678');
@@ -44,7 +44,8 @@ class LoginControllerTest extends TestCase
         $loginRequestMock = $this->getMockBuilder(LoginRequest::class)->disableOriginalConstructor()->getMock();
         $loginValidatorMock = $this->getMockBuilder(LoginValidator::class)->disableOriginalConstructor()->getMock();
 
-        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -65,7 +66,8 @@ class LoginControllerTest extends TestCase
         $loginRequestMock = $this->getMockBuilder(LoginRequest::class)->disableOriginalConstructor()->getMock();
         $loginValidatorMock = $this->getMockBuilder(LoginValidator::class)->disableOriginalConstructor()->getMock();
 
-        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -90,7 +92,8 @@ class LoginControllerTest extends TestCase
         $loginRequestMock = $this->getMockBuilder(LoginRequest::class)->disableOriginalConstructor()->getMock();
         $loginValidatorMock = $this->getMockBuilder(LoginValidator::class)->disableOriginalConstructor()->getMock();
 
-        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -118,7 +121,8 @@ class LoginControllerTest extends TestCase
             'password' => 'Password invalid'
         ]);
 
-        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($requestMock, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -141,7 +145,8 @@ class LoginControllerTest extends TestCase
         $loginRequestMock = $this->getMockBuilder(LoginRequest::class)->disableOriginalConstructor()->getMock();
         $loginValidatorMock = $this->getMockBuilder(LoginValidator::class)->disableOriginalConstructor()->getMock();
 
-        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -168,7 +173,8 @@ class LoginControllerTest extends TestCase
         $loginRequestMock = $this->getMockBuilder(LoginRequest::class)->disableOriginalConstructor()->getMock();
         $loginValidatorMock = $this->getMockBuilder(LoginValidator::class)->disableOriginalConstructor()->getMock();
 
-        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->login($loginRequestMock, $loginValidatorMock);
 
         $expectedResult = new Response();
@@ -185,7 +191,8 @@ class LoginControllerTest extends TestCase
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $sessionServiceMock->expects($this->once())->method('destroyUser')->willReturn(true);
         $tokenServiceMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
-        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->logout();
 
         $expectedResult = new Response();
@@ -202,7 +209,8 @@ class LoginControllerTest extends TestCase
         $sessionServiceMock = $this->getMockBuilder(SessionService::class)->disableOriginalConstructor()->getMock();
         $sessionServiceMock->expects($this->once())->method('destroyUser')->willReturn(false);
         $tokenServiceMock = $this->getMockBuilder(TokenService::class)->disableOriginalConstructor()->getMock();
-        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock, $tokenServiceMock);
+        $loginController = new LoginController($request, $response, $loginServiceMock, $sessionServiceMock,
+            $tokenServiceMock);
         $loginController = $loginController->logout();
 
         $expectedResult = new Response();

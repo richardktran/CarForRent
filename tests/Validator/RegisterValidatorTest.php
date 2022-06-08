@@ -2,7 +2,7 @@
 
 namespace Khoatran\Tests\Validator;
 
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Repository\UserRepository;
 use Khoatran\CarForRent\Request\RegisterRequest;
 use Khoatran\CarForRent\Validator\RegisterValidator;
@@ -40,7 +40,7 @@ class RegisterValidatorTest extends TestCase
             ->getMock();
         $userRepository->expects($this->once())
             ->method('findByUsername')
-            ->willReturn(new UserModel());
+            ->willReturn(new User());
         $loginValidator = new RegisterValidator($userRepository);
         $errors = $loginValidator->validateUserRegister($requestRequest);
         $this->assertEquals('Username already exists', $errors['username']);

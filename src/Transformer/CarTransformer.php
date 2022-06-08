@@ -2,13 +2,13 @@
 
 namespace Khoatran\CarForRent\Transformer;
 
-use Khoatran\CarForRent\Model\CarModel;
-use Khoatran\CarForRent\Model\UserModel;
+use Khoatran\CarForRent\Model\Car;
+use Khoatran\CarForRent\Model\User;
 use Khoatran\CarForRent\Request\CarRequest;
 
 class CarTransformer
 {
-    public function toArray(CarModel $car): array
+    public function toArray(Car $car): array
     {
         return [
             'id' => $car->getId(),
